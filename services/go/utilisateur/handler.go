@@ -31,7 +31,7 @@ func createUsers(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		user.MotDePasse = string(hashedPassword)
+		user.MotDePasse = internal.PrivateString(hashedPassword)
 
 		repo.create(user)
 

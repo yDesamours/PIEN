@@ -1,6 +1,7 @@
 package main
 
 import (
+	"PIEN/internal"
 	"time"
 
 	"gorm.io/gorm"
@@ -9,7 +10,7 @@ import (
 type Utilisateur struct {
 	ID                      string `gorm:"primaryKey"`
 	Email                   string
-	MotDePasse              string
+	MotDePasse              internal.PrivateString
 	Role                    string
 	Telephone               string
 	is2FaActive             string

@@ -2,6 +2,7 @@ package internal
 
 import (
 	"log"
+	"os"
 
 	"gorm.io/gorm"
 )
@@ -29,13 +30,16 @@ func (a *App) Error(e error) {
 }
 
 type AppBuilder struct {
-	port   string
-	logger *log.Logger
-	db     *gorm.DB
+	databaseEngine string
+	dsn            string
+	port           string
+	logger         *log.Logger
+	db             *gorm.DB
 }
 
 func NewAppBuilder() *AppBuilder {
-	return &AppBuilder{}
+	logger := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime)
+	return &AppBuilder{logger: logger}
 }
 
 func (a *AppBuilder) Port(port string) {
@@ -46,8 +50,9 @@ func (a *AppBuilder) Logger(logger *log.Logger) {
 	a.logger = logger
 }
 
-func (a *AppBuilder) DB(db *gorm.DB) {
-	a.db = db
+func (a *AppBuilder) DB(engine, dsn string) {
+	a.databaseEngine = engine
+	a.dsn = dsn
 }
 
 func (a *AppBuilder) Build() (*App, error) {
@@ -55,13 +60,11 @@ func (a *AppBuilder) Build() (*App, error) {
 		return nil, nil
 	}
 
-	if a.logger == nil {
-		return nil, nil
+	db, err := db(a.databaseEngine, a.dsn)
+	if err != nil {
+		return nil, err
 	}
-
-	if a.db == nil {
-		return nil, nil
-	}
+	a.db = db
 
 	return &App{
 		port:   a.port,

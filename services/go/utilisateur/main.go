@@ -10,6 +10,7 @@ func main() {
 	port := flag.String("port", ":8080", "port to listen on")
 
 	appBuilder := internal.NewAppBuilder()
+	appBuilder.Port(*port)
 
 	app, err := appBuilder.Build()
 	if err != nil {
