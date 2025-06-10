@@ -1,4 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { capltalize } from "../../../utils/utils";
+import useApi from "../../../hooks/api";
+import USER from "../../../services/api/user";
 
 const LoginForm = forwardRef(function (
   { className, handleValueChange = () => {} },
@@ -10,9 +13,9 @@ const LoginForm = forwardRef(function (
     password: "",
     showPassword: false,
   });
+  const { execute, requestState } = useApi();
 
   const onchange = ({ target }) => {
-    console.log(target.value);
     setUserData((state) => ({
       ...state,
       [target.name]: target.value,
@@ -26,85 +29,103 @@ const LoginForm = forwardRef(function (
     }));
   };
 
+  const onReset = () => {
+    setUserData((state) => ({
+      role: "",
+      email: "",
+      password: "",
+      showPassword: state.showPassword,
+    }));
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    execute(() =>
+      USER.LOGIN({
+        email: userData.email,
+        password: userData.password,
+        role: userData.role,
+      })
+    );
+  };
+
   useEffect(() => {
     handleValueChange(userData);
   }, [userData]);
 
-  const onSubmit = (formData) => {
-    console.log(formData);
-  };
+  return (
+    <>
+      <form onSubmit={onSubmit} className={className} ref={ref}>
+        <fieldset className="flex flex-col gap-2 text-left">
+          <legend className="mb-6 text-2xl">Qui etes vous?</legend>
+          {["eleve", "enseignant", "gestionnaire"].map((e) => (
+            <label
+              className="bg-accent w-60 h-10 font-bold text-black cursor-pointer flex justify-center items-center hover:scale-110 transition-transform duration-300"
+              key={e}
+            >
+              {capltalize(e)}
+              <input
+                type="radio"
+                name="role"
+                value={e}
+                checked={userData.role === e}
+                onChange={onchange}
+                className="invisible"
+              />
+            </label>
+          ))}
+        </fieldset>
 
-  const credentialsElements = (
-    <div>
-      <label className="grid gap-1 mb-2">
-        <span className="text-left">
-          Email <span className="text-red-800">*</span>
-        </span>
-        <input
-          type="text"
-          name="email"
-          value={userData.email}
-          onChange={onchange}
-          className="border-1 h-8 w-100"
-        />
-      </label>
-
-      <label className="grid gap-1">
-        <span className="text-left">
-          Password <span className="text-red-800">*</span>
-        </span>
-        <input
-          type={userData.showPassword ? "text" : "password"}
-          name="password"
-          value={userData.password}
-          onChange={onchange}
-          className="border-1 h-8 w-100"
-        />
-      </label>
-
-      <div className="flex justify-between mb-2">
-        <label>
-          <span className="mr-1">Show Password</span>
-          <input
-            type="checkbox"
-            name="showPassword"
-            onChange={ontogglePassword}
-          />
-        </label>
-
-        <a>Forgot Password?</a>
-      </div>
-      <button type="submit" className="w-full">
-        Login
-      </button>
-    </div>
-  );
-
-  const roleElements = (
-    <div>
-      {["eleve", "enseignant", "gestionnaire"].map((e) => (
-        <div key={e}>
-          <label>
-            {e}
+        <fieldset>
+          <legend className="mb-6 text-2xl text-left">Bienvenue</legend>
+          <label className="grid gap-1 mb-2 text-left text-primary">
+            Email
             <input
-              type="radio"
-              name="role"
-              value={e}
-              checked={userData.role === e}
+              type="text"
+              name="email"
+              value={userData.email}
               onChange={onchange}
-              className="invisible"
+              className="border-1 h-8 w-100"
             />
           </label>
-        </div>
-      ))}
-    </div>
-  );
 
-  return (
-    <form onSubmit={onSubmit} className={className} ref={ref}>
-      {roleElements}
-      {credentialsElements}
-    </form>
+          <label className="grid gap-1 text-left text-primary">
+            Password
+            <input
+              type={userData.showPassword ? "text" : "password"}
+              name="password"
+              value={userData.password}
+              onChange={onchange}
+              className="border-1 h-8 w-100"
+            />
+          </label>
+
+          <div className="flex justify-between mb-2">
+            <label>
+              <span className="mr-1">Show Password</span>
+              <input
+                type="checkbox"
+                name="showPassword"
+                onChange={ontogglePassword}
+              />
+            </label>
+
+            <a className="cursor-pointer">Forgot Password?</a>
+          </div>
+          <button type="submit" className="w-full mb-1 bg-primary">
+            Login
+          </button>
+          <span
+            role="button"
+            onClick={onReset}
+            className="text-primary text-xs cursor-pointer"
+          >
+            Vous n'etes pas {userData.role}?
+          </span>
+        </fieldset>
+      </form>
+    </>
   );
 });
 

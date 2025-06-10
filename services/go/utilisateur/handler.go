@@ -96,6 +96,19 @@ func login(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, user)
+		jwtPayload := make(map[string]string)
+		jwtPayload["userId"] = user.ID
+		jwtPayload["role"] = user.Role
+
+		jwtBuilder := app.Token.JwtBuilder()
+		jwtBuilder.Claim("payload", jwtPayload)
+		token, err := app.Token.BuildJWT(jwtBuilder)
+		if err != nil {
+			app.Error(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, token)
 	}
 }

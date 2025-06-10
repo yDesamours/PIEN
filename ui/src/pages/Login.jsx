@@ -8,6 +8,8 @@ export default function Login() {
   const handleValueChange = ({ role }) => {
     if (role) {
       setPosition("left-0");
+    } else {
+      setPosition("left-1/2");
     }
   };
 

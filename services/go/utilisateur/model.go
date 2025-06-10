@@ -13,7 +13,7 @@ type Utilisateur struct {
 	MotDePasse              internal.PrivateString
 	Role                    string
 	Telephone               string
-	is2FaActive             string
+	Is2FaActive             string
 	Statut                  string
 	NotificationsAutorisees []string
 	CreeLe                  time.Time

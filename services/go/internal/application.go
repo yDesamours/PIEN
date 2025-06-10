@@ -11,6 +11,7 @@ type App struct {
 	port   string
 	logger *log.Logger
 	db     *gorm.DB
+	Token  *Token
 }
 
 func (a *App) GetDb() *gorm.DB {
@@ -70,5 +71,6 @@ func (a *AppBuilder) Build() (*App, error) {
 		port:   a.port,
 		logger: a.logger,
 		db:     a.db,
+		Token:  New(),
 	}, nil
 }
