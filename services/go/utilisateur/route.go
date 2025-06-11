@@ -11,7 +11,7 @@ func route(app *internal.App) http.Handler {
 	router := gin.Default()
 	utilisateurRepository := newUtilisateurRepository(app.GetDb())
 
-	router.GET("/login", login(app, utilisateurRepository))
+	router.POST("/login", login(app, utilisateurRepository))
 
 	return router
 }

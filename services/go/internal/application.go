@@ -36,11 +36,16 @@ type AppBuilder struct {
 	port           string
 	logger         *log.Logger
 	db             *gorm.DB
+	secret         string
 }
 
 func NewAppBuilder() *AppBuilder {
 	logger := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime)
 	return &AppBuilder{logger: logger}
+}
+
+func (a *AppBuilder) Secret(secret string) {
+	a.secret = secret
 }
 
 func (a *AppBuilder) Port(port string) {
@@ -71,6 +76,6 @@ func (a *AppBuilder) Build() (*App, error) {
 		port:   a.port,
 		logger: a.logger,
 		db:     a.db,
-		Token:  New(),
+		Token:  New(a.secret),
 	}, nil
 }

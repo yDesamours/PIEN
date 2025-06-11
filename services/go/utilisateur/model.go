@@ -48,7 +48,7 @@ func (r *UtilisateurRepository) findById(ID string) (*Utilisateur, error) {
 
 func (r *UtilisateurRepository) findByEmailAndRole(email, role string) (*Utilisateur, error) {
 	var utilisateur Utilisateur
-	result := r.db.Where("email = ? and role = ?", email, role).First(&utilisateur)
+	result := r.db.Table("utilisateurs").Where("email = ? and role = ?", email, role).First(&utilisateur)
 	return &utilisateur, result.Error
 }
 

@@ -41,7 +41,7 @@ func (build *jwtBuilder) build(method *jwt.SigningMethodHMAC, secret string) (st
 	}
 
 	token := jwt.NewWithClaims(method, build.claims)
-	return token.SignedString(secret)
+	return token.SignedString(([]byte)(secret))
 
 }
 
@@ -49,8 +49,8 @@ type Token struct {
 	jwtSecret string
 }
 
-func New() *Token {
-	return &Token{}
+func New(secret string) *Token {
+	return &Token{jwtSecret: secret}
 }
 
 func (t *Token) JwtBuilder() *jwtBuilder {

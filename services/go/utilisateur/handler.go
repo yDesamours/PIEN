@@ -69,9 +69,9 @@ func getUser(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
 func login(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type login struct {
-			Email    string `json:"email"`
-			Password string `json:"password"`
-			Role     string `json:"role"`
+			Email    string             `json:"email"`
+			Password string             `json:"password"`
+			Role     internal.UpperCase `json:"role"`
 		}
 
 		var credentials login
@@ -82,14 +82,14 @@ func login(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
 			return
 		}
 
-		user, err := repo.findByEmailAndRole(credentials.Email, credentials.Role)
+		user, err := repo.findByEmailAndRole(credentials.Email, credentials.Role.ToString())
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		err = bcrypt.CompareHashAndPassword([]byte(credentials.Password), []byte(user.MotDePasse))
+		err = bcrypt.CompareHashAndPassword([]byte(user.MotDePasse), []byte(credentials.Password))
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
