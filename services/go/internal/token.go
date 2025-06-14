@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"time"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -34,11 +35,10 @@ func (build *jwtBuilder) build(method *jwt.SigningMethodHMAC, secret string) (st
 		return "", fmt.Errorf("Cannot build twice")
 	}
 
+	build.Claim("exp", time.Now().Add(time.Minute*5).Unix())
+	build.Claim("iat", (time.Now().Unix()))
+
 	build.built = true
-	copy := make(map[string]interface{})
-	for k, v := range build.claims {
-		copy[k] = v
-	}
 
 	token := jwt.NewWithClaims(method, build.claims)
 	return token.SignedString(([]byte)(secret))

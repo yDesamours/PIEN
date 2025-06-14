@@ -16,14 +16,19 @@ export default function useApi() {
 
     try {
       const result = await apiCall();
-      // Ici tu peux afficher un toast succès si tu veux
-      return result;
+      return result.data;
     } catch (err) {
-      setError(err.message || "Erreur inconnue");
-      // Ici tu peux afficher un toast erreur
+      setRequestState((state) => ({
+        ...state,
+        loading: false,
+        error: err.message || "Erreur inconnue",
+      }));
       throw err;
     } finally {
-      setLoading(false);
+      setRequestState((state) => ({
+        ...state,
+        loading: false,
+      }));
     }
   };
 

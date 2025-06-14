@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
@@ -28,6 +29,11 @@ func (a *App) Infos(s string) {
 
 func (a *App) Error(e error) {
 	a.logger.Println(e.Error())
+}
+
+func (a *App) Success(c *gin.Context, code int, data interface{}) {
+	response := SuccessResponse{Status: 0, Data: data, Message: ""}
+	c.JSON(code, response)
 }
 
 type AppBuilder struct {

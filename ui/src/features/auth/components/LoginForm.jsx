@@ -1,7 +1,14 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import {
+  forwardRef,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { capltalize } from "../../../utils/utils";
 import useApi from "../../../hooks/api";
 import USER from "../../../services/api/user";
+import { AuthContext } from "../../../context/authContext";
 
 const LoginForm = forwardRef(function (
   { className, handleValueChange = () => {} },
@@ -14,6 +21,7 @@ const LoginForm = forwardRef(function (
     showPassword: false,
   });
   const { execute, requestState } = useApi();
+  const { login } = useContext(AuthContext);
 
   const onchange = ({ target }) => {
     setUserData((state) => ({
@@ -38,16 +46,18 @@ const LoginForm = forwardRef(function (
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    execute(() =>
+    const result = await execute(() =>
       USER.LOGIN({
         email: userData.email,
         password: userData.password,
         role: userData.role,
       })
     );
+
+    login(result);
   };
 
   useEffect(() => {

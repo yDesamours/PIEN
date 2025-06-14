@@ -101,7 +101,7 @@ func login(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
 		jwtPayload["role"] = user.Role
 
 		jwtBuilder := app.Token.JwtBuilder()
-		jwtBuilder.Claim("payload", jwtPayload)
+		jwtBuilder.Claim("user", jwtPayload)
 		token, err := app.Token.BuildJWT(jwtBuilder)
 		if err != nil {
 			app.Error(err)
@@ -109,6 +109,8 @@ func login(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, token)
+		response := map[string]string{"token": token}
+		app.Success(c, http.StatusOK, response)
+
 	}
 }
