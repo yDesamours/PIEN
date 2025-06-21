@@ -63,12 +63,12 @@ export default function AudioPicker({ onChange }) {
             🎵 {audioFile.name}
           </p>
           <audio controls src={previewUrl} className="w-full" />
-          <button
+          <Icon
+            role="button"
+            name="trash"
             onClick={handleRemove}
-            className="text-red-600 text-sm hover:underline"
-          >
-            Supprimer
-          </button>
+            className="text-red-600 text-sm hover:underline w-3"
+          />
         </div>
       )}
     </div>

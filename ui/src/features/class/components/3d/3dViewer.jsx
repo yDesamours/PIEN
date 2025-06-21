@@ -9,7 +9,7 @@ export default function Simple3DViewer({
   renderingConfig,
 }) {
   const {
-    scale = 0.01,
+    scale = 1,
     background = "#F0F0F0",
     environmentPreset = "warehouse",
     animationName = null,

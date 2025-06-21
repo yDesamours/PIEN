@@ -7,6 +7,8 @@ import { courseBuilderContext } from "../../../../context/courseContext";
 import ImagePicker from "../content/imagePicker";
 import AudioPicker from "../content/audioPicker";
 import VideoPicker from "../content/videoPicker";
+import GlbPicker from "../content/3dPicker";
+import DocumentPicker from "../content/documentPicker";
 
 function toComponent(type) {
   switch (type) {
@@ -18,6 +20,10 @@ function toComponent(type) {
       return AudioPicker;
     case "video":
       return VideoPicker;
+    case "3d":
+      return GlbPicker;
+    case "document":
+      return DocumentPicker;
     default:
       return Empty;
   }

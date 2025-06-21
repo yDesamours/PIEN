@@ -4,7 +4,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed w-full inset-0 z-50 flex items-center justify-center bg-black/50">
       <div
         className="bg-white rounded-lg shadow-lg max-w-md w-full mx-4 animate-fade-in"
         role="dialog"

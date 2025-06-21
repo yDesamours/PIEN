@@ -25,6 +25,7 @@ export default function ContentChoser() {
           <ContentChoserItem icon="image" label="Image" name="image" />
           <ContentChoserItem icon="audio" label="Audio" name="audio" />
           <ContentChoserItem icon="video" label="Video" name="video" />
+          <ContentChoserItem icon="document" label="Document" name="document" />
           <ContentChoserItem icon="3d" label="Modele 3d" name="3d" />
         </ContentChoserContent>
       </div>
