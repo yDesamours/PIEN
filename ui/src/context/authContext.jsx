@@ -1,55 +1,49 @@
-import { useEffect, useState } from "react";
-import { createContext } from "react";
+import { useNavigate } from "react-router";
+import { useEffect, useState, createContext } from "react";
+import useApi from "../hooks/api";
+import USER from "../services/api/user";
 
 export const AuthContext = createContext({
   user: null,
-  token: null,
   login: () => {},
   logout: () => {},
-  isAuthenticated: false,
 });
 
-function decode(token) {
-  return JSON.parse(atob(token.split(".")[1]));
-}
-
 export default function AuthContextProvider({ children }) {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState();
+  const { execute } = useApi();
+  const navigate = useNavigate();
 
-  const login = ({ token }) => {
-    const { user } = decode(token);
-
-    localStorage.setItem("jwt", token);
-    setUserData({ user, token });
+  const login = (user) => {
+    console.log({ user });
+    setUserData({ ...user });
+    navigate("/");
   };
 
   const logout = () => {
-    setUserData({});
+    setUserData(null);
   };
 
-  const isAuthenticated = userData.user !== null;
-
   useEffect(() => {
-    const savedToken = localStorage.getItem("jwt");
-    if (!savedToken) {
-      setUserData({ user: null });
-      return;
-    }
+    const checkAuth = async () => {
+      const user = await execute(USER.ME);
+      if (user) {
+        login(user);
+      } else {
+        setUserData(null);
+      }
+    };
 
-    const { user, exp } = decode(savedToken);
-    const expirationDate = new Date(exp * 1000);
-
-    if (expirationDate < new Date()) {
-      logout();
-      return;
-    }
-    console.log(expirationDate);
-    setUserData({ user, token: savedToken });
+    checkAuth();
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ user: userData.user, login, logout, isAuthenticated }}
+      value={{
+        user: userData,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

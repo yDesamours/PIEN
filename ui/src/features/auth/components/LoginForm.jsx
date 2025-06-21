@@ -48,8 +48,7 @@ const LoginForm = forwardRef(function (
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    const result = await execute(() =>
+    const result = await execute(
       USER.LOGIN({
         email: userData.email,
         password: userData.password,

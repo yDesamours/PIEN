@@ -3,12 +3,13 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import dns from "node:dns";
+import svgr from "vite-plugin-svgr";
 
 dns.setDefaultResultOrder("verbatim");
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), svgr()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

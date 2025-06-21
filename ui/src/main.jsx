@@ -1,15 +1,20 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { RouterProvider } from "react-router";
-import router from "./router/router.jsx";
-import UserContext from "./context/authContext.jsx";
+import { BrowserRouter } from "react-router";
+
 import AuthContextProvider from "./context/authContext.jsx";
+import { SideViewerProvider } from "./components/sideViewer/sideViewer.jsx";
+import App from "./app.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthContextProvider>
-      <RouterProvider router={router} />
-    </AuthContextProvider>
+    <BrowserRouter>
+      <AuthContextProvider>
+        <SideViewerProvider>
+          <App />
+        </SideViewerProvider>
+      </AuthContextProvider>
+    </BrowserRouter>
   </StrictMode>
 );
