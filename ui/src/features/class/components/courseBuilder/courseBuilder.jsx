@@ -1,5 +1,5 @@
 import CourseBulderProvider from "../../../../context/courseContext";
-import ContentChoser from "./contentChoser";
+import ContentChoser from "./contentChoser/contentChoser";
 import CourseContent from "./CourseContent";
 
 export default function CourseBuilder() {

@@ -5,6 +5,8 @@ import Trash from "../../../../assets/icons/trash.svg?react";
 import Duplicate from "../../../../assets/icons/duplicate.svg?react";
 import { courseBuilderContext } from "../../../../context/courseContext";
 import ImagePicker from "../content/imagePicker";
+import AudioPicker from "../content/audioPicker";
+import VideoPicker from "../content/videoPicker";
 
 function toComponent(type) {
   switch (type) {
@@ -12,6 +14,10 @@ function toComponent(type) {
       return Text;
     case "image":
       return ImagePicker;
+    case "audio":
+      return AudioPicker;
+    case "video":
+      return VideoPicker;
     default:
       return Empty;
   }
