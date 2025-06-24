@@ -2,22 +2,23 @@ package main
 
 import (
 	"PIEN/internal"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
 )
 
 type Utilisateur struct {
-	ID                      string `gorm:"primaryKey"`
-	Email                   string
-	MotDePasse              internal.PrivateString
-	Role                    string
-	Telephone               string
-	Is2FaActive             string
-	Statut                  string
-	NotificationsAutorisees []string
-	CreeLe                  time.Time
-	CreePar                 string
+	ID                      int                    `gorm:"primaryKey" json:"id"`
+	Email                   string                 `json:"email"`
+	MotDePasse              internal.PrivateString `json:"motDePasse,omitempty"`
+	Role                    string                 `json:"role"`
+	Telephone               string                 `json:"telephone"`
+	Is2FaActive             string                 `json:"is2FaActive"`
+	Statut                  string                 `json:"statut"`
+	NotificationsAutorisees []string               `json:"notificationsAutorisees"`
+	CreeLe                  time.Time              `json:"creeLe"`
+	CreePar                 string                 `json:"creePar"`
 }
 
 type UtilisateurRepository struct {
@@ -39,9 +40,9 @@ func (r *UtilisateurRepository) update(u *Utilisateur) error {
 	return result.Error
 }
 
-func (r *UtilisateurRepository) findById(ID string) (*Utilisateur, error) {
+func (r *UtilisateurRepository) findById(ID int) (*Utilisateur, error) {
 	var Utilisateur Utilisateur
-	result := r.db.First(&Utilisateur, ID)
+	result := r.db.Table("utilisateurs").First(&Utilisateur, ID)
 
 	return &Utilisateur, result.Error
 }
@@ -59,10 +60,10 @@ func (r *UtilisateurRepository) findByEmail(email string) (*Utilisateur, error) 
 }
 
 type Jeton struct {
-	ID            string
-	UtilisateurID string
+	ID            int `gorm:"-, primaryKey"`
+	UtilisateurID int
 	Valeur        string
-	Scope         string
+	Porte         JetonScope
 	EmisLe        time.Time
 	ExpireLe      time.Time
 	EstRevoque    bool
@@ -74,13 +75,28 @@ type JetonRepository struct {
 	db *gorm.DB
 }
 
+func newJetonRepository(db *gorm.DB) *JetonRepository {
+	return &JetonRepository{db}
+}
+
+func (repository *JetonRepository) find(valeur string, scope JetonScope) (*Jeton, error) {
+	var jeton Jeton
+	result := repository.db.Table("jetons").Where(&Jeton{Valeur: valeur, Porte: scope}).First(&jeton)
+	return &jeton, result.Error
+}
+
 func (repository *JetonRepository) create(jeton *Jeton) error {
-	result := repository.db.Create(jeton)
+	result := repository.db.Table("jetons").Save(jeton)
 	return result.Error
 }
 
 func (repository *JetonRepository) update(jeton *Jeton) error {
 	result := repository.db.Save(jeton)
+	return result.Error
+}
+
+func (repository *JetonRepository) invalidateForUserAndScope(userID int, scope JetonScope) error {
+	result := repository.db.Table("jetons").Where(&Jeton{UtilisateurID: userID, Porte: scope}).Update("est_revoque", true)
 	return result.Error
 }
 
@@ -104,4 +120,48 @@ func (r *HistoriqueMotDePasseRepository) getByUserID(utilisateurID string) ([]Hi
 	var historiques []HistoriqueMotDePasse
 	result := r.db.Where("utilisateur_id = ?", utilisateurID).Find(&historiques)
 	return historiques, result.Error
+}
+
+type JetonScope int
+
+const (
+	JetonScope2FA JetonScope = iota
+	JetonScopeResetPassword
+	JetonScopeId
+)
+
+func (s JetonScope) String() string {
+	switch s {
+	case JetonScope2FA:
+		return "2fa"
+	case JetonScopeResetPassword:
+		return "reset_password"
+	case JetonScopeId:
+		return "session_id"
+	default:
+		return "unknown"
+	}
+}
+
+func (s *JetonScope) Scan(value interface{}) error {
+	str, ok := value.(string)
+	if !ok {
+		return fmt.Errorf("cannot convert")
+	}
+
+	switch str {
+	case "2fa":
+		*s = JetonScope2FA
+	case "reset_password":
+		*s = JetonScopeResetPassword
+	case "session_id":
+		*s = JetonScopeId
+	default:
+		return nil
+	}
+	return nil
+}
+
+func (s JetonScope) Value() (string, error) {
+	return s.String(), nil
 }

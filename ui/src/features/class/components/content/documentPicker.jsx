@@ -1,21 +1,37 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Icon from "../../../../components/icon/icon";
 
+const types = [
+  ".pdf",
+  ".docx",
+  ".txt",
+  ".xls",
+  ".xlsx",
+  ".ppt",
+  ".pptx",
+  ".md",
+];
+
 export default function DocumentPicker({
-  onChange,
-  allowedTypes = [".pdf", ".docx", ".txt", ".xlsx", ".md"],
+  data,
+  save = () => {},
+  allowedTypes = types,
 }) {
-  const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
   const inputRef = useRef();
+  const iconName = data ? data.fileName.split(".").pop().toLowerCase() : "";
+
+  let objectUrl = null;
 
   const handleFile = (file) => {
     const extension = file.name.split(".").pop().toLowerCase();
     if (!allowedTypes.includes("." + extension)) return;
 
-    setPreviewUrl(URL.createObjectURL(file));
-    setFile(file);
-    onChange?.(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const result = reader.result;
+      save({ fileName: file.name, mimeType: file.type, content: result });
+    };
+    reader.readAsArrayBuffer(file);
   };
 
   const handleSelect = (e) => {
@@ -30,17 +46,26 @@ export default function DocumentPicker({
   };
 
   const handleRemove = () => {
-    setFile(null);
-    inputRef.current.value = null;
-    onChange?.(null);
+    save(null);
   };
 
   const handlePreview = () => {
-    if (!file) return;
-    window.open(previewUrl, "_blank");
+    if (!objectUrl) return;
+    window.open(objectUrl, "_blank");
   };
 
-  const acceptString = allowedTypes.join(",");
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    const blob = new Blob([data.content], { type: data.mimeType });
+    objectUrl = URL.createObjectURL(blob);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [data]);
 
   return (
     <div
@@ -48,7 +73,7 @@ export default function DocumentPicker({
       onDrop={handleDrop}
       className="flex flex-col items-center gap-2 w-full p-4 border"
     >
-      {!file && (
+      {!data && (
         <>
           <Icon name="document" className="w-10" />
           <p>Glissez un document ici</p>
@@ -57,7 +82,7 @@ export default function DocumentPicker({
             Sélectionner un document depuis votre ordinateur
             <input
               type="file"
-              accept={acceptString}
+              accept={allowedTypes.join(",")}
               className="hidden"
               ref={inputRef}
               onChange={handleSelect}
@@ -65,10 +90,12 @@ export default function DocumentPicker({
           </label>
         </>
       )}
-      {file && (
+
+      {data && (
         <div className="w-full flex flex-col items-center gap-2">
+          <Icon name={iconName} className="w-10" />
           <p className="text-sm text-gray-700 font-medium text-center truncate w-full">
-            📄 {file.name}
+            {data.fileName}
           </p>
           <div className="flex justify-center space-x-4 bg-blue-400 rounded-sm mb-3 w-20 h-5 m-auto">
             <Icon

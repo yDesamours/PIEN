@@ -72,3 +72,9 @@ func (t *Token) Otp(digits int) (string, error) {
 	n := nBig.Int64() + min
 	return fmt.Sprintf("%d", n), nil
 }
+
+func (t *Token) Random() (string, error) {
+	b := make([]byte, 32)
+	_, err := rand.Read(b)
+	return fmt.Sprintf("%x", b), err
+}

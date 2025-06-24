@@ -9,7 +9,7 @@ import (
 type PrivateString string
 
 func (s PrivateString) MarshalJSON() ([]byte, error) {
-	return []byte{}, nil
+	return []byte(strconv.Quote("")), nil
 }
 
 type UpperCase string

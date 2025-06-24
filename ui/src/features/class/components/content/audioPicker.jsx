@@ -1,18 +1,18 @@
 import { useState, useRef } from "react";
 import Icon from "../../../../components/icon/icon";
 
-export default function AudioPicker({ onChange }) {
-  const [audioFile, setAudioFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+export default function AudioPicker({ data, save = () => {} }) {
   const inputRef = useRef();
 
   const handleFile = (file) => {
     if (!file || !file.type.startsWith("audio/")) return;
 
-    const url = URL.createObjectURL(file);
-    setAudioFile(file);
-    setPreviewUrl(url);
-    onChange?.(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const result = reader.result;
+      save({ file: file, content: result });
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSelect = (e) => {
@@ -27,11 +27,7 @@ export default function AudioPicker({ onChange }) {
   };
 
   const handleRemove = () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setAudioFile(null);
-    setPreviewUrl(null);
-    inputRef.current.value = null;
-    onChange?.(null);
+    save(null);
   };
 
   return (
@@ -40,7 +36,7 @@ export default function AudioPicker({ onChange }) {
       onDrop={handleDrop}
       className="flex flex-col items-center gap-2 w-full p-4 border"
     >
-      {!audioFile && (
+      {!data && (
         <>
           <Icon name="audio" className="w-10" />
           <p>Glissier un fichier audio</p>
@@ -57,12 +53,12 @@ export default function AudioPicker({ onChange }) {
           </label>
         </>
       )}
-      {audioFile && (
+      {data && (
         <div className="w-full flex flex-col items-center gap-2">
           <p className="text-sm text-gray-700 font-medium text-center truncate w-full">
-            🎵 {audioFile.name}
+            🎵 {data.file.name}
           </p>
-          <audio controls src={previewUrl} className="w-full" />
+          <audio controls src={data.content} className="w-full" />
           <Icon
             role="button"
             name="trash"

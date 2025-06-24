@@ -1,18 +1,11 @@
 import { useState } from "react";
 import Icon from "../../../../components/icon/icon";
 
-export default function ImagePicker() {
+export default function ImagePicker({ data, save = () => {} }) {
   const initalWidth = 100;
-  const [preview, setPreview] = useState(null);
-  const [dimensions, setDimensions] = useState({
-    width: initalWidth,
-    height: 0,
-  });
-  const [aspectRatio, setAspectRatio] = useState(1);
 
   const handleFile = (file) => {
     if (!file || !file.type.startsWith("image/")) {
-      setPreview(null);
       return;
     }
 
@@ -20,19 +13,27 @@ export default function ImagePicker() {
       return;
     }
 
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-    img.onload = () => {
-      const [ratio] = [img.width / img.height];
-      setDimensions((state) => ({ ...state, height: state.width / ratio }));
-      setAspectRatio(ratio);
-    };
-
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPreview(reader.result);
+      const result = reader.result;
+      const img = new Image();
+
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const [aspectRatio] = [img.width / img.height];
+        save({
+          fileName: file.name,
+          type: file.type,
+          content: result,
+          dimensions: {
+            width: initalWidth,
+            height: initalWidth / aspectRatio,
+            aspectRatio,
+          },
+        });
+      };
     };
-    reader.readAsDataURL(file);
+    reader.readAsArrayBuffer(file);
   };
 
   const handleDrop = (e) => {
@@ -42,23 +43,23 @@ export default function ImagePicker() {
   };
 
   const scaleUp = () => {
-    setDimensions((state) => ({
-      ...state,
-      width: state.width * 1.1,
-      height: (state.width * 1.1) / aspectRatio,
-    }));
+    const { dimensions } = data;
+    save({
+      ...data,
+      width: dimensions.width * 1.1,
+      height: (dimensions.width * 1.1) / dimensions.aspectRatio,
+    });
   };
 
   const scaleDown = () => {
-    setDimensions((state) => {
-      const width = state.width / 1.1;
-      if (width < initalWidth) return state;
+    const { dimensions } = data;
+    const width = dimensions.width / 1.1;
+    if (width < initalWidth) return;
 
-      return {
-        ...state,
-        width: width,
-        height: width / aspectRatio,
-      };
+    save({
+      ...data,
+      width: width,
+      height: width / dimensions.aspectRatio,
     });
   };
 
@@ -68,8 +69,7 @@ export default function ImagePicker() {
   };
 
   const handleRemove = () => {
-    setPreview(null);
-    if (onChange) onChange(null);
+    save(null);
   };
 
   return (
@@ -78,7 +78,7 @@ export default function ImagePicker() {
       onDragOver={(e) => e.preventDefault()}
       className="  p-4 flex flex-col justify-around items-center gap-2 border-1"
     >
-      {!preview && (
+      {!data && (
         <>
           <Icon name="image" className="w-10" />
           <p className="text-sm">Glisser une image ici</p>
@@ -95,27 +95,27 @@ export default function ImagePicker() {
         </>
       )}
 
-      {preview && (
+      {data && (
         <>
-          <div className="flex justify-center space-x-4 bg-blue-400 rounded-sm mb-3 w-30 m-auto">
+          <div className="flex justify-center space-x-4 bg-blue-400 rounded-sm mb-3 w-30 m-auto shrink-0">
             <button
               title="agrandir l'image"
               onClick={scaleUp}
-              className="cursor-pointer"
+              className="cursor-pointer shrink-0"
             >
               +
             </button>
             <button
               title="reduire l'image"
               onClick={scaleDown}
-              className="cursor-pointer"
+              className="cursor-pointer shrink-0"
             >
               -
             </button>
             <Icon
               name="trash"
               role="button"
-              className="w-3 cursor-pointer"
+              className="w-3 cursor-pointer shrink-0"
               onClick={handleRemove}
             />
           </div>
@@ -123,11 +123,11 @@ export default function ImagePicker() {
           <div
             className="mb-3 m-auto"
             style={{
-              width: `${dimensions.width}px`,
-              height: `${dimensions.height}px`,
+              width: `${data.dimensions.width}px`,
+              height: `${data.dimensions.height}px`,
             }}
           >
-            <img src={preview} alt="Preview" className="object-cover" />
+            <img src={data.content} alt="Preview" className="object-cover" />
           </div>
         </>
       )}

@@ -9,6 +9,7 @@ import AudioPicker from "../content/audioPicker";
 import VideoPicker from "../content/videoPicker";
 import GlbPicker from "../content/3dPicker";
 import DocumentPicker from "../content/documentPicker";
+import NewContent from "../content/newContent";
 
 function toComponent(type) {
   switch (type) {
@@ -24,30 +25,44 @@ function toComponent(type) {
       return GlbPicker;
     case "document":
       return DocumentPicker;
+    case "new":
+      return NewContent;
     default:
       return Empty;
   }
 }
 
-export default function Box({ component, data, id }) {
+export default function Box({ component, data, id, order, tools = true }) {
   const Component = toComponent(component);
-  const { deleteBox, duplicate } = useContext(courseBuilderContext);
+  const { deleteBox, duplicate, addAfter, saveBlock } =
+    useContext(courseBuilderContext);
+
+  const save = (data) => saveBlock(id, data);
+
   return (
-    <div className="flex flex-col space-y-1">
-      <Component {...data} />
-      <div className="flex justify-end space-x-2">
-        <button className="text-red-500 cursor-pointer">+</button>
-        <Duplicate
-          role="button"
-          className="w-3 cursor-pointer"
-          onClick={() => duplicate(id)}
-        />
-        <Trash
-          role="button"
-          className="w-3 cursor-pointer"
-          onClick={() => deleteBox(id)}
-        />
-      </div>
+    <div className={`flex flex-col order-${order} gap-1 bg-custom-test-color`}>
+      <Component data={data} id={id} save={save} />
+
+      {tools && (
+        <div className="flex justify-end space-x-2">
+          <button
+            onClick={() => addAfter(id)}
+            className="text-red-500 cursor-pointer"
+          >
+            +
+          </button>
+          <Duplicate
+            role="button"
+            className="w-3 cursor-pointer"
+            onClick={() => duplicate(id)}
+          />
+          <Trash
+            role="button"
+            className="w-3 cursor-pointer"
+            onClick={() => deleteBox(id)}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,18 +1,18 @@
 import { useState, useRef } from "react";
 import Icon from "../../../../components/icon/icon";
 
-export default function VideoPicker({ onChange }) {
-  const [videoFile, setVideoFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+export default function VideoPicker({ data, save = () => {} }) {
   const inputRef = useRef();
 
   const handleFile = (file) => {
     if (!file || !file.type.startsWith("video/")) return;
 
-    const url = URL.createObjectURL(file);
-    setVideoFile(file);
-    setPreviewUrl(url);
-    onChange?.(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const result = reader.result;
+      save({ file: file, content: result });
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSelect = (e) => {
@@ -27,11 +27,7 @@ export default function VideoPicker({ onChange }) {
   };
 
   const handleRemove = () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setVideoFile(null);
-    setPreviewUrl(null);
-    inputRef.current.value = null;
-    onChange?.(null);
+    save(null);
   };
 
   return (
@@ -40,7 +36,7 @@ export default function VideoPicker({ onChange }) {
       onDrop={handleDrop}
       className="flex flex-col items-center gap-2 w-full p-4 border"
     >
-      {!videoFile && (
+      {!data && (
         <>
           <Icon name="video" className="w-10" />
           <p>Glissez une vidéo ici</p>
@@ -57,14 +53,14 @@ export default function VideoPicker({ onChange }) {
           </label>
         </>
       )}
-      {videoFile && (
+      {data && (
         <div className="w-full flex flex-col items-center gap-2">
           <p className="text-sm text-gray-700 font-medium text-center truncate w-full">
-            🎬 {videoFile.name}
+            🎬 {data.file.name}
           </p>
           <video
             controls
-            src={previewUrl}
+            src={data.content}
             className="w-full max-h-64 rounded shadow"
           />
           <Icon
