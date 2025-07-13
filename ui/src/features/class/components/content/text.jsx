@@ -34,7 +34,7 @@ const toolbarHandlers = {
   },
 };
 
-const Text = forwardRef(({ content }, ref) => {
+const Text = forwardRef(({ data, save }, ref) => {
   const isMounted = useRef(false);
   const editorRef = useRef(null);
   /**
@@ -59,24 +59,17 @@ const Text = forwardRef(({ content }, ref) => {
     });
     isMounted.current = true;
 
-    if (content) {
-      quill.setContents(content);
+    if (data) {
+      quill.setContents(data.content);
     }
 
     quill.on(Quill.events.TEXT_CHANGE, (...args) => {
-      console.log(args);
+      save({ content: quill.getContents() });
     });
   }, []);
 
-  useImperativeHandle(ref, () => ({
-    saveBox: () => {
-      const content = quill.getContents();
-      return { content };
-    },
-  }));
-
   return (
-    <div className="editor m-0">
+    <div className="grid grid-cols-1 text-left m-0 h-full">
       <div ref={editorRef}></div>
     </div>
   );

@@ -1,22 +1,30 @@
 import {
   createContext,
   forwardRef,
+  useCallback,
   useImperativeHandle,
   useState,
 } from "react";
 
 export const sideBarContext = createContext({ toggle: () => {}, open: false });
 
-export default forwardRef(function SideBar({ children } = props, ref) {
+export default forwardRef(function SideBar(props, ref) {
+  const { children } = props;
   const [open, setOpen] = useState(false);
-  const toggle = () => {
+
+  const toggle = useCallback(() => {
     setOpen((state) => !state);
-  };
+  }, []);
+
+  const openSidebar = useCallback(() => {
+    setOpen(true);
+  }, []);
 
   useImperativeHandle(
     ref,
     () => ({
       toggle,
+      open: openSidebar,
     }),
     []
   );

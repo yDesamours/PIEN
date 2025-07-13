@@ -16,7 +16,7 @@
     "quill": "^2.0.3",
     "react": "^19.1",
     "react-dom": "^19.1",
-    "react-router": "^7.6.0",
+    "react-router-dom": "^6.11.2",
     "three": "^0.177.0"
   },
   "devDependencies": {

@@ -1,6 +1,13 @@
-import { useRoutes } from "react-router";
-import routes from "./routes/routes";
+import { Outlet } from "react-router-dom";
+import AuthContextProvider from "./context/authContext";
+import { SideViewerProvider } from "./components/sideViewer/sideViewer";
 
 export default function App() {
-  return useRoutes(routes);
+  return (
+    <AuthContextProvider>
+      <SideViewerProvider>
+        <Outlet />
+      </SideViewerProvider>
+    </AuthContextProvider>
+  );
 }

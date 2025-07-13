@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router";
 import { useEffect, useState, createContext } from "react";
 import useApi from "../hooks/api";
 import USER from "../services/api/user";
+import { storage } from "../utils/utils";
 
 export const AuthContext = createContext({
   user: null,
@@ -12,12 +12,10 @@ export const AuthContext = createContext({
 export default function AuthContextProvider({ children }) {
   const [userData, setUserData] = useState();
   const { execute } = useApi();
-  const navigate = useNavigate();
 
   const login = (user) => {
-    console.log({ user });
+    storage.setUser(user);
     setUserData({ ...user });
-    navigate("/");
   };
 
   const logout = () => {

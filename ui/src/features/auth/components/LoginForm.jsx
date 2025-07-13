@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   forwardRef,
   useContext,
@@ -20,8 +21,9 @@ const LoginForm = forwardRef(function (
     password: "",
     showPassword: false,
   });
-  const { execute, requestState } = useApi();
+  const { execute } = useApi();
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const onchange = ({ target }) => {
     setUserData((state) => ({
@@ -57,6 +59,7 @@ const LoginForm = forwardRef(function (
     );
 
     login(result);
+    navigate("/");
   };
 
   useEffect(() => {

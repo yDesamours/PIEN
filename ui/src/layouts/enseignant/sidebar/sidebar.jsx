@@ -1,40 +1,42 @@
-import { forwardRef, useContext } from "react";
-import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
 import {
   SideBar,
   SideBarContent,
   SideBarItem,
-  SideBarTrigger,
 } from "../../../components/sidebar";
-import { sideBarContext } from "../../../components/sidebar/sidebar";
+import { titleContext } from "../enseignantMainLayout";
 
-export default forwardRef(function EnseignantSidebar(_, ref) {
-  const { toggle, open } = useContext(sideBarContext);
-  const navigate = useNavigate();
-
-  const onItemClicked = (path) => {
-    console.log("Navigating to:", `/enseignant/${path}`);
-    if (!open) {
-      toggle();
+export default function EnseignantSidebar({ forwardRef }) {
+  const { setTitle } = useContext(titleContext);
+  const onItemClicked = () => {
+    if (forwardRef.current) {
+      forwardRef.current.open();
     }
-    navigate(`/enseignant/${path}`, { replace: true });
   };
 
   return (
-    <SideBar ref={ref}>
-      {/* <SideBarTrigger /> */}
+    <SideBar ref={forwardRef}>
       <SideBarContent>
-        <SideBarItem
-          label="Dashboard"
-          icon="home"
-          onClick={() => onItemClicked("dashboard")}
-        />
-        <SideBarItem
-          label="item 1"
-          icon="book"
-          onClick={() => onItemClicked("cours")}
-        />
+        <SideBarItem label="Dashboard" icon="home" onClick={onItemClicked}>
+          <NavLink
+            to="dashboard"
+            onClick={() => setTitle("dashboard")}
+            className="p-2"
+          >
+            Dashboard
+          </NavLink>
+        </SideBarItem>
+        <SideBarItem label="item 1" icon="book" onClick={onItemClicked}>
+          <NavLink
+            to="classes"
+            onClick={() => setTitle("Mes classes")}
+            className="p-2"
+          >
+            Classes
+          </NavLink>
+        </SideBarItem>
       </SideBarContent>
     </SideBar>
   );
-});
+}

@@ -1,9 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Plus from "../../../../assets/icons/plus.svg?react";
 import { courseBuilderContext } from "../../../../context/courseContext";
 
 export default function NewContent({ id }) {
   const { newOrder, openChooser } = useContext(courseBuilderContext);
+
+  useEffect(() => {
+    openChooser(id);
+  }, []);
 
   return (
     <section

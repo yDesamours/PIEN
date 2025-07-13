@@ -1,13 +1,10 @@
 import { useContext, useEffect } from "react";
-import Loading from "../layouts/loading";
 import { AuthContext } from "../context/authContext";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  console.log(user);
 
   useEffect(() => {
     if (user === undefined) return;
@@ -19,5 +16,5 @@ export default function Home() {
     }
   }, [user]);
 
-  return <Loading />;
+  return <p></p>;
 }
