@@ -1,12 +1,8 @@
-export class BoxArgument {
-  component = "";
-  data = {};
-  id = 0;
-  order = 0;
-  constructor(component, data, id, order) {
-    this.data = data;
-    this.component = component;
-    this.id = id;
-    this.order = order;
-  }
+export function boxArgument(component, data, id, order) {
+  return {
+    data,
+    component,
+    id,
+    order,
+  };
 }

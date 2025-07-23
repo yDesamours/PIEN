@@ -4,13 +4,28 @@ import Icon from "../../../../components/icon/icon";
 export default function AudioPicker({ data, save = () => {} }) {
   const inputRef = useRef();
 
+  /**
+   * Read the file and save it
+   *
+   * @param {File} file
+   */
   const handleFile = (file) => {
     if (!file || !file.type.startsWith("audio/")) return;
+
+    const fileMetadata = {
+      name: file.name,
+      size: file.size,
+      lastModified: file.lastModified,
+      type: file.type,
+    };
 
     const reader = new FileReader();
     reader.onloadend = () => {
       const result = reader.result;
-      save({ file: file, content: result });
+      save({
+        file: fileMetadata,
+        content: result,
+      });
     };
     reader.readAsDataURL(file);
   };

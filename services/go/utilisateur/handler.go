@@ -79,21 +79,21 @@ func login(app *internal.App, userRepo *UtilisateurRepository, jetonRepo *JetonR
 		err := c.BindJSON(&credentials)
 		if err != nil {
 			app.Error(err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
 
 		user, err := userRepo.findByEmailAndRole(credentials.Email, credentials.Role.ToString())
 		if err != nil {
 			app.Error(err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusNotFound, gin.H{"message": "email ou mot de passe incorrect"})
 			return
 		}
 
 		err = bcrypt.CompareHashAndPassword([]byte(user.MotDePasse), []byte(credentials.Password))
 		if err != nil {
 			app.Error(err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusNotFound, gin.H{"message": "email ou mot de passe incorrect"})
 			return
 		}
 
@@ -102,7 +102,7 @@ func login(app *internal.App, userRepo *UtilisateurRepository, jetonRepo *JetonR
 		err = jetonRepo.invalidateForUserAndScope(user.ID, JetonScopeId)
 		if err != nil {
 			app.Error(err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return
 		}
 
@@ -118,7 +118,7 @@ func login(app *internal.App, userRepo *UtilisateurRepository, jetonRepo *JetonR
 		err = jetonRepo.create(&jeton)
 		if err != nil {
 			app.Error(err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return
 		}
 

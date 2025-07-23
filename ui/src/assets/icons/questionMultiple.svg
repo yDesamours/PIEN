@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- First checkbox (checked) -->
+  <rect x="10" y="10" width="12" height="12" stroke="#000" stroke-width="2" fill="#4CAF50"/>
+  <path d="M12 16l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"/>
+
+  <!-- Second checkbox (unchecked) -->
+  <rect x="10" y="28" width="12" height="12" stroke="#000" stroke-width="2" fill="#fff"/>
+
+  <!-- Third checkbox (unchecked) -->
+  <rect x="10" y="46" width="12" height="12" stroke="#000" stroke-width="2" fill="#fff"/>
+
+  <!-- Text lines -->
+  <line x1="26" y1="16" x2="54" y2="16" stroke="#000" stroke-width="2"/>
+  <line x1="26" y1="34" x2="54" y2="34" stroke="#000" stroke-width="2"/>
+  <line x1="26" y1="52" x2="54" y2="52" stroke="#000" stroke-width="2"/>
+</svg>

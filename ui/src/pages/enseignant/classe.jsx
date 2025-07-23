@@ -12,7 +12,6 @@ import ClasseDescription from "./classeDescription";
 
 export default function Classe() {
   const { cours: coursPromise, classe } = useLoaderData();
-  console.log(classe);
 
   return (
     <>

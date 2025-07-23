@@ -1,5 +1,4 @@
 import { useState } from "react";
-import USER from "../services/api/user";
 
 export default function useApi() {
   const [requestState, setRequestState] = useState({
@@ -19,10 +18,15 @@ export default function useApi() {
 
     try {
       result = await sendRequest(config);
+
       if (result.ok) {
-        return result.body;
+        return { data: result.body };
       }
       if (result.errorData.code === 401) {
+        return;
+      }
+      if (!result.ok && result.code === 404) {
+        return { error: result.errorData };
       }
     } catch (err) {
       const message =
@@ -55,11 +59,11 @@ const sendRequest = async ({ method = "GET", body, url }) => {
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
 
+  const responseData = await response.json();
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    return { ok: false, errorData };
+    return { ok: false, errorData: responseData, code: response.status };
   }
 
-  const responseData = await response.json();
   return { ok: true, body: responseData.data };
 };

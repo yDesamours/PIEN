@@ -10,6 +10,12 @@ import VideoPicker from "../content/videoPicker";
 import GlbPicker from "../content/3dPicker";
 import DocumentPicker from "../content/documentPicker";
 import NewContent from "../content/newContent";
+import TwoColumns from "../organizer/twoColumns";
+import ThreeColumns from "../organizer/threeColumns";
+import ColumnChoser from "../organizer/columnChoser";
+import QuestionLibre from "../evaluation/questionLibre";
+import VraiFaux from "../evaluation/vraiFaux";
+import QuestionMultiple from "../evaluation/questionMultiple";
 
 function toComponent(type) {
   switch (type) {
@@ -27,6 +33,18 @@ function toComponent(type) {
       return DocumentPicker;
     case "new":
       return NewContent;
+    case "twoColumns":
+      return TwoColumns;
+    case "columnChoser":
+      return ColumnChoser;
+    case "threeColumns":
+      return ThreeColumns;
+    case "questionLibre":
+      return QuestionLibre;
+    case "vraiFaux":
+      return VraiFaux;
+    case "questionMultiple":
+      return QuestionMultiple;
     default:
       return Empty;
   }
@@ -39,9 +57,17 @@ export default function Box({ component, data, id, order, tools = true }) {
 
   const save = (data) => saveBlock(id, data);
 
+  const componentProps = {
+    id,
+    save,
+    data,
+  };
+
   return (
-    <div className={`flex flex-col order-${order} gap-1 bg-custom-test-color`}>
-      <Component data={data} id={id} save={save} />
+    <article
+      className={`flex flex-col order-${order} gap-1 bg-custom-test-color`}
+    >
+      <Component {...componentProps} />
 
       {tools && (
         <div className="flex justify-end space-x-2">
@@ -63,6 +89,6 @@ export default function Box({ component, data, id, order, tools = true }) {
           />
         </div>
       )}
-    </div>
+    </article>
   );
 }

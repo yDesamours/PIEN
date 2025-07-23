@@ -5,7 +5,7 @@ export default function EnseignantClasseLayout() {
   return (
     <>
       <Title title="Mes Classes" />
-      <div className="p-2">
+      <div className="p-2 h-full">
         <Outlet />
       </div>
     </>

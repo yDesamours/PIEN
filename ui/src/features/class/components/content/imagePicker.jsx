@@ -33,7 +33,7 @@ export default function ImagePicker({ data, save = () => {} }) {
         });
       };
     };
-    reader.readAsArrayBuffer(file);
+    reader.readAsDataURL(file);
   };
 
   const handleDrop = (e) => {

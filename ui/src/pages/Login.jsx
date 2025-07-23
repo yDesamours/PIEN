@@ -14,7 +14,7 @@ export default function Login() {
   };
 
   return (
-    <>
+    <main>
       <div
         className={`absolute bg-amber-900 h-full w-1/2 ${position} z-100 transition-all duration-300 ease-in-out`}
       ></div>
@@ -23,6 +23,6 @@ export default function Login() {
         className="grid grid-cols-2 justify-items-center absolute top-1/2 w-full -translate-y-1/2"
         ref={formRef}
       />
-    </>
+    </main>
   );
 }

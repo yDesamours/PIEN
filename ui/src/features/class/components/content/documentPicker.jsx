@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Icon from "../../../../components/icon/icon";
+import { base64ToBlob } from "../../../../utils/utils";
 
 const types = [
   ".pdf",
@@ -18,10 +19,17 @@ export default function DocumentPicker({
   allowedTypes = types,
 }) {
   const inputRef = useRef();
-  const iconName = data ? data.fileName.split(".").pop().toLowerCase() : "";
+  const iconName = data
+    ? data.fileName.split(".").pop().toLowerCase().substring(0, 3)
+    : "";
 
   let objectUrl = null;
 
+  /**
+   *
+   * @param {File} file
+   * @returns
+   */
   const handleFile = (file) => {
     const extension = file.name.split(".").pop().toLowerCase();
     if (!allowedTypes.includes("." + extension)) return;
@@ -31,7 +39,7 @@ export default function DocumentPicker({
       const result = reader.result;
       save({ fileName: file.name, mimeType: file.type, content: result });
     };
-    reader.readAsArrayBuffer(file);
+    reader.readAsDataURL(file);
   };
 
   const handleSelect = (e) => {
@@ -59,7 +67,7 @@ export default function DocumentPicker({
       return;
     }
 
-    const blob = new Blob([data.content], { type: data.mimeType });
+    const blob = base64ToBlob(data.content);
     objectUrl = URL.createObjectURL(blob);
 
     return () => {
