@@ -20,6 +20,11 @@ export function isEmpty(string) {
   return !!string && string.trim().length > 0;
 }
 
+/**
+ *
+ * @param {string} base64String
+ * @returns {Blob}
+ */
 export function base64ToBlob(base64String) {
   if (!base64String.startsWith("data:")) {
     throw new Error("Chaîne data: URL attendue.");

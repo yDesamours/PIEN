@@ -13,14 +13,14 @@ export default function ContentChoser() {
 
   return (
     <section
-      className={`${visible} bg-white transition-all duration-300 ease-in-out z-30 overflow-hidden`}
+      className={`${visible} bg-white transition-all duration-300 ease-in-out z-30 overflow-hidden absolute right-0 h-dvh`}
     >
       <div className="flex flex-col">
         <div className="flex justify-between text-md text-black">
-          <p>Choose</p>
+          <p className="font-bold">Contenu</p>
           <Icon name="close" onClick={closeChooser} />
         </div>
-        <ContentGroup summary="Ressource">
+        <ContentGroup summary="Text">
           <ContentChoserContent>
             <ContentChoserItem
               icon="text"
@@ -28,6 +28,11 @@ export default function ContentChoser() {
               name="text"
               onChoose={add}
             />
+          </ContentChoserContent>
+        </ContentGroup>
+
+        <ContentGroup summary="Multimedia">
+          <ContentChoserContent>
             <ContentChoserItem
               icon="image"
               label="Image"
@@ -52,12 +57,20 @@ export default function ContentChoser() {
               name="document"
               onChoose={add}
             />
+          </ContentChoserContent>
+        </ContentGroup>
+        <ContentGroup summary="3D">
+          <ContentChoserContent>
             <ContentChoserItem
               icon="3d"
               label="Modele 3d"
               name="3d"
               onChoose={add}
             />
+          </ContentChoserContent>
+        </ContentGroup>
+        <ContentGroup summary="Evaluation">
+          <ContentChoserContent>
             <ContentChoserItem
               icon="questionLibre"
               label="Question Libre"

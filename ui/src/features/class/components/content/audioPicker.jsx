@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import Icon from "../../../../components/icon/icon";
+import Trash from "../../../../assets/icons/trash.svg?react";
 
-export default function AudioPicker({ data, save = () => {} }) {
+export default function AudioPicker({ data, id, save = () => {} }) {
   const inputRef = useRef();
 
   /**
@@ -41,8 +42,12 @@ export default function AudioPicker({ data, save = () => {} }) {
     handleFile(file);
   };
 
-  const handleRemove = () => {
+  const handleRemove = useCallback(() => {
     save(null);
+  }, [save]);
+
+  const onDescription = (e) => {
+    save({ description: e.target.value });
   };
 
   return (
@@ -74,12 +79,24 @@ export default function AudioPicker({ data, save = () => {} }) {
             🎵 {data.file.name}
           </p>
           <audio controls src={data.content} className="w-full" />
-          <Icon
+          <Trash
             role="button"
             name="trash"
             onClick={handleRemove}
             className="text-red-600 text-sm hover:underline w-3"
           />
+          <form className="w-full">
+            <label htmlFor={`audio-description-${id}`} className="sr-only">
+              Description
+            </label>
+            <textarea
+              value={data.description}
+              onChange={onDescription}
+              placeholder="taper une description ici"
+              id={`audio-description-${id}`}
+              className=" border resize-none border-gray-300 h-15 w-full px-3 py-2 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </form>
         </div>
       )}
     </div>

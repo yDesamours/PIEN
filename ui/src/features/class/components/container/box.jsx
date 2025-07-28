@@ -71,20 +71,25 @@ export default function Box({ component, data, id, order, tools = true }) {
 
       {tools && (
         <div className="flex justify-end space-x-2">
-          <button
-            onClick={() => addAfter(id)}
-            className="text-red-500 cursor-pointer"
-          >
-            +
-          </button>
-          <Duplicate
-            role="button"
-            className="w-3 cursor-pointer"
-            onClick={() => duplicate(id)}
-          />
+          {component !== "new" && (
+            <>
+              <button
+                onClick={() => addAfter(id)}
+                className="text-blue-500 cursor-pointer"
+              >
+                +
+              </button>
+
+              <Duplicate
+                role="button"
+                className="w-3 cursor-pointer text-green-500"
+                onClick={() => duplicate(id)}
+              />
+            </>
+          )}
           <Trash
             role="button"
-            className="w-3 cursor-pointer"
+            className="w-3 cursor-pointer text-red-500"
             onClick={() => deleteBox(id)}
           />
         </div>

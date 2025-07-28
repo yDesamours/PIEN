@@ -72,6 +72,10 @@ export default function ImagePicker({ data, save = () => {} }) {
     save(null);
   };
 
+  const onDescription = (e) => {
+    save({ description: e.target.value });
+  };
+
   return (
     <div
       onDrop={handleDrop}
@@ -129,6 +133,18 @@ export default function ImagePicker({ data, save = () => {} }) {
           >
             <img src={data.content} alt="Preview" className="object-cover" />
           </div>
+          <form className="w-full">
+            <label htmlFor={`audio-description-${id}`} className="sr-only">
+              Description
+            </label>
+            <textarea
+              value={data.description}
+              onChange={onDescription}
+              placeholder="taper une description ici"
+              id={`audio-description-${id}`}
+              className=" border resize-none border-gray-300 h-15 w-full px-3 py-2 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </form>
         </>
       )}
     </div>

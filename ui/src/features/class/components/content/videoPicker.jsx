@@ -1,16 +1,23 @@
 import { useState, useRef } from "react";
 import Icon from "../../../../components/icon/icon";
+import Trash from "../../../../assets/icons/trash.svg?react";
 
 export default function VideoPicker({ data, save = () => {} }) {
   const inputRef = useRef();
 
   const handleFile = (file) => {
     if (!file || !file.type.startsWith("video/")) return;
+    const fileMetadata = {
+      name: file.name,
+      size: file.size,
+      lastModified: file.lastModified,
+      type: file.type,
+    };
 
     const reader = new FileReader();
     reader.onloadend = () => {
       const result = reader.result;
-      save({ file: file, content: result });
+      save({ file: fileMetadata, content: result });
     };
     reader.readAsDataURL(file);
   };
@@ -28,6 +35,10 @@ export default function VideoPicker({ data, save = () => {} }) {
 
   const handleRemove = () => {
     save(null);
+  };
+
+  const onDescription = (e) => {
+    save({ description: e.target.value });
   };
 
   return (
@@ -63,12 +74,24 @@ export default function VideoPicker({ data, save = () => {} }) {
             src={data.content}
             className="w-full max-h-64 rounded shadow"
           />
-          <Icon
+          <Trash
             role="button"
             name="trash"
             onClick={handleRemove}
             className="text-red-600 text-sm hover:underline w-3"
           />
+          <form className="w-full">
+            <label htmlFor={`audio-description-${id}`} className="sr-only">
+              Description
+            </label>
+            <textarea
+              value={data.description}
+              onChange={onDescription}
+              placeholder="taper une description ici"
+              id={`audio-description-${id}`}
+              className=" border resize-none border-gray-300 h-15 w-full px-3 py-2 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </form>
         </div>
       )}
     </div>

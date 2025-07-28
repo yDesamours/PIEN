@@ -44,6 +44,8 @@ const getInitialComponentData = (componentType) => {
       return { content: "" };
     case "questionMultiple":
       return { content: "", reponses: [] };
+    case "3d":
+      return null;
   }
 
   return {}; // Retourne un objet vide par défaut pour les autres types
@@ -280,8 +282,6 @@ export default function CourseBulderProvider({ children }) {
       openChooser,
       closeChooser,
       chooserOpened,
-      saveBlock,
-      getData,
       load,
     }),
     [

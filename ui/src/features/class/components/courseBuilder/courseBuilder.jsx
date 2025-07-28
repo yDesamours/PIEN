@@ -15,7 +15,10 @@ export default function CourseBuilder() {
         <TabPane defaultValue="builder">
           <BuilderToolbar />
           <TabPaneContent value="builder">
-            <div className="relative h-full flex space-x-1" id="course-builder">
+            <div
+              className="relative h-full flex gap-2 bg-gray-200"
+              id="course-builder"
+            >
               <CourseContent />
               <ContentChoser />
               <ResourceList />

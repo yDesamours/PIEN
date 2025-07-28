@@ -9,7 +9,7 @@ export default function BuilderToolbar() {
   const {} = useContext(courseBuilderContext);
   const { setVisible, visible } = useContext(tabPaneContext);
 
-  const text = visible === "preview" ? "Editer" : "Preview";
+  const text = visible === "preview" ? "Editer" : "Previsualiser";
 
   const toggle = () => {
     const tab = visible === "preview" ? "builder" : "preview";
@@ -17,7 +17,7 @@ export default function BuilderToolbar() {
   };
 
   return (
-    <Toolbar>
+    <Toolbar className="bg-amber-300 h-12">
       <ToolbarContent>
         <ToolbarItem onClick={toggle}>{text}</ToolbarItem>
         <ToolbarItem>Save</ToolbarItem>
