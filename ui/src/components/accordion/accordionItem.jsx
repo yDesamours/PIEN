@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const AccordionItem = ({ title, children, options }) => {
   const [isOpen, setIsOpen] = useState(false);

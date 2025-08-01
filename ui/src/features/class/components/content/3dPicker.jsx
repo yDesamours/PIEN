@@ -54,8 +54,6 @@ export default function GlbPicker({ save, data }) {
   };
 
   const handlePreview = () => {
-    console.log(data);
-
     if (data.content) {
       const blob = base64ToBlob(data.content);
       const url = URL.createObjectURL(blob);
@@ -124,62 +122,72 @@ export default function GlbPicker({ save, data }) {
               Sélectionner un modèle depuis la bibliotheque
             </p>
           </form>
-          <Modal isOpen={isModalOpen} onClose={closeBibliothequeModal}>
+          <Modal
+            title="Bibliotheque de modele"
+            isOpen={isModalOpen}
+            onClose={closeBibliothequeModal}
+          >
             <Bibliotheque onChoose={onChoose} />
           </Modal>
         </div>
       )}
       {data && (
-        <div className="w-full flex flex-col items-center gap-2">
-          <p className="text-sm text-gray-700 font-medium text-center truncate w-full">
-            🧊 {data.file.name}
-          </p>
-          <div className="flex justify-center space-x-4 bg-blue-400 rounded-sm mb-3 w-20 h-5 m-auto">
-            <Icon
-              role="button"
-              name="trash"
-              onClick={handleRemove}
-              className="text-red-600 text-sm hover:underline w-3"
-            />
+        <>
+          <div className="w-full flex flex-col items-center gap-2">
+            <p className="text-sm text-gray-700 font-medium text-center truncate w-full">
+              🧊 {data.file.name}
+            </p>
+            <div className="flex justify-center space-x-4 bg-blue-400 rounded-sm mb-3 w-20 h-5 m-auto">
+              <Icon
+                role="button"
+                name="trash"
+                onClick={handleRemove}
+                className="text-red-600 text-sm hover:underline w-3"
+              />
 
-            <Icon
-              role="button"
-              name="preview"
-              onClick={handlePreview}
-              className="cursor-pointer  w-3"
-            />
+              <Icon
+                role="button"
+                name="preview"
+                onClick={handlePreview}
+                className="cursor-pointer  w-3"
+              />
+            </div>
           </div>
-        </div>
+          <Modal isOpen={previewOpen} onClose={handlePreviewStop}>
+            <div className="h-full">
+              <TabPane defaultValue="viewer">
+                <TabPaneContent value="viewer">
+                  <div className="flex flex-col h-full">
+                    <ModelViewer
+                      modelPath={previewUrl}
+                      className="flex-1 flex gap-3"
+                      renderingConfig={{ annotations: data.annotations }}
+                    />
+                    <TabPaneNav>
+                      <TabPaneButton value="annotation" className="h-20">
+                        Modifier ce modele
+                      </TabPaneButton>
+                    </TabPaneNav>
+                  </div>
+                </TabPaneContent>
+                <TabPaneContent value="annotation">
+                  <div className="flex flex-col h-full">
+                    <AnnotationEditor
+                      modelPath={previewUrl}
+                      onSaveAnnotations={onSaveAnnotations}
+                      className="flex-1 max-h-full"
+                      initialAnnotations={data.annotations}
+                    />
+                    <TabPaneNav>
+                      <TabPaneButton value="viewer">Terminer</TabPaneButton>
+                    </TabPaneNav>
+                  </div>
+                </TabPaneContent>
+              </TabPane>
+            </div>
+          </Modal>
+        </>
       )}
-      <Modal isOpen={previewOpen} onClose={handlePreviewStop}>
-        <div className="h-150">
-          <TabPane defaultValue="viewer">
-            <TabPaneContent value="viewer">
-              <div className="flex flex-col h-full">
-                <ModelViewer modelPath={previewUrl} className="flex-1 flex" />
-                <TabPaneNav>
-                  <TabPaneButton value="annotation">
-                    Modifier ce modele
-                  </TabPaneButton>
-                </TabPaneNav>
-              </div>
-            </TabPaneContent>
-            <TabPaneContent value="annotation">
-              <div className="flex flex-col h-full">
-                <AnnotationEditor
-                  modelPath={previewUrl}
-                  onSaveAnnotations={onSaveAnnotations}
-                  className="flex-1 max-h-full"
-                  initialAnnotations={data.annotations}
-                />
-                <TabPaneNav>
-                  <TabPaneButton value="annotation">Terminer</TabPaneButton>
-                </TabPaneNav>
-              </div>
-            </TabPaneContent>
-          </TabPane>
-        </div>
-      </Modal>
     </>
   );
 }

@@ -1,10 +1,14 @@
 import { Environment, Html, OrbitControls } from "@react-three/drei";
+import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useCallback, useState } from "react";
+import { Suspense, useCallback, useRef, useState } from "react";
 import EditableModel from "./editableModel";
 import Marker from "./annotations/marker";
 import { AxesHelper } from "three";
 import Annotation from "./annotations/annotation";
+import { colorRand } from "../../../../utils/utils";
+import Markers from "./annotations/markers";
+import CameraFocus from "./cameraFocus";
 
 export default function AnnotationEditor({
   modelPath,
@@ -19,7 +23,10 @@ export default function AnnotationEditor({
     title: "new",
     description: "",
     position: { ...point },
+    color: colorRand(),
   });
+  const controls = useRef();
+  const [targetPoint, setTargetPoint] = useState([0, 0, 0]);
 
   const handleModelClick = useCallback((point) => {
     setAnnotations((state) => [...state, newAnnotationData(point)]);
@@ -36,6 +43,15 @@ export default function AnnotationEditor({
     }
   };
 
+  const handleAnnotationClicked = (id) => {
+    const annotation = annotations.find((e) => e.id === id);
+    if (!annotation) {
+      return;
+    }
+    const [x, y, z] = annotation.position;
+    setTargetPoint(new THREE.Vector3(x, y, z));
+  };
+
   return (
     <div className={className}>
       <div className="flex gap-3 h-full">
@@ -44,7 +60,7 @@ export default function AnnotationEditor({
             <Canvas>
               <color attach="background" args={["#F0F8FF"]} />{" "}
               <Environment files={environmentPreset} />
-              <OrbitControls makeDefault />
+              <OrbitControls makeDefault ref={controls} />
               <Suspense fallback={<Html center>Chargement du modèle...</Html>}>
                 <EditableModel
                   modelPath={modelPath}
@@ -54,27 +70,26 @@ export default function AnnotationEditor({
                 <primitive object={new AxesHelper(50)} />
 
                 {/* Affichage des annotations existantes */}
-                {annotations.map((anno, index) => {
-                  const { x, y, z } = anno.position;
-                  return <Marker position={[x, y, z]} />;
-                })}
+                <Markers
+                  annotations={annotations}
+                  onClick={handleAnnotationClicked}
+                />
+                {/* <CameraFocus
+                  controlsRef={controls}
+                  targetPoint={targetPoint}
+                  setTargetPoint={setTargetPoint}
+                /> */}
               </Suspense>
             </Canvas>
           </div>
         </div>
         <div className="flex-1 flex flex-col">
-          <h3>Annotations</h3>
-          {annotations.length === 0 ? (
-            <p>Aucune annotation.</p>
-          ) : (
-            <>
-              <Annotation
-                annotations={annotations}
-                deleteAnnotation={handleDeleteAnnotation}
-                onSave={handleSaveAllAnnotations}
-              />
-            </>
-          )}
+          <Annotation
+            annotations={annotations}
+            deleteAnnotation={handleDeleteAnnotation}
+            onSave={handleSaveAllAnnotations}
+            canEdit={true}
+          />
         </div>
         <div style={{ clear: "both" }}></div> {/* Pour gérer le float */}
       </div>

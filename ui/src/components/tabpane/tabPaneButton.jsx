@@ -14,6 +14,7 @@ export default function TabPaneButton({
   };
   return (
     <li
+      role="tab"
       className={`cursor-pointer flex items-center p-2 ${className} ${
         visible === value ? selectedClassName : ""
       }`}

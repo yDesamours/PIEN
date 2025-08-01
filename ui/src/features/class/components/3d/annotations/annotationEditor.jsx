@@ -9,6 +9,8 @@ export default function AnnotationEditor({
   description,
   deleteAnnotation,
   id,
+  color,
+  canEdit = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,8 +50,12 @@ export default function AnnotationEditor({
 
   return (
     <div className="border-b border-gray-200 w-full mb-3 ">
-      <div className="flex gap-1">
-        {editor.isEditing ? (
+      <div className="flex gap-1 items-center">
+        <span
+          className="w-3 h-3 rounded-full"
+          style={{ backgroundColor: color }}
+        ></span>
+        {canEdit && editor.isEditing ? (
           <form className="flex flex-2 justify-between items-center w-full py-2 px-1 text-lg font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300">
             <input name="title" value={editor.title} onChange={onEditing} />
           </form>
@@ -79,26 +85,28 @@ export default function AnnotationEditor({
             </svg>
           </button>
         )}
-        <div className="flex justify-center items-center">
-          <Trash
-            role="button"
-            className="w-4 m-2 cursor-pointer "
-            onClick={() => deleteAnnotation(id)}
-          />
-          {editor.isEditing ? (
-            <Disk
+        {canEdit && (
+          <div className="flex justify-center items-center">
+            <Trash
               role="button"
               className="w-4 m-2 cursor-pointer "
-              onClick={onEdit}
+              onClick={() => deleteAnnotation(id)}
             />
-          ) : (
-            <Pen
-              role="button"
-              className="w-4 m-2 cursor-pointer "
-              onClick={onBeginEdit}
-            />
-          )}
-        </div>
+            {editor.isEditing ? (
+              <Disk
+                role="button"
+                className="w-4 m-2 cursor-pointer "
+                onClick={onEdit}
+              />
+            ) : (
+              <Pen
+                role="button"
+                className="w-4 m-2 cursor-pointer "
+                onClick={onBeginEdit}
+              />
+            )}
+          </div>
+        )}
       </div>
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out ${
@@ -106,7 +114,7 @@ export default function AnnotationEditor({
         }`}
       >
         <div className="py-4 px-5 text-gray-700 bg-gray-50">
-          {editor.isEditing ? (
+          {canEdit && editor.isEditing ? (
             <form>
               <textarea
                 name="description"

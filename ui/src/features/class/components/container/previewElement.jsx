@@ -1,3 +1,4 @@
+import Viewer3d from "../view/3dViewer";
 import AudioViewer from "../view/audioViewer";
 import DocumentViewwer from "../view/documentViewer";
 import Text from "../view/text";
@@ -14,6 +15,8 @@ function toComponent(component) {
       return VideoViewer;
     case "document":
       return DocumentViewwer;
+    case "3d":
+      return Viewer3d;
     default:
       return Empty;
   }

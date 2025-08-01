@@ -4,15 +4,15 @@ export default function Modal({ isOpen, onClose, title, children }) {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed w-full inset-0 z-50 flex items-center justify-center bg-black/50 animate-slideInFast">
+    <div className="fixed w-full h-full inset-0 z-50 flex items-center justify-center bg-black/50 animate-slideInFast">
       <div
-        className="bg-white rounded-lg shadow-lg  flex-1 mx-8 animate-fade-in"
+        className="bg-white h-full rounded-lg shadow-lg  flex-1 flex flex-col justify-end  animate-fade-in"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
         <div className="flex justify-between items-center px-4 py-2 border-b w-full">
-          <h2 id="modal-title" className="text-lg font-semibold">
+          <h2 id="modal-title" className="text-lg font-semibold h-10">
             {title}
           </h2>
           <button
@@ -24,7 +24,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
           </button>
         </div>
 
-        <div className="p-4">{children}</div>
+        <div className="p-4 flex-1">{children}</div>
       </div>
     </div>,
     document.body

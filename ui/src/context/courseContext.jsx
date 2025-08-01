@@ -5,7 +5,7 @@ import {
   useReducer,
   useState,
 } from "react";
-import { boxArgument } from "../features/class/utils/utils";
+import { boxArgument, storage } from "../features/class/utils/utils";
 import ResourceChoser from "../features/class/components/organizer/resourceChoser";
 import { deepCopyJSON } from "../utils/utils";
 
@@ -48,7 +48,7 @@ const getInitialComponentData = (componentType) => {
       return null;
   }
 
-  return {}; // Retourne un objet vide par défaut pour les autres types
+  return {};
 };
 
 function addBlock(blocks, payload) {
@@ -91,22 +91,6 @@ function addBlock(blocks, payload) {
 
   return newBlocks;
 }
-
-// function addBlock(blocks, payload) {
-//   const newOrderIndex = blocks.findIndex((i) => i.id === payload.id);
-//   if (newOrderIndex < 0) {
-//     return blocks;
-//   }
-//   const newOrder = blocks[newOrderIndex];
-
-//   const newBlocks = blocks.slice();
-//   blocks.splice(newOrderIndex, 1, {
-//     ...payload.contentType,
-//     order: newOrder.order,
-//   });
-
-//   return newBlocks;
-// }
 
 function addAfter(blocks, payload) {
   const blockIndex = blocks.findIndex((e) => e.id === payload);
@@ -197,13 +181,15 @@ const reducer = (state, action) => {
     default:
       return state;
   }
+  storage.setCourse(newState);
   return newState;
 };
 
 export default function CourseBulderProvider({ children }) {
-  const [course, dispacth] = useReducer(reducer, {
+  const initialCourse = storage.getCourse() ?? {
     blocks: [{ component: "new", order: 0, id: crypto.randomUUID() }],
-  });
+  };
+  const [course, dispacth] = useReducer(reducer, initialCourse);
   const [chooserOpened, setChoserOpened] = useState(null);
 
   const closeChooser = () => {

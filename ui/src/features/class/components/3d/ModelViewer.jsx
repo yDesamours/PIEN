@@ -2,6 +2,9 @@ import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment, Html } from "@react-three/drei";
 import { Model } from "./model";
+import Marker from "./annotations/marker";
+import Markers from "./annotations/markers";
+import Annotation from "./annotations/annotation";
 
 export default function ModelViewer({
   modelPath,
@@ -11,7 +14,7 @@ export default function ModelViewer({
 }) {
   const {
     scale = 3,
-    background = "#F0F0F0",
+    background = "#F354d4",
     environmentPreset = "/model/hdr/empty_warehouse.hdr",
     animationName = null,
     autoRotate = false,
@@ -25,18 +28,7 @@ export default function ModelViewer({
         <Canvas>
           <color attach="background" args={[background]} />
           <Environment files={environmentPreset} />
-
-          {/* <ambientLight intensity={0.5} />
-        <spotLight
-          position={[10, 10, 10]}
-          angle={0.15}
-          penumbra={1}
-          intensity={1}
-          castShadow
-        />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} /> */}
-
-          {autoRotate ? null : <OrbitControls makeDefault />}
+          <OrbitControls makeDefault rotateSpeed={1} autoRotate />
 
           <Suspense
             fallback={
@@ -53,14 +45,13 @@ export default function ModelViewer({
               rotationSpeed={rotationSpeed}
               annotations={annotations}
             />
-            {annotations.map((anno, index) => {
-              const { x, y, z } = anno.position;
-              return <Marker position={[x, y, z]} />;
-            })}
+            <Markers annotations={annotations} />
           </Suspense>
         </Canvas>
       </div>
-      <div className="flex-1"></div>
+      <div className="flex-1 flex flex-col">
+        <Annotation annotations={annotations} />
+      </div>
     </div>
   );
 }

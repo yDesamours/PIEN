@@ -48,3 +48,39 @@ export function base64ToBlob(base64String) {
 
   return new Blob([buffer], { type: mimeType });
 }
+
+/**
+ *
+ * @returns {string}
+ */
+export function colorRand() {
+  function rand() {
+    return (Math.random() * 15).toFixed(0);
+  }
+
+  const values = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+  ];
+  let color = "#";
+
+  for (let i = 0; i <= 5; i++) {
+    color = color.concat(values[rand()]);
+  }
+
+  return color;
+}
