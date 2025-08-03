@@ -1,10 +1,12 @@
 import { createPortal } from "react-dom";
 
 export default function Modal({ isOpen, onClose, title, children }) {
-  if (!isOpen) return null;
+  const position = isOpen ? "" : "translate-y-full";
 
   return createPortal(
-    <div className="fixed w-full h-full inset-0 z-50 flex items-center justify-center bg-black/50 animate-slideInFast">
+    <div
+      className={`fixed w-full h-full inset-0 z-50 flex items-center transition-all duration-300 justify-center bg-black/50 ${position}`}
+    >
       <div
         className="bg-white h-full rounded-lg shadow-lg  flex-1 flex flex-col justify-end  animate-fade-in"
         role="dialog"

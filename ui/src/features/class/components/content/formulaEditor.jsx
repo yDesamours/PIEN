@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "katex/dist/katex.min.css";
-import { InlineMath, BlockMath } from "react-katex";
+import Info from "../../../../assets/icons/info.svg?react";
 
-export default function FormulaEditor({ data, save }) {
+export default function FormulaEditor({ data, save, id }) {
   const [inputValue, setInputValue] = useState(data?.formula || "");
+  const idComponent = "formula-input-".concat(id);
 
   // Utilisation d'un effet avec un timer pour le débouncing
   useEffect(() => {
@@ -16,48 +17,32 @@ export default function FormulaEditor({ data, save }) {
     };
   }, [inputValue, save]);
 
-  const isBlockFormula =
-    inputValue.includes("\\begin{") || inputValue.includes("\\begin{align}");
-
   return (
     <div className="p-4 bg-white rounded-md shadow-sm border border-gray-200">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">
-        Formule Mathématique (Éditeur)
+      <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-1">
+        <span>Formule Mathématique </span>
+        <div title="Écrivez votre formule en LaTeX ici">
+          <Info className="w-4 h-4" />
+        </div>
       </h3>
 
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col">
+        <form className="flex flex-col">
           <label
-            htmlFor="formula-input"
-            className="text-sm font-medium text-gray-700"
+            htmlFor={idComponent}
+            className="text-sm font-medium text-gray-700 sr-only"
           >
-            Écrivez votre formule en LaTeX ici :
+            Écrivez votre formule en LaTeX ici
           </label>
           <textarea
-            id="formula-input"
+            id={idComponent}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
-            rows="5"
+            className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 resize-none font-mono text-sm"
+            rows="1"
             placeholder="Ex: c = \\sqrt{a^2 + b^2}"
           ></textarea>
-        </div>
-
-        {/* Aperçu en temps réel */}
-        {inputValue.trim() && (
-          <div className="mt-4">
-            <h4 className="text-md font-semibold text-gray-800 mb-2">Aperçu</h4>
-            <div className="p-4 border rounded-md border-gray-200 bg-gray-50">
-              {/* Le composant rend InlineMath par défaut, mais si la formule contient des
-                  balises de bloc LaTeX, on utilise BlockMath. */}
-              {isBlockFormula ? (
-                <BlockMath math={inputValue} />
-              ) : (
-                <InlineMath math={inputValue} />
-              )}
-            </div>
-          </div>
-        )}
+        </form>
       </div>
     </div>
   );

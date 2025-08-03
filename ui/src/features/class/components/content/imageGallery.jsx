@@ -2,21 +2,35 @@ import { useState, useRef } from "react";
 
 export default function ImageGallery({ data, save }) {
   const fileInputRef = useRef(null);
-  const [images, setImages] = useState(data?.images || []);
+  // const [images, setImages] = useState(data?.images || []);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const files = Array.from(event.target.files);
     if (!files.length) return;
 
-    const newImages = files.map((file) => ({
-      id: Date.now() + Math.random(),
-      url: URL.createObjectURL(file),
-      file: file,
-      alt: "",
-    }));
+    const imagePromises = files.map(
+      (file) =>
+        new Promise((resolve) => {
+          const { name, type } = file;
+          const reader = new FileReader();
 
-    const updatedImages = [...images, ...newImages];
-    setImages(updatedImages);
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            resolve({
+              id: Date.now() + Math.random(),
+              name,
+              type,
+              content: reader.result,
+              alt: "",
+            });
+          };
+        })
+    );
+
+    const oldImages = data ? data.images : [];
+    const newImages = await Promise.all(imagePromises);
+    const updatedImages = [...oldImages, ...newImages];
+    // setImages(updatedImages);
 
     save({ images: updatedImages });
     if (fileInputRef.current) {
@@ -25,22 +39,18 @@ export default function ImageGallery({ data, save }) {
   };
 
   const handleDeleteImage = (id) => {
+    const images = data ? data.images : [];
+    if (images.length === 0) return;
     const updatedImages = images.filter((image) => image.id !== id);
-    setImages(updatedImages);
-
-    const deletedImage = images.find((image) => image.id === id);
-    if (deletedImage && deletedImage.url) {
-      URL.revokeObjectURL(deletedImage.url);
-    }
 
     save({ images: updatedImages });
   };
 
   const handleAltTextChange = (id, altText) => {
+    const images = data ? data.images : [];
     const updatedImages = images.map((image) =>
       image.id === id ? { ...image, alt: altText } : image
     );
-    setImages(updatedImages);
     save({ images: updatedImages });
   };
 
@@ -70,15 +80,15 @@ export default function ImageGallery({ data, save }) {
         Ajouter une image
       </button>
 
-      {images.length > 0 && (
+      {data && (
         <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {images.map((image) => (
+          {data.images.map((image) => (
             <div
               key={image.id}
               className="relative group overflow-hidden rounded-md shadow-sm"
             >
               <img
-                src={image.url}
+                src={image.content}
                 alt={image.alt || "Image de la galerie"}
                 className="w-full h-40 object-cover"
               />

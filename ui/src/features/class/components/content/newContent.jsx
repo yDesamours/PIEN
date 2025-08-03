@@ -11,9 +11,10 @@ export default function NewContent({ id }) {
 
   return (
     <section
+      onClick={() => openChooser(id)}
       className={`flex items-center justify-center border border-gray-300 border-dashed h-12`}
     >
-      <Plus onClick={() => openChooser(id)} className="w-6 h-6" />
+      <Plus className="w-6 h-6" />
     </section>
   );
 }

@@ -1,3 +1,3 @@
 export default function ContentChoserContent({ children }) {
-  return <ul className=" text-black px-4">{children}</ul>;
+  return <ul className=" grid grid-cols-2 gap-4  text-lg p-4">{children}</ul>;
 }

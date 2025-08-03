@@ -9,15 +9,15 @@ import ContentGroup from "../contentGroup/contentGroup";
 export default function ContentChoser() {
   const { chooserOpened, closeChooser, add } = useContext(courseBuilderContext);
 
-  const visible = chooserOpened ? "w-72" : "w-0";
+  const visible = chooserOpened ? "w-100 p-4" : "w-0";
 
   return (
     <section
-      className={`${visible} bg-white transition-all duration-300 ease-in-out z-30 overflow-hidden absolute right-0 h-dvh`}
+      className={`${visible} bg-background-2  rounded-l-2xl shadow-lg font-sans transition-all duration-300 ease-in-out z-30 overflow-hidden absolute right-0 h-dvh my-8 `}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-3">
         <div className="flex justify-between text-md text-black">
-          <p className="font-bold">Contenu</p>
+          <p className="font-semibold text-gray-800">Contenu</p>
           <Icon name="close" onClick={closeChooser} />
         </div>
         <ContentGroup summary="Text">
@@ -26,6 +26,30 @@ export default function ContentChoser() {
               icon="text"
               label="Text"
               name="text"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="title"
+              label="Titre"
+              name="titre"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="quote"
+              label="Citation"
+              name="quote"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="formula"
+              label="Formule"
+              name="formula"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="code"
+              label="Bloc de Code"
+              name="code"
               onChoose={add}
             />
           </ContentChoserContent>
@@ -40,9 +64,21 @@ export default function ContentChoser() {
               onChoose={add}
             />
             <ContentChoserItem
+              icon="gallery"
+              label="Gallerie d'image"
+              name="gallery"
+              onChoose={add}
+            />
+            <ContentChoserItem
               icon="audio"
               label="Audio"
               name="audio"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="mic"
+              label="Enregistreur"
+              name="recorder"
               onChoose={add}
             />
             <ContentChoserItem

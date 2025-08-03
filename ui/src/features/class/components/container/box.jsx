@@ -7,7 +7,7 @@ import { courseBuilderContext } from "../../../../context/courseContext";
 import ImagePicker from "../content/imagePicker";
 import AudioPicker from "../content/audioPicker";
 import VideoPicker from "../content/videoPicker";
-import GlbPicker from "../content/3dPicker";
+import GlbPicker from "../content/GlbPicker";
 import DocumentPicker from "../content/documentPicker";
 import NewContent from "../content/newContent";
 import TwoColumns from "../organizer/twoColumns";
@@ -16,11 +16,23 @@ import ColumnChoser from "../organizer/columnChoser";
 import QuestionLibre from "../evaluation/questionLibre";
 import VraiFaux from "../evaluation/vraiFaux";
 import QuestionMultiple from "../evaluation/questionMultiple";
+import AudioRecorder from "../content/audioRecorder";
+import ImageGallery from "../content/imageGallery";
+import CodeBlock from "../content/codeBlock";
+import title from "../content/title";
+import Blockquote from "../content/blockquote";
+import FormulaEditor from "../content/formulaEditor";
 
 function toComponent(type) {
   switch (type) {
     case "text":
       return Text;
+    case "titre":
+      return title;
+    case "quote":
+      return Blockquote;
+    case "formula":
+      return FormulaEditor;
     case "image":
       return ImagePicker;
     case "audio":
@@ -45,6 +57,12 @@ function toComponent(type) {
       return VraiFaux;
     case "questionMultiple":
       return QuestionMultiple;
+    case "recorder":
+      return AudioRecorder;
+    case "gallery":
+      return ImageGallery;
+    case "code":
+      return CodeBlock;
     default:
       return Empty;
   }
@@ -55,8 +73,7 @@ export default function Box({ component, data, id, order, tools = true }) {
   const { deleteBox, duplicate, addAfter, saveBlock } =
     useContext(courseBuilderContext);
 
-  const save = (data) => saveBlock(id, data);
-
+  const save = useCallback((data) => saveBlock(id, data), [saveBlock, id]);
   const componentProps = {
     id,
     save,

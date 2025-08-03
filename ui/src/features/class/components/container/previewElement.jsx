@@ -1,6 +1,9 @@
 import Viewer3d from "../view/3dViewer";
 import AudioViewer from "../view/audioViewer";
+import CodeBlockViewer from "../view/codeBlockViewer";
 import DocumentViewwer from "../view/documentViewer";
+import FormulaViewer from "../view/formulaViewer";
+import GalleryViewer from "../view/galleryViewer";
 import Text from "../view/text";
 import VideoViewer from "../view/videoViewer";
 import Empty from "./empty";
@@ -11,12 +14,20 @@ function toComponent(component) {
       return Text;
     case "audio":
       return AudioViewer;
+    case "recorder":
+      return AudioViewer;
     case "video":
       return VideoViewer;
     case "document":
       return DocumentViewwer;
     case "3d":
       return Viewer3d;
+    case "gallery":
+      return GalleryViewer;
+    case "code":
+      return CodeBlockViewer;
+    case "formula":
+      return FormulaViewer;
     default:
       return Empty;
   }

@@ -1,11 +1,13 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
-import Tab, { tabContext } from "./tab"; // Votre composant Tab principal
-import TabBody from "./TabBody";
-import TabContent from "./TabContent";
-import TabItem from "./TabItem";
-import TabList from "./TabList";
+import { useState } from "react";
+import {
+  Tab,
+  TabBody,
+  TabContent,
+  TabItem,
+  TabList,
+} from "../../../../components/tab";
 
-export default function CourseTabs({ data, save, renderContent }) {
+export default function CourseTabs({ data, save }) {
   // Initialisation de la structure des données d'onglets
   const initialTabs =
     data?.tabs && data.tabs.length > 0
@@ -99,14 +101,7 @@ export default function CourseTabs({ data, save, renderContent }) {
           {tabs.map((tab) => (
             <TabContent key={tab.id} value={tab.id}>
               <div className="mt-4 p-4 border rounded-md border-gray-200">
-                {tab.content.length > 0 ? (
-                  renderContent(tab.content, activeTabIndex)
-                ) : (
-                  <p className="text-gray-500">
-                    Cet onglet est vide pour l'instant. Ajoutez du contenu via
-                    le panneau principal.
-                  </p>
-                )}
+                {tab.content}
               </div>
             </TabContent>
           ))}

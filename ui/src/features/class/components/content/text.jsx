@@ -5,7 +5,7 @@ import "quill/dist/quill.snow.css";
 
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
-  ["blockquote", "code-block"],
+  // ["blockquote", "code-block"],
   ["link", "formula"],
 
   [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
@@ -34,7 +34,7 @@ const toolbarHandlers = {
   },
 };
 
-const Text = forwardRef(({ data, save }, ref) => {
+export default function Text({ data, save }) {
   const isMounted = useRef(false);
   const editorRef = useRef(null);
   /**
@@ -69,10 +69,13 @@ const Text = forwardRef(({ data, save }, ref) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 text-left m-0 h-full">
-      <div ref={editorRef}></div>
+    <div className="flex flex-col text-left m-0 p-4 bg-white rounded-md shadow-sm border border-gray-200">
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+        Bloc de Texte
+      </h3>
+      <div className="flex flex-col">
+        <div ref={editorRef}></div>
+      </div>
     </div>
   );
-});
-
-export default Text;
+}

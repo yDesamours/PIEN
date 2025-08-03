@@ -9,9 +9,9 @@ export default function CourseContent() {
   } = useContext(courseBuilderContext);
 
   return (
-    <div className="py-2 flex-1">
+    <div className="py-8 flex-1 bg-background-1">
       <section
-        className="flex flex-col flex-1 gap-4 w-[60%] m-auto border-2 p-2 h-full rounded-xl"
+        className="flex flex-col flex-1 gap-4 w-[60%] m-auto  p-8 h-full rounded-xl bg-white"
         id="course-content"
       >
         {blocks.map((e, _, list) => {

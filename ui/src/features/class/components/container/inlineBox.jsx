@@ -7,7 +7,7 @@ import { courseBuilderContext } from "../../../../context/courseContext";
 import ImagePicker from "../content/imagePicker";
 import AudioPicker from "../content/audioPicker";
 import VideoPicker from "../content/videoPicker";
-import GlbPicker from "../content/3dPicker";
+import GlbPicker from "../content/GlbPicker";
 import DocumentPicker from "../content/documentPicker";
 import NewContent from "../content/newContent";
 import TwoColumns from "../organizer/twoColumns";

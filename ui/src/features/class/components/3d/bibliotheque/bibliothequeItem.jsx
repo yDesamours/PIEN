@@ -8,7 +8,7 @@ export default function BibliothequeItem({
   return (
     <figure
       onClick={() => onChoose({ name, path })}
-      className="w-32 hover:scale-110 duration-300 transition-all "
+      className="w-32 hover:scale-110 duration-300 transition-all flex flex-col justify-center items-center "
     >
       <img src={img} alt={name} className="w-full h-auto" />
       <figcaption>{description}</figcaption>

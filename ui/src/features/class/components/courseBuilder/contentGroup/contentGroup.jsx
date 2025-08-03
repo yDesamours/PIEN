@@ -1,8 +1,9 @@
 export default function ContentGroup({ children, summary }) {
   return (
-    <details className="p-1 m-1 bg-gray-100 shadow-md">
-      <summary className="text-black text-left list-none cursor-pointer border-1 rounded-sm border-black p-1">
+    <details className="group bg-white  shadow transition">
+      <summary className="cursor-pointer px-4 py-3 text-blue-600 font-semibold text-xl flex items-center justify-between group-open:rounded-b-none">
         {summary}
+        {/* <span class="transition-transform group-open:rotate-90">▶</span> */}
       </summary>
       {children}
     </details>

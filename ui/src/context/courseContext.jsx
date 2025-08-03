@@ -46,6 +46,12 @@ const getInitialComponentData = (componentType) => {
       return { content: "", reponses: [] };
     case "3d":
       return null;
+    case "recorder":
+      return {};
+    case "code":
+      return { language: "javascript", content: "" };
+    default:
+      return null;
   }
 
   return {};
@@ -146,7 +152,7 @@ function saveBlock(blocks, id, data) {
 
   const blockData = block.data ?? {};
   if (data) block.data = Object.assign(blockData, deepCopyJSON(data));
-  else block.data = null;
+  else block.data = getInitialComponentData(block.component);
   newBlocks.splice(blockIndex, 1, block);
   return newBlocks;
 }

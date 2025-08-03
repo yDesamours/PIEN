@@ -5,13 +5,13 @@
   --color-primary: #2196f3;
   --color-secondary: #4caf50;
   --color-accent: #ff9800;
-  --color-background: #f5f5f5;
+  --color-background-1: #eaf0f6;
+  --color-background-2: #eff6ff;
   --color-border: #e0e0e0;
   --color-text: #1f2937;
   --color-error: #ef4444;
   --color-info: #3b82f6;
 }
-
 
 @theme {
   --animate-fade-in-scale: fade-in-scale 0.3s ease-out;
@@ -27,14 +27,26 @@
   }
 }
 
-@theme  {
+@theme {
   --animate-slideInFast: slideIn 300ms ease-out;
   @keyframes slideIn {
     0% {
       transform: translateX(100%);
     }
     100% {
-      transform: transform: translateX(10000px);
+      transform: translateX(0%);
+    }
+  }
+}
+
+@theme {
+  --animate-slideOutFast: slideOut 300ms ease-out;
+  @keyframes slideOut {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
     }
   }
 }

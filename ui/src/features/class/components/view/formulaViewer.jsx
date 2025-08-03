@@ -9,7 +9,6 @@ export default function FormulaViewer({ data }) {
     return null; // Ne rien afficher si la formule est vide
   }
 
-  // Détecter si la formule doit être affichée en bloc ou en ligne
   const isBlockFormula =
     formula.includes("\\begin{") || formula.includes("\\begin{align}");
 
