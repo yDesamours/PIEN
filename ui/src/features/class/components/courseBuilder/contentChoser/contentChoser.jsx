@@ -105,6 +105,34 @@ export default function ContentChoser() {
             />
           </ContentChoserContent>
         </ContentGroup>
+        <ContentGroup summary="Diagram">
+          <ContentChoserContent>
+            <ContentChoserItem
+              icon="venn"
+              label="Diagramme de Venn"
+              name="venn"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="histogram"
+              label="Histogramme"
+              name="histogram"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="bar"
+              label="Diagramme en batons"
+              name="barplot"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="target"
+              label="Bullseye"
+              name="bullseye"
+              onChoose={add}
+            />
+          </ContentChoserContent>
+        </ContentGroup>
         <ContentGroup summary="Evaluation">
           <ContentChoserContent>
             <ContentChoserItem
@@ -139,6 +167,12 @@ export default function ContentChoser() {
               icon="3d"
               label="Trois colonnes"
               name="threeColumns"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="table"
+              label="Tableau"
+              name="table"
               onChoose={add}
             />
           </ContentChoserContent>

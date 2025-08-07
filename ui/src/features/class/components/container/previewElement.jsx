@@ -1,9 +1,11 @@
 import Viewer3d from "../view/3dViewer";
 import AudioViewer from "../view/audioViewer";
+import BullseyeDiagramViewer from "../view/BullseyeDiagramViewer";
 import CodeBlockViewer from "../view/codeBlockViewer";
 import DocumentViewwer from "../view/documentViewer";
 import FormulaViewer from "../view/formulaViewer";
 import GalleryViewer from "../view/galleryViewer";
+import TableView from "../view/tableView";
 import Text from "../view/text";
 import VideoViewer from "../view/videoViewer";
 import Empty from "./empty";
@@ -28,6 +30,10 @@ function toComponent(component) {
       return CodeBlockViewer;
     case "formula":
       return FormulaViewer;
+    case "bullseye":
+      return BullseyeDiagramViewer;
+    case "table":
+      return TableView;
     default:
       return Empty;
   }

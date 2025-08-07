@@ -22,6 +22,11 @@ import CodeBlock from "../content/codeBlock";
 import title from "../content/title";
 import Blockquote from "../content/blockquote";
 import FormulaEditor from "../content/formulaEditor";
+import VennDiagramEditor from "../content/vennDiagramEditor";
+import HistogramEditor from "../content/histogramEditor";
+import BullseyeDiagramEditor from "../content/bullsEyeDiagram";
+import TableEditor from "../content/tableEditor";
+import BarplotEditor from "../content/barplot";
 
 function toComponent(type) {
   switch (type) {
@@ -63,6 +68,16 @@ function toComponent(type) {
       return ImageGallery;
     case "code":
       return CodeBlock;
+    case "venn":
+      return VennDiagramEditor;
+    case "histogram":
+      return HistogramEditor;
+    case "bullseye":
+      return BullseyeDiagramEditor;
+    case "table":
+      return TableEditor;
+    case "barplot":
+      return BarplotEditor;
     default:
       return Empty;
   }
@@ -70,13 +85,18 @@ function toComponent(type) {
 
 export default function Box({ component, data, id, order, tools = true }) {
   const Component = toComponent(component);
-  const { deleteBox, duplicate, addAfter, saveBlock } =
+  const { deleteBox, duplicate, addAfter, saveBlock, updateBlock } =
     useContext(courseBuilderContext);
 
   const save = useCallback((data) => saveBlock(id, data), [saveBlock, id]);
+  const update = useCallback(
+    (data) => updateBlock(id, data),
+    [updateBlock, id]
+  );
   const componentProps = {
     id,
     save,
+    update,
     data,
   };
 

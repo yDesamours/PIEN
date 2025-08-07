@@ -1,4 +1,4 @@
-export function capltalize(s) {
+export function capitalize(s) {
   return s[0].toUpperCase().concat(s.substring(1));
 }
 
@@ -9,15 +9,6 @@ export const storage = {
 
 export function deepCopyJSON(obj) {
   return JSON.parse(JSON.stringify(obj));
-}
-
-/**
- *
- * @param {String} string
- * @returns {Boolean}
- */
-export function isEmpty(string) {
-  return !!string && string.trim().length > 0;
 }
 
 /**
@@ -92,4 +83,20 @@ export function blobToBase64(blob) {
     reader.onerror = reject;
     reader.readAsDataURL(blob);
   });
+}
+
+export function isEmpty(p) {
+  if (p === null) return true;
+
+  if (p.trim && p.trim() === "") {
+    return true;
+  }
+
+  if (Array.isArray(p) && p.length === 0) {
+    return true;
+  }
+}
+
+export function id() {
+  return crypto.randomUUID();
 }

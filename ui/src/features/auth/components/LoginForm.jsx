@@ -6,7 +6,7 @@ import {
   useImperativeHandle,
   useState,
 } from "react";
-import { capltalize } from "../../../utils/utils";
+import { capitalize } from "../../../utils/utils";
 import useApi from "../../../hooks/api";
 import USER from "../../../services/api/user";
 import { AuthContext } from "../../../context/authContext";
@@ -86,7 +86,7 @@ const LoginForm = forwardRef(function (
                 className="bg-accent w-60 h-10 font-bold text-black cursor-pointer flex justify-center items-center hover:scale-110 transition-transform duration-300"
                 key={e}
               >
-                {capltalize(e)}
+                {capitalize(e)}
                 <input
                   type="radio"
                   name="role"

@@ -7,13 +7,14 @@ import {
 } from "react";
 import { boxArgument, storage } from "../features/class/utils/utils";
 import ResourceChoser from "../features/class/components/organizer/resourceChoser";
-import { deepCopyJSON } from "../utils/utils";
+import { deepCopyJSON, id } from "../utils/utils";
 
 export const courseBuilderContext = createContext({
   content: { blocks: [] },
   load: () => {},
   save: () => {},
   saveBlock: () => {},
+  updateBlock: () => {},
   add: () => {},
   addAfter: () => {},
   duplicate: () => {},
@@ -50,12 +51,42 @@ const getInitialComponentData = (componentType) => {
       return {};
     case "code":
       return { language: "javascript", content: "" };
+    case "venn":
+      return { sets: {} };
+    case "bullseye":
+      return {};
+    case "table":
+      return newTable();
+    case "barplot":
+      return {
+        ...newTable(),
+      };
     default:
       return null;
   }
 
   return {};
 };
+
+function newTable() {
+  const [col1Id, col2Id] = [id(), id()];
+
+  return {
+    headers: [
+      { id: col1Id, value: "Colonne 1" },
+      { id: col2Id, value: "Colonne 2" },
+    ],
+    rows: [
+      {
+        id: id(),
+        cells: [
+          { column: col1Id, value: "", id: id() },
+          { column: col2Id, value: "", id: id() },
+        ],
+      },
+    ],
+  };
+}
 
 function addBlock(blocks, payload) {
   // Le `payload.id` est l'ID du bloc "new" que nous cherchons à remplacer.
@@ -157,6 +188,17 @@ function saveBlock(blocks, id, data) {
   return newBlocks;
 }
 
+function updateBlock(blocks, id, data) {
+  const blockIndex = blocks.findIndex((e) => e.id === id);
+  if (blockIndex < 0) return blocks;
+  const newBlocks = blocks.slice();
+  const block = { ...blocks[blockIndex] };
+
+  block.data = deepCopyJSON(data);
+  newBlocks.splice(blockIndex, 1, block);
+  return newBlocks;
+}
+
 const reducer = (state, action) => {
   let newState;
   switch (action.type) {
@@ -182,6 +224,16 @@ const reducer = (state, action) => {
       newState = {
         ...state,
         blocks: saveBlock(state.blocks, action.payload.id, action.payload.data),
+      };
+      break;
+    case "UPDATE_BLOCK":
+      newState = {
+        ...state,
+        blocks: updateBlock(
+          state.blocks,
+          action.payload.id,
+          action.payload.data
+        ),
       };
       break;
     default:
@@ -254,6 +306,16 @@ export default function CourseBulderProvider({ children }) {
     [dispacth]
   );
 
+  const updateBlock = useCallback(
+    (id, data) => {
+      dispacth({
+        type: "UPDATE_BLOCK",
+        payload: { id, data: deepCopyJSON(data) },
+      });
+    },
+    [dispacth]
+  );
+
   const getData = useCallback(
     (id) => {
       const content = course.blocks.find((e) => e.id === id);
@@ -267,6 +329,7 @@ export default function CourseBulderProvider({ children }) {
       content: course,
       getData,
       saveBlock,
+      updateBlock,
       add,
       addAfter,
       duplicate,
