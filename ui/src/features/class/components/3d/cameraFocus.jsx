@@ -51,7 +51,6 @@ export default function CameraFocus({
     if (controlsRef.current && targetPoint) {
       const elapsed = (performance.now() - startTime.current) / 1000;
       const t = Math.min(1, elapsed / duration); // Facteur d'interpolation (0 à 1)
-      console.log(endTarget.current);
 
       //Interpoler la cible des contrôles
       controlsRef.current.target.lerpVectors(

@@ -7,6 +7,7 @@ export default function Table({
   handleCellChange = () => {},
   handleDeleteRow = () => {},
   handleAddRow = () => {},
+  dataset = false,
 }) {
   return (
     <div className="p-4 bg-white rounded-md shadow-sm border border-gray-200">
@@ -18,7 +19,7 @@ export default function Table({
         <table className="min-w-full divide-y divide-gray-500">
           <thead className="bg-gray-50">
             <tr>
-              {headers.map((header) => (
+              {headers.map((header, i) => (
                 <th
                   key={header.id}
                   className="px-3 py-2 text-left border-1 border-gray-300 text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -26,20 +27,24 @@ export default function Table({
                   <div className="flex items-center">
                     <input
                       type="text"
-                      value={header.value}
+                      value={dataset && i === 0 ? "" : header.value}
                       onChange={(e) =>
                         handleHeaderChange(header.id, e.target.value)
                       }
                       className="bg-transparent border-none outline-none focus:outline-blue-500 rounded p-1 w-full"
+                      disabled={dataset && i === 0}
                     />
-                    {headers.length > 1 && handleDeleteColumn && (
-                      <button
-                        onClick={() => handleDeleteColumn(header.id)}
-                        className="ml-2 p-1 text-gray-400 hover:text-red-500 transition-colors duration-200"
-                      >
-                        &times;
-                      </button>
-                    )}
+                    {headers.length > 1 &&
+                      handleDeleteColumn &&
+                      dataset &&
+                      i !== 0 && (
+                        <button
+                          onClick={() => handleDeleteColumn(header.id)}
+                          className="ml-2 p-1 text-gray-400 hover:text-red-500 transition-colors duration-200"
+                        >
+                          &times;
+                        </button>
+                      )}
                   </div>
                 </th>
               ))}

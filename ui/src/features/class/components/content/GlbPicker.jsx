@@ -153,39 +153,43 @@ export default function GlbPicker({ save, data }) {
               />
             </div>
           </div>
-          <Modal isOpen={previewOpen} onClose={handlePreviewStop}>
-            <div className="h-full">
-              <TabPane defaultValue="viewer">
-                <TabPaneContent value="viewer">
-                  <div className="flex flex-col h-full">
-                    <ModelViewer
-                      modelPath={previewUrl}
-                      className="flex-1 flex gap-3"
-                      renderingConfig={{ annotations: data.annotations }}
-                    />
-                    <TabPaneNav>
-                      <TabPaneButton value="annotation" className="h-20">
-                        Modifier ce modele
-                      </TabPaneButton>
-                    </TabPaneNav>
-                  </div>
-                </TabPaneContent>
-                <TabPaneContent value="annotation">
-                  <div className="flex flex-col h-full">
-                    <AnnotationEditor
-                      modelPath={previewUrl}
-                      onSaveAnnotations={onSaveAnnotations}
-                      className="flex-1 max-h-full"
-                      initialAnnotations={data.annotations}
-                    />
-                    <TabPaneNav>
-                      <TabPaneButton value="viewer">Terminer</TabPaneButton>
-                    </TabPaneNav>
-                  </div>
-                </TabPaneContent>
-              </TabPane>
-            </div>
-          </Modal>
+          {previewUrl && (
+            <Modal isOpen={previewOpen} onClose={handlePreviewStop}>
+              <div className="h-full">
+                <TabPane defaultValue="viewer">
+                  <TabPaneContent value="viewer">
+                    <div className="flex flex-col h-full">
+                      <ModelViewer
+                        modelPath={previewUrl}
+                        className="flex-1 flex gap-3"
+                        renderingConfig={{
+                          annotations: data.annotations,
+                        }}
+                      />
+                      <TabPaneNav>
+                        <TabPaneButton value="annotation" className="h-20">
+                          Modifier ce modele
+                        </TabPaneButton>
+                      </TabPaneNav>
+                    </div>
+                  </TabPaneContent>
+                  <TabPaneContent value="annotation">
+                    <div className="flex flex-col h-full">
+                      <AnnotationEditor
+                        modelPath={previewUrl}
+                        onSaveAnnotations={onSaveAnnotations}
+                        className="flex-1 max-h-full"
+                        initialAnnotations={data.annotations}
+                      />
+                      <TabPaneNav>
+                        <TabPaneButton value="viewer">Terminer</TabPaneButton>
+                      </TabPaneNav>
+                    </div>
+                  </TabPaneContent>
+                </TabPane>
+              </div>
+            </Modal>
+          )}
         </>
       )}
     </>

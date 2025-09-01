@@ -4,10 +4,9 @@ import Title from "../../components/title/title";
 export default function EnseignantClasseLayout() {
   return (
     <>
-      <Title title="Mes Classes" />
-      <div className="p-2 h-full">
-        <Outlet />
-      </div>
+      {/* <div className=" flex-1 flex flex-col"> */}
+      <Outlet />
+      {/* </div> */}
     </>
   );
 }

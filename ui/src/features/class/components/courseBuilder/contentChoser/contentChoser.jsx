@@ -13,7 +13,7 @@ export default function ContentChoser() {
 
   return (
     <section
-      className={`${visible} bg-background-2  rounded-l-2xl shadow-lg font-sans transition-all duration-300 ease-in-out z-30 overflow-hidden absolute right-0 h-dvh my-8 `}
+      className={`${visible} bg-background-2  rounded-l-2xl shadow-lg font-sans transition-all duration-300 ease-in-out z-30 overflow-hidden absolute right-0 h-full my-8 `}
     >
       <div className="flex flex-col gap-3">
         <div className="flex justify-between text-md text-black">
@@ -126,9 +126,49 @@ export default function ContentChoser() {
               onChoose={add}
             />
             <ContentChoserItem
+              icon="line"
+              label="Diagramme en ligne"
+              name="lineplot"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="pie"
+              label="Diagramme en gateau"
+              name="piechart"
+              onChoose={add}
+            />
+            <ContentChoserItem
               icon="target"
               label="Bullseye"
               name="bullseye"
+              onChoose={add}
+            />
+          </ContentChoserContent>
+        </ContentGroup>
+        <ContentGroup summary="Embed">
+          <ContentChoserContent>
+            <ContentChoserItem
+              icon="youtube"
+              label="Youtube"
+              name="youtube"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="drive"
+              label="Google Drive"
+              name="drive"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="website"
+              label="Site Web"
+              name="website"
+              onChoose={add}
+            />
+            <ContentChoserItem
+              icon="map"
+              label="Google Maps"
+              name="map"
               onChoose={add}
             />
           </ContentChoserContent>

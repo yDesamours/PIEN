@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func createUsers(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
+func createUsers(app *App, repo *UtilisateurRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user := &Utilisateur{}
 		err := c.BindJSON(user)
@@ -41,7 +41,7 @@ func createUsers(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc
 	}
 }
 
-func updateUser(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc {
+func updateUser(app *App, repo *UtilisateurRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		user := &Utilisateur{}
 		err := c.BindJSON(user)
@@ -67,12 +67,12 @@ func updateUser(app *internal.App, repo *UtilisateurRepository) gin.HandlerFunc 
 // 	}
 // }
 
-func login(app *internal.App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository) gin.HandlerFunc {
+func login(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type login struct {
-			Email    string             `json:"email"`
-			Password string             `json:"password"`
-			Role     internal.UpperCase `json:"role"`
+			Email    string `json:"email"`
+			Password string `json:"password"`
+			Role     string `json:"role"`
 		}
 
 		var credentials login
@@ -83,7 +83,7 @@ func login(app *internal.App, userRepo *UtilisateurRepository, jetonRepo *JetonR
 			return
 		}
 
-		user, err := userRepo.findByEmailAndRole(credentials.Email, credentials.Role.ToString())
+		user, err := userRepo.findByEmailAndRole(credentials.Email, credentials.Role)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusNotFound, gin.H{"message": "email ou mot de passe incorrect"})
@@ -128,7 +128,7 @@ func login(app *internal.App, userRepo *UtilisateurRepository, jetonRepo *JetonR
 	}
 }
 
-func me(app *internal.App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository) gin.HandlerFunc {
+func me(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sessionToken, err := c.Cookie(JetonScopeId.String())
 		if err != nil || sessionToken == "" {

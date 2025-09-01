@@ -1,12 +1,29 @@
+import { useEffect, useState } from "react";
 import {
   TabPane,
   TabPaneButton,
   TabPaneContent,
   TabPaneNav,
 } from "../../../../../components/tabpane";
+import useApi from "../../../../../hooks/api";
 import BibliothequeGroup from "./bibliothequeGroup";
+import COURS from "../../../../../services/api/cours";
 
 export default function Bibliotheque({ onChoose }) {
+  const [models, setModels] = useState({});
+  const { execute } = useApi();
+
+  useEffect(() => {
+    execute(COURS.GET_MODELS()).then(({ data }) => {
+      const receivedModels = data.reduce((acc, cur) => {
+        const { categorie } = cur;
+        acc[categorie] = (acc[categorie] || []).concat(cur);
+        return acc;
+      }, {});
+      setModels(receivedModels);
+    });
+  }, []);
+
   return (
     <TabPane defaultValue="anatomie">
       <div className="flex h-[80vh] bg-gray-50 p-6 gap-8">
@@ -41,13 +58,25 @@ export default function Bibliotheque({ onChoose }) {
           <h2 className="text-lg font-semibold text-gray-700 mb-4">Contenu</h2>
 
           <TabPaneContent value="anatomie">
-            <BibliothequeGroup name="anatomie" onChoose={onChoose} />
+            <BibliothequeGroup
+              name="anatomie"
+              onChoose={onChoose}
+              items={models.biologie}
+            />
           </TabPaneContent>
           <TabPaneContent value="physique">
-            <BibliothequeGroup name="physique" onChoose={onChoose} />
+            <BibliothequeGroup
+              name="physique"
+              onChoose={onChoose}
+              items={models.physique}
+            />
           </TabPaneContent>
           <TabPaneContent value="mecanique">
-            <BibliothequeGroup name="mecanique" onChoose={onChoose} />
+            <BibliothequeGroup
+              name="mecanique"
+              onChoose={onChoose}
+              items={models.mecanique}
+            />
           </TabPaneContent>
         </div>
       </div>

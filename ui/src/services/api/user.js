@@ -1,4 +1,4 @@
-const host = "/api";
+const host = "/api/utilisateurs";
 
 const USER = {};
 

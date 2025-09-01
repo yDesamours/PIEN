@@ -1,7 +1,12 @@
 export default function ToolbarContent({ children }) {
   return (
-    <article>
-      <ul className="flex items-center justify-start gap-2">{children}</ul>
+    <article className="w-full">
+      <ul
+        role="list"
+        className="flex items-center justify-end gap-4 p-4 w-full"
+      >
+        {children}
+      </ul>
     </article>
   );
 }

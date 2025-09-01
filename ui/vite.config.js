@@ -17,8 +17,18 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
+      "/api/utilisateurs": {
         target: "http://localhost:8081",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      "/api/cours": {
+        target: "http://localhost:8082",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      "/api/multimedia": {
+        target: "http://localhost:8083",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

@@ -1,17 +1,16 @@
+import MULTIMEDIA from "../../../../../services/api/multimedia";
 import BibliothequeItem from "./bibliothequeItem";
-import { MODELS } from "./models";
 
-export default function BibliothequeGroup({ name, onChoose }) {
-  const items = MODELS[name] || [];
+export default function BibliothequeGroup({ name, onChoose, items = [] }) {
   return (
     <div className="flex">
-      {items.map(({ name, description, img, path }) => (
+      {items.map(({ name, description, thumbnailUrl, url }) => (
         <BibliothequeItem
           onChoose={onChoose}
-          path={path}
+          path={MULTIMEDIA.GET_FILE(url)}
           description={description}
           name={name}
-          img={img}
+          img={MULTIMEDIA.GET_FILE(thumbnailUrl)}
           key={name}
         />
       ))}

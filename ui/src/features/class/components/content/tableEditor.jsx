@@ -7,17 +7,6 @@ export default function TableEditor({ data, save }) {
   const headers = data.headers;
   const rows = data.rows;
 
-  // Débouncing pour la sauvegarde
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     save({ headers, rows });
-  //   }, 500);
-
-  //   return () => {
-  //     clearTimeout(handler);
-  //   };
-  // }, [headers, rows, save]);
-
   // Gestion des en-têtes
   const handleHeaderChange = (id, value) => {
     const updatedHeader = headers.find((h) => h.id === id);
@@ -44,20 +33,18 @@ export default function TableEditor({ data, save }) {
 
   const handleDeleteColumn = (id) => {
     const headerToDelete = headers.find((h) => h.id === id);
-    if (headerToDelete) return;
+    if (!headerToDelete) return;
 
     const updatedHeaders = headers.filter((h) => h.id !== id);
-    // setHeaders(updatedHeaders);
 
     // Supprimer la colonne correspondante de chaque ligne
     const updatedRows = rows.map((row) => {
       const newRow = {
         id: row.id,
-        cells: row.cells.filter((col) => col.column === headerToDelete.id),
+        cells: row.cells.filter((col) => col.column !== headerToDelete.id),
       };
       return newRow;
     });
-    // setRows(updatedRows);
     save({ headers: updatedHeaders, rows: updatedRows });
   };
 

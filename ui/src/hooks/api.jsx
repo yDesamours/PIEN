@@ -7,7 +7,7 @@ export default function useApi() {
     result: null,
   });
 
-  const execute = async (config) => {
+  const execute = async (config, cb) => {
     setRequestState((state) => ({
       ...state,
       loading: true,
@@ -20,7 +20,9 @@ export default function useApi() {
       result = await sendRequest(config);
 
       if (result.ok) {
-        return { data: result.body };
+        const response = { data: result.body };
+        if (cb) return cb(response);
+        return response;
       }
       if (result.errorData.code === 401) {
         return;

@@ -36,6 +36,24 @@ export default function EnseignantSidebar({ forwardRef }) {
             Classes
           </NavLink>
         </SideBarItem>
+        <SideBarItem label="item 1" icon="book" onClick={onItemClicked}>
+          <NavLink
+            to="classes"
+            onClick={() => setTitle("Mes classes")}
+            className="p-2"
+          >
+            Conversations
+          </NavLink>
+        </SideBarItem>
+        <SideBarItem label="item 1" icon="book" onClick={onItemClicked}>
+          <NavLink
+            to="classes"
+            onClick={() => setTitle("Mes classes")}
+            className="p-2"
+          >
+            Forums
+          </NavLink>
+        </SideBarItem>
       </SideBarContent>
     </SideBar>
   );

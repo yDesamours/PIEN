@@ -3,9 +3,7 @@ import { Histogram } from "@upsetjs/plots";
 
 export default function HistogramEditor({ data, save }) {
   const [selection, setSelection] = useState(null);
-  const [values, setValues] = useState(
-    data ?? { title: "", label: "", elems: "" }
-  );
+  const [values, setValues] = useState({ ...data });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,7 +15,6 @@ export default function HistogramEditor({ data, save }) {
 
   const handleSave = () => {
     const { title, elems, label } = values;
-    console.log(elems);
     save({ title, label, elems: JSON.parse(elems) });
   };
 

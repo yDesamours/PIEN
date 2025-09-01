@@ -15,10 +15,16 @@ export default function Viewer3d({ data }) {
   }, [data]);
 
   return (
-    <ModelViewer
-      modelPath={previewUrl}
-      className="flex-1 flex gap-3"
-      renderingConfig={{ annotations: data.annotations }}
-    />
+    <>
+      {previewUrl ? (
+        <ModelViewer
+          modelPath={previewUrl}
+          className="flex-1 flex gap-3"
+          renderingConfig={{ annotations: data.annotations }}
+        />
+      ) : (
+        <p></p>
+      )}
+    </>
   );
 }

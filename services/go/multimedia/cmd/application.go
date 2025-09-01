@@ -1,6 +1,7 @@
-package internal
+package main
 
 import (
+	"PIEN/internal"
 	"log"
 	"os"
 
@@ -12,7 +13,7 @@ type App struct {
 	port   string
 	logger *log.Logger
 	db     *gorm.DB
-	Token  *Token
+	cache  internal.CacheService
 }
 
 func (a *App) GetDb() *gorm.DB {
@@ -32,7 +33,7 @@ func (a *App) Error(e error) {
 }
 
 func (a *App) Success(c *gin.Context, code int, data interface{}) {
-	response := SuccessResponse{Status: 0, Data: data, Message: ""}
+	response := internal.SuccessResponse{Status: 0, Data: data, Message: ""}
 	c.JSON(code, response)
 }
 
@@ -42,16 +43,11 @@ type AppBuilder struct {
 	port           string
 	logger         *log.Logger
 	db             *gorm.DB
-	secret         string
 }
 
 func NewAppBuilder() *AppBuilder {
 	logger := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime)
 	return &AppBuilder{logger: logger}
-}
-
-func (a *AppBuilder) Secret(secret string) {
-	a.secret = secret
 }
 
 func (a *AppBuilder) Port(port string) {
@@ -82,6 +78,6 @@ func (a *AppBuilder) Build() (*App, error) {
 		port:   a.port,
 		logger: a.logger,
 		db:     a.db,
-		Token:  New(a.secret),
+		cache:  internal.DefaultCacheService(),
 	}, nil
 }

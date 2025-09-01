@@ -48,7 +48,6 @@ export default function VennDiagramEditor({ data, save }) {
 
   const onNewElement = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     setNewSet((prev) => ({
       ...prev,
@@ -129,8 +128,13 @@ export default function VennDiagramEditor({ data, save }) {
         )}
       </div>
 
-      <div className="border rounded p-4 bg-gray-50">
-        <VennDiagram sets={sets} width={400} height={300} />
+      <div className="border rounded p-4 bg-gray-50 flex justify-center">
+        <VennDiagram
+          sets={sets}
+          width={400}
+          height={300}
+          exportButtons={false}
+        />
       </div>
     </div>
   );

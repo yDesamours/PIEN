@@ -3,6 +3,7 @@ import {
   useCallback,
   useMemo,
   useReducer,
+  useRef,
   useState,
 } from "react";
 import { boxArgument, storage } from "../features/class/utils/utils";
@@ -10,7 +11,8 @@ import ResourceChoser from "../features/class/components/organizer/resourceChose
 import { deepCopyJSON, id } from "../utils/utils";
 
 export const courseBuilderContext = createContext({
-  content: { blocks: [] },
+  content: [],
+  description: { title: "", description: "", objectif: [] },
   load: () => {},
   save: () => {},
   saveBlock: () => {},
@@ -24,10 +26,18 @@ export const courseBuilderContext = createContext({
   chooserOpened: false,
   newOrder: 0,
   getData: () => {},
+  openDescription: () => {},
+  closeDescription: () => {},
+  descriptionOpen: false,
+  setDescription: () => {},
+  undo: () => {},
+  redo: () => {},
 });
 
 const getInitialComponentData = (componentType) => {
   switch (componentType) {
+    case "text":
+      return { content: "" };
     case "twoColumns":
       return {
         first: { component: "columnChoser" },
@@ -57,9 +67,34 @@ const getInitialComponentData = (componentType) => {
       return {};
     case "table":
       return newTable();
+    case "histogram":
+      return { title: "", label: "", elems: "" };
     case "barplot":
       return {
         ...newTable(),
+        orientation: "vertical",
+        ligne: "ligne",
+        entete: "entete",
+      };
+    case "lineplot":
+      return {
+        ...newTable(),
+        ligne: "ligne",
+        entete: "entete",
+      };
+    case "piechart":
+      return {
+        ...newTable(),
+        ligne: "ligne",
+        entete: "entete",
+      };
+    case "youtube":
+      return {
+        embedUrl: "",
+      };
+    case "drive":
+      return {
+        embedUrl: "",
       };
     default:
       return null;
@@ -80,8 +115,8 @@ function newTable() {
       {
         id: id(),
         cells: [
-          { column: col1Id, value: "", id: id() },
-          { column: col2Id, value: "", id: id() },
+          { column: col1Id, value: "0", id: id() },
+          { column: col2Id, value: "0", id: id() },
         ],
       },
     ],
@@ -199,9 +234,46 @@ function updateBlock(blocks, id, data) {
   return newBlocks;
 }
 
+function undo(presentState) {
+  const { blocks, description, past, future } = presentState;
+  const lastState = [...past].pop();
+  if (!lastState) {
+    return presentState;
+  }
+
+  return {
+    ...lastState,
+    future: [...future, { blocks, description }],
+    past: [...past.slice(0, -1)],
+  };
+}
+
+function redo(presentState) {
+  const { blocks, description, past, future } = presentState;
+  const nextState = [...future].pop();
+  if (!nextState) {
+    return presentState;
+  }
+
+  return {
+    ...nextState,
+    past: [...past, { blocks, description }],
+    future: [...future.slice(0, -1)],
+  };
+}
+
 const reducer = (state, action) => {
   let newState;
+  let redoOrUndo = false;
   switch (action.type) {
+    case "UNDO":
+      redoOrUndo = true;
+      newState = undo(state);
+      break;
+    case "REDO":
+      redoOrUndo = true;
+      newState = redo(state);
+      break;
     case "ADD":
       newState = { ...state, blocks: addBlock(state.blocks, action.payload) };
       break;
@@ -236,19 +308,38 @@ const reducer = (state, action) => {
         ),
       };
       break;
+    case "DESCRIPTION":
+      newState = {
+        ...state,
+        description: action.payload,
+      };
+      break;
     default:
       return state;
   }
-  storage.setCourse(newState);
-  return newState;
+  const finalState = redoOrUndo
+    ? newState
+    : Object.assign(newState, {
+        past: [
+          ...state.past,
+          { description: state.description, blocks: state.blocks },
+        ],
+        future: [],
+      });
+  storage.setCourse(finalState);
+  return finalState;
 };
 
 export default function CourseBulderProvider({ children }) {
   const initialCourse = storage.getCourse() ?? {
+    description: { title: "", resume: "", objectif: "" },
     blocks: [{ component: "new", order: 0, id: crypto.randomUUID() }],
+    past: [],
+    future: [],
   };
   const [course, dispacth] = useReducer(reducer, initialCourse);
   const [chooserOpened, setChoserOpened] = useState(null);
+  const [descriptionOpen, setDescriptionOpen] = useState(false);
 
   const closeChooser = () => {
     setChoserOpened(null);
@@ -256,6 +347,14 @@ export default function CourseBulderProvider({ children }) {
 
   const openChooser = (id) => {
     setChoserOpened(id);
+  };
+
+  const openDescription = () => {
+    setDescriptionOpen(true);
+  };
+
+  const closeDescription = () => {
+    setDescriptionOpen(false);
   };
 
   const load = useCallback(() => {}, []);
@@ -324,9 +423,23 @@ export default function CourseBulderProvider({ children }) {
     [course]
   );
 
+  const setDescription = (value) => {
+    const description = Object.assign(course.description, value);
+    dispacth({ type: "DESCRIPTION", payload: description });
+  };
+
+  const undo = useCallback(() => {
+    dispacth({ type: "UNDO" });
+  }, [dispacth]);
+
+  const redo = useCallback(() => {
+    dispacth({ type: "REDO" });
+  }, [dispacth]);
+
   const contextValue = useMemo(
     () => ({
-      content: course,
+      content: deepCopyJSON(course.blocks),
+      description: deepCopyJSON(course.description),
       getData,
       saveBlock,
       updateBlock,
@@ -337,7 +450,13 @@ export default function CourseBulderProvider({ children }) {
       openChooser,
       closeChooser,
       chooserOpened,
+      descriptionOpen,
+      openDescription,
+      closeDescription,
+      setDescription,
       load,
+      undo,
+      redo,
     }),
     [
       getData,
@@ -352,6 +471,13 @@ export default function CourseBulderProvider({ children }) {
       saveBlock,
       getData,
       load,
+      course,
+      descriptionOpen,
+      openDescription,
+      closeDescription,
+      setDescription,
+      undo,
+      redo,
     ]
   );
 

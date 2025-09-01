@@ -26,7 +26,13 @@ import VennDiagramEditor from "../content/vennDiagramEditor";
 import HistogramEditor from "../content/histogramEditor";
 import BullseyeDiagramEditor from "../content/bullsEyeDiagram";
 import TableEditor from "../content/tableEditor";
-import BarplotEditor from "../content/barplot";
+import BarplotEditor from "../content/barplotEditor";
+import LineplotEditor from "../content/linePlotEditor";
+import PieChartEditor from "../content/pieChartEditor";
+import YoutubeEmbed from "../content/youtubeEmbed";
+import GoogleDriveEmbed from "../content/GoogleDriveEmbed";
+import GoogleMapsEmbed from "../content/GoogleMapsEmbed";
+import WebsiteEmbed from "../content/websiteEmbed";
 
 function toComponent(type) {
   switch (type) {
@@ -70,14 +76,26 @@ function toComponent(type) {
       return CodeBlock;
     case "venn":
       return VennDiagramEditor;
-    case "histogram":
-      return HistogramEditor;
+    // case "histogram":
+    //   return HistogramEditor;
     case "bullseye":
       return BullseyeDiagramEditor;
     case "table":
       return TableEditor;
     case "barplot":
       return BarplotEditor;
+    case "lineplot":
+      return LineplotEditor;
+    case "piechart":
+      return PieChartEditor;
+    case "youtube":
+      return YoutubeEmbed;
+    case "drive":
+      return GoogleDriveEmbed;
+    case "map":
+      return GoogleMapsEmbed;
+    case "website":
+      return WebsiteEmbed;
     default:
       return Empty;
   }

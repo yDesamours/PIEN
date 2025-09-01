@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { dropdownContext } from "./dropdown";
 
-export default function DropdownTrigger({ children }) {
+export default function DropdownTrigger({ children, className }) {
   const { toggle } = useContext(dropdownContext);
   return (
     <button
       onClick={toggle}
-      className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-1 py-1 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+      className={`${className} inline-flex justify-center items-center w-full rounded-md border px-1 py-1 text-sm font-medium outline-none`}
     >
       {children}
       <svg

@@ -76,7 +76,6 @@ const classes = [
 
 export default function ClasseLoader({ params }) {
   const { classeId } = params;
-  console.log(classeId);
 
   return defer({
     classe: new Promise((resolve) => {

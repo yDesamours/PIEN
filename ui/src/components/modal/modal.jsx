@@ -7,7 +7,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
   return createPortal(
     <>
       <div
-        className={`fixed ${display} h-full bg-gray-900  w-full opacity-80`}
+        className={`fixed ${display} h-dvh bg-gray-900 z-40 w-full top-0 opacity-80`}
       ></div>
       <div
         className={`fixed bottom-0 w-full h-[90%] z-50 flex items-center transition-all duration-300 justify-center bg-black/50 ${position} overflow-y-auto`}

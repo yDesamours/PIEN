@@ -6,6 +6,7 @@ import ResourceList from "../organizer/resourceList";
 import BuilderToolbar from "./builderToolbar";
 import ContentChoser from "./contentChoser/contentChoser";
 import CourseContent from "./CourseContent";
+import CourseDescription from "./courseDescription";
 import Preview from "./preview";
 
 export default function CourseBuilder() {
@@ -16,12 +17,13 @@ export default function CourseBuilder() {
           <BuilderToolbar />
           <TabPaneContent value="builder">
             <div
-              className="relative h-full flex gap-2 bg-gray-200"
+              className="relative flex-1 flex gap-2 bg-gray-200 overflow-hidden"
               id="course-builder"
             >
               <CourseContent />
               <ContentChoser />
               <ResourceList />
+              <CourseDescription />
             </div>
           </TabPaneContent>
           <TabPaneContent value="preview">

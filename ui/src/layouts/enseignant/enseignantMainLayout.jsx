@@ -18,18 +18,18 @@ export default function EnseignantLayout({ children }) {
 
   return (
     <>
-      <header className="flex ">
+      <header className="flex sticky top-0 bg-white z-30">
         <button onClick={toggleSideBar} className="h-full p-3">
           <Icon name="drawer" />
         </button>
         <Nav />
       </header>
-      <div className="flex h-full">
+      <div className="flex h-full overflow-hidden">
         <aside>
           <Sidebar forwardRef={sideBarRef} />
         </aside>
 
-        <main className="flex-1">
+        <main className="h-full w-full flex flex-col">
           <Outlet />
         </main>
 
