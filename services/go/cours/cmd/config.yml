@@ -1,0 +1,9 @@
+server:
+  port: 8082
+database:
+  host: localhost
+  port: 27017
+  user: pien
+  password: password
+  dbname: pien
+  authsource: pien

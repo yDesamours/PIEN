@@ -1,0 +1,133 @@
+@import "tailwindcss";
+@source inline("{order-{1..200}}");
+@source inline("{scale-{50..200}}");
+
+@theme static {
+  --color-primary: #2196f3;
+  --color-secondary: #4caf50;
+  --color-accent: #ff9800;
+  --color-background-1: #eaf0f6;
+  --color-background-2: #eff6ff;
+  --color-border: #e0e0e0;
+  --color-text: #1f2937;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+}
+
+@theme {
+  --animate-fade-in-scale: fade-in-scale 0.3s ease-out;
+  @keyframes fade-in-scale {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+@theme {
+  --animate-slideInFast: slideIn 300ms ease-out;
+  @keyframes slideIn {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
+}
+
+@theme {
+  --animate-slideOutFast: slideOut 300ms ease-out;
+  @keyframes slideOut {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+/* @theme{
+  --slideInFast: slideIn 300ms ease-out forwards;
+
+  @keyframes slideIn {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(0); }
+  },
+} */
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /* display: flex;
+  flex-direction: column; */
+  display: grid;
+  grid-template-rows: 50px 1fr;
+
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: #535bf2;
+}
+
+html, body {
+  margin: 0;
+  /* display: flex;
+  place-items: center; */
+  width: 100%;
+  height: 100%;
+}
+
+input {
+  padding-left: 12px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+}
+
+.scrollable {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+

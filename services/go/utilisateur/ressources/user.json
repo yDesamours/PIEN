@@ -1,0 +1,31 @@
+[
+  {
+    "id": 1,
+    "email": "yveltdesamours.ing@gmail.com",
+    "motDePasse": "$2y$10$a.naIzCB4lSnzZo9C2xVb.x4hSpEjVUx6TH3Z1ZJZyn.LQMid8ewS",
+    "role": "enseignant",
+    "telephone": "0612345678",
+    "is2FaActive": "true",
+    "statut": "actif",
+    "notificationsAutorisees": [
+      "email",
+      "sms"
+    ],
+    "creeLe": "2023-10-26T10:00:00Z",
+    "creePar": "system"
+  },
+  {
+    "id": 2,
+    "email": "marie.durand@exemple.com",
+    "motDePasse": "$2y$10$a.naIzCB4lSnzZo9C2xVb.x4hSpEjVUx6TH3Z1ZJZyn.LQMid8ewS",
+    "role": "enseignant",
+    "telephone": "0789012345",
+    "is2FaActive": "false",
+    "statut": "inactif",
+    "notificationsAutorisees": [
+      "email"
+    ],
+    "creeLe": "2023-10-25T14:30:00Z",
+    "creePar": "jean.dupont@exemple.com"
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "ID": 1,
+    "UtilisateurID": 1,
+    "Valeur": "70f8ff7f8c1594242030ebd0bddbd1644e5ae20abc30d3adeb9f8c239b03ef25",
+    "Porte": 2,
+    "EmisLe": "2025-10-03T18:08:46.7993923-04:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": false
+  }
+]
