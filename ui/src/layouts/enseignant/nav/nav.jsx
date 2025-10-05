@@ -11,6 +11,7 @@ import { sideViewerContext } from "../../../components/sideViewer/sideViewer";
 import Notification from "./notification";
 import Message from "./message";
 import Icon from "../../../components/icon/icon";
+import User from "../../../features/auth/components/user";
 export default function EnseignantNav() {
   const [searchInput, setSearchInput] = useState("");
   const { open } = useContext(sideViewerContext);
@@ -32,13 +33,8 @@ export default function EnseignantNav() {
   };
 
   return (
-    <Nav className="w-full flex" id="nav">
+    <Nav className="flex flex-1" id="nav">
       <NavContainer>
-        <NavItem>
-          <a href="/">
-            <img alt="logo" />
-          </a>
-        </NavItem>
         <NavItem className="flex-1">
           <form onSubmit={onsubmit} className="border">
             <input value={searchInput} onChange={onChange} />
@@ -53,7 +49,7 @@ export default function EnseignantNav() {
         <NavItem>
           <Dropdown>
             <DropdownTrigger>
-              <Icon name="profil" className="w-4" />
+              <User className="text-xs text-left w-20" />
             </DropdownTrigger>
             <DropdownContainer>
               <DropdownContent>

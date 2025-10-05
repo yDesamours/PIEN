@@ -6,30 +6,26 @@ import Sidebar from "./sidebar/sidebar";
 import { createContext, useRef, useState } from "react";
 import Icon from "../../components/icon/icon";
 import Title from "../../components/title/title";
+import BreadCrumb from "../../components/breadcrumb/breadcrumb";
 
 export const titleContext = createContext({ setTitle: () => {} });
 
 export default function EnseignantLayout({ children }) {
   const sideBarRef = useRef();
 
-  const toggleSideBar = () => {
-    sideBarRef.current.toggle();
-  };
-
   return (
     <>
-      <header className="flex sticky top-0 bg-white z-30">
-        <button onClick={toggleSideBar} className="h-full p-3">
-          <Icon name="drawer" />
-        </button>
-        <Nav />
-      </header>
-      <div className="flex h-full overflow-hidden">
-        <aside>
-          <Sidebar forwardRef={sideBarRef} />
-        </aside>
+      <aside>
+        <Sidebar />
+      </aside>
 
-        <main className="h-full w-full flex flex-col">
+      <div className="flex flex-col h-full flex-1 overflow-hidden ">
+        <header className="flex sticky top-0 bg-white z-30 shadow items-center pl-5">
+          <BreadCrumb className="flex-1" />
+          <Nav />
+        </header>
+
+        <main className="h-full w-full flex flex-col bg-gray-50">
           <Outlet />
         </main>
 

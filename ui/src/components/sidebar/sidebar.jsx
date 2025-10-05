@@ -1,6 +1,5 @@
 import {
   createContext,
-  forwardRef,
   useCallback,
   useImperativeHandle,
   useState,
@@ -8,7 +7,7 @@ import {
 
 export const sideBarContext = createContext({ toggle: () => {}, open: false });
 
-export default forwardRef(function SideBar(props, ref) {
+export default function SideBar(props, ref) {
   const { children } = props;
   const [open, setOpen] = useState(false);
 
@@ -29,15 +28,15 @@ export default forwardRef(function SideBar(props, ref) {
     []
   );
 
-  const className = open ? "w-50" : "w-10";
+  const className = open ? "w-60" : "w-10";
 
   return (
     <sideBarContext.Provider value={{ toggle, open }}>
       <div
-        className={`${className} relative h-full  bg-white transition-all duration-300 ease-in-out pt-2 pl-2`}
+        className={`${className} relative h-full  bg-white border-r-1 border-gray-100  transition-all duration-300 ease-in-out pt-2 pl-2`}
       >
         {children}
       </div>
     </sideBarContext.Provider>
   );
-});
+}

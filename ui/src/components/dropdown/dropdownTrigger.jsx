@@ -6,7 +6,7 @@ export default function DropdownTrigger({ children, className }) {
   return (
     <button
       onClick={toggle}
-      className={`${className} inline-flex justify-center items-center w-full rounded-md border px-1 py-1 text-sm font-medium outline-none`}
+      className={`${className} inline-flex justify-center items-center w-full rounded-md px-1 py-1 text-sm font-medium outline-none`}
     >
       {children}
       <svg
