@@ -29,44 +29,44 @@ export default function EnseignantSidebar() {
             Classe
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="eleve">
           <NavLink to="classes" className="p-2">
             Eleve
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="evaluation">
           <NavLink to="classes" className="p-2">
             Evaluation
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="correction">
           <NavLink to="classes" className="p-2">
             Correction
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="line">
           <NavLink to="classes" className="p-2">
             Progression
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="calendrier">
           <NavLink to="classes" className="p-2">
             Calendrier
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="envelope">
           <NavLink to="classes" className="p-2">
             Messagerie
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="file">
           <NavLink to="classes" className="p-2 text-inherit">
             Ressource
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="speaker">
           <NavLink to="classes" className="p-2">
-            Annoncement
+            Annonces
           </NavLink>
         </SideBarItem>
         <Divider className="mt-8" />

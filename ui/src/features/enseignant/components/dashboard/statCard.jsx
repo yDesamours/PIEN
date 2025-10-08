@@ -6,7 +6,7 @@ export default function StatCard({
   iconBgClass,
 }) {
   return (
-    <div className="flex flex-col justify-between p-6 bg-white rounded-2xl shadow-lg min-w-[220px]">
+    <article className="flex flex-col justify-between p-6 bg-white rounded-2xl shadow-lg min-w-[220px]">
       <div
         className={`flex justify-center items-center w-12 h-12 rounded-xl text-white text-2xl mb-4 ${iconBgClass}`}
       >
@@ -18,6 +18,6 @@ export default function StatCard({
         <div className="text-4xl font-semibold text-gray-900">{value}</div>
         <div className="text-sm text-gray-600 mt-2">{description}</div>
       </div>
-    </div>
+    </article>
   );
 }

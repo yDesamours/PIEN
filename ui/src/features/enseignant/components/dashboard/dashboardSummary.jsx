@@ -2,7 +2,7 @@ import StatCard from "./statCard";
 
 const DashboardSummary = () => {
   return (
-    <div className="flex justify-left items-center gap-5 p-5">
+    <section className="flex justify-left items-center gap-5 p-5">
       <StatCard
         title="Classes Actives"
         value="5"
@@ -28,7 +28,7 @@ const DashboardSummary = () => {
         icon="📝"
         iconBgClass="bg-orange-100 text-orange-600"
       />
-    </div>
+    </section>
   );
 };
 

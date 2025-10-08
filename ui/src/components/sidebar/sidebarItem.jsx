@@ -7,7 +7,7 @@ export default function SideBarItem({ onClick, icon, children }) {
 
   return (
     <li className="flex  space-x-2 h-5 cursor-pointer items-center text-black text-sm font-medium">
-      {icon && <Icon onClick={onClick} name={icon} width="18px" />}
+      {icon && <Icon onClick={onClick} name={icon} className="w-4 h-4" />}
       <span
         className={`transition-all duration-1000 ease-out ${
           open ? "opacity-100 w-auto" : "opacity-0 w-0 overflow-hidden"

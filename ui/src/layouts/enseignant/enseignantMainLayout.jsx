@@ -25,7 +25,7 @@ export default function EnseignantLayout({ children }) {
           <Nav />
         </header>
 
-        <main className="h-full w-full flex flex-col bg-gray-50">
+        <main className="h-full w-full flex flex-col px-5 bg-gray-100">
           <Outlet />
         </main>
 

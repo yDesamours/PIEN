@@ -33,7 +33,7 @@ export default function SideBar(props, ref) {
   return (
     <sideBarContext.Provider value={{ toggle, open }}>
       <div
-        className={`${className} relative h-full  bg-white border-r-1 border-gray-100  transition-all duration-300 ease-in-out pt-2 pl-2`}
+        className={`${className} relative h-full  bg-white border-r-1 border-gray-100  transition-all duration-300 ease-in-out pt-1 px-2`}
       >
         {children}
       </div>

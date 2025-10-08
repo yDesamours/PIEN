@@ -15,6 +15,15 @@
     "Porte": 2,
     "EmisLe": "2025-10-04T11:42:50.1584734-04:00",
     "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 3,
+    "UtilisateurID": 1,
+    "Valeur": "b7bd08e8ac4b3228fb528e3ee7a47a60ad3ec64c6b783b75be4001ceb16f597e",
+    "Porte": 2,
+    "EmisLe": "2025-10-05T19:37:10.3092743-04:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
     "EstRevoque": false
   }
 ]

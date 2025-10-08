@@ -78,22 +78,32 @@ const modules = [
   {
     id: 1,
     nom: "Module 1",
+    lecon: 5,
+    modification: "12-Jan-2025",
   },
   {
     id: 2,
     nom: "Module 2",
+    lecon: 5,
+    modification: "12-Jan-2025",
   },
   {
     id: 3,
     nom: "Module 3",
+    lecon: 5,
+    modification: "12-Jan-2025",
   },
   {
     id: 4,
     nom: "Module 4",
+    lecon: 5,
+    modification: "12-Jan-2025",
   },
   {
     id: 5,
     nom: "Module 5",
+    lecon: 5,
+    modification: "12-Jan-2025",
   },
 ];
 

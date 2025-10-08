@@ -34,11 +34,6 @@ public class ContenuRepository {
 
         if (optionalClasse.isPresent()) {
             Classe classeAModifier = optionalClasse.get();
-            if (classeAModifier.getContenu_id() == null) {
-                classeAModifier.setContenu_id(new ArrayList<>());
-            }
-            // 3. Ajouter le nouveau contenu à la liste
-            classeAModifier.getContenu_id().add(nouveauContenu);
 
             // 4. Écrire la liste complète mise à jour dans le fichier
             mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, toutesLesClasses);
