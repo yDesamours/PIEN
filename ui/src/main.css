@@ -5,11 +5,11 @@
 @source inline("{scale-{50..200}}");
 
 @theme static {
-  --color-primary: #2196f3;
+  --color-primary: #4682B4;
   --color-secondary: #4caf50;
   --color-accent: #ff9800;
   --color-background-1: #eaf0f6;
-  --color-background-2: #eff6ff;
+  --color-background-2: #F0F8FF;
   --color-border: #e0e0e0;
   --color-text: #1f2937;
   --color-error: #ef4444;
@@ -21,6 +21,13 @@
   src: url('/fonts/Lato-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/fonts/Lato-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
 }
 
 @font-face {

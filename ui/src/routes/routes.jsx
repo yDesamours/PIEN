@@ -66,14 +66,14 @@ export default createBrowserRouter([
                     children: [
                       { index: true, element: <Module /> },
                       {
-                        path: ":moduleId/lecons",
+                        path: ":moduleId",
                         children: [
                           {
                             index: true,
                             element: <EnseignantCours />,
                             loader: ModuleLoader,
                           },
-                          { path: ":coursId", element: <Cours /> },
+                          ,
                         ],
                       },
                     ],
@@ -83,6 +83,10 @@ export default createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "enseignant/classes/:classeId/modules/:moduleId/lecons/:coursId",
+        element: <Cours />,
       },
     ],
   },

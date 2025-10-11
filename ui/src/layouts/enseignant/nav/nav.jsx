@@ -37,7 +37,11 @@ export default function EnseignantNav() {
       <NavContainer>
         <NavItem className="flex-1">
           <form onSubmit={onsubmit} className="border">
-            <input value={searchInput} onChange={onChange} />
+            <input
+              value={searchInput}
+              onChange={onChange}
+              className="border-none focus:border-none outline-none"
+            />
           </form>
         </NavItem>
         <NavItem onClick={showNotifications}>

@@ -10,15 +10,13 @@ export default function ModuleItem({ nom, id, lecon, modification }) {
   const navigate = useNavigate();
   return (
     <Card key={id}>
-      <CardHeader>
-        <div className="flex justify-between">
-          <h2>{nom}</h2>
-          <Icon
-            name="option"
-            role="button"
-            className="text-right w-4 h-4 cursor-pointer"
-          />
-        </div>
+      <CardHeader className="flex justify-between">
+        <h2>{nom}</h2>
+        <Icon
+          name="option"
+          role="button"
+          className="text-right w-4 h-4 cursor-pointer"
+        />
       </CardHeader>
 
       <CardBody>
@@ -28,16 +26,22 @@ export default function ModuleItem({ nom, id, lecon, modification }) {
           </span>
           <span>{lecon}</span>
         </p>
-      </CardBody>
-
-      <CardFooter>
-        <p className="text-xs  text-gray-600 flex justify-between gap-4 min-w-0">
+        <p className="text-xs  text-gray-600 flex justify-between gap-4 min-w-0 mb-3">
           <span className="flex items-center gap-1 whitespace-nowrap">
             <Icon name="clock" className="w-4 h-4" />
             Derniere modification
           </span>
           <span>{modification}</span>
         </p>
+      </CardBody>
+
+      <CardFooter>
+        <Button
+          onClick={() => navigate(`modules/${id}`)}
+          className="flex-1 bg-primary text-white mx-0 "
+        >
+          Gerer Module
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -41,6 +41,9 @@ export default function Classe() {
             <TabItem value="materiels" icon="file">
               Ressources
             </TabItem>
+            <TabItem value="commentaires" icon="conversation">
+              Commentaires
+            </TabItem>
           </TabList>
         </section>
         <TabBody>

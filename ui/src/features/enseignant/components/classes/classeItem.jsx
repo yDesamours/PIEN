@@ -4,15 +4,27 @@ import Card from "../../../../components/card/card";
 import CardBody from "../../../../components/card/cardBody";
 import Icon from "../../../../components/icon/icon";
 import CardFooter from "../../../../components/card/cardFooter";
+import CardHeader from "../../../../components/card/cardHeader";
 
 export default function ClasseItem({ classe }) {
   const navigate = useNavigate();
 
   return (
     <Card key={classe.id}>
-      <h3 className="text-lg font-bold text-black text-left">{classe.nom}</h3>
-      <p className="text-sm  text-gray-600 text-left">{classe.matiere}</p>
-      <p className="text-sm  text-gray-600 text-left">{classe.niveau}</p>
+      <CardHeader className="flex justify-between">
+        <div className="flex justify-between flex-col">
+          <h3 className="text-lg font-bold text-black text-left">
+            {classe.nom}
+          </h3>
+          <p className="text-sm  text-gray-600 text-left">{classe.matiere}</p>
+          <p className="text-sm  text-gray-600 text-left">{classe.niveau}</p>
+        </div>
+        <Icon
+          name="option"
+          role="button"
+          className="text-right w-4 h-4 cursor-pointer"
+        />
+      </CardHeader>
 
       <CardBody>
         <p className="text-xs  text-gray-600 flex justify-between">
@@ -36,20 +48,12 @@ export default function ClasseItem({ classe }) {
       </CardBody>
 
       <CardFooter className="flex-1">
-        <div className="flex items-stretch ">
-          <Button
-            onClick={() => navigate(`${classe.id}`)}
-            className="flex-1 bg-primary text-white mx-0 "
-          >
-            Gerer Classe
-          </Button>
-          <div
-            role="button"
-            className="flex items-center bg-gray-200 m-1 rounded-sm cursor-pointer"
-          >
-            <Icon name="option" className="w-6 h-6 " />
-          </div>
-        </div>
+        <Button
+          onClick={() => navigate(`${classe.id}`)}
+          className="flex-1 bg-primary text-white mx-0 "
+        >
+          Gerer Classe
+        </Button>
       </CardFooter>
     </Card>
   );
