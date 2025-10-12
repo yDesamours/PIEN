@@ -12,7 +12,7 @@ export default function ResourceList() {
 
   return (
     <article
-      className={`${visible} bg-white transition-all duration-300 ease-in-out z-30 overflow-hidden`}
+      className={`${visible} bg-white transition-all duration-300 ease-in-out z-30 overflow-hidden text-sm`}
     >
       <div className="flex flex-col">
         <div className="flex justify-between text-md text-black">

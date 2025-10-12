@@ -4,7 +4,7 @@ export function capitalize(s) {
 }
 
 export const storage = {
-  getUser: () => sessionStorage.getItem("user"),
+  getUser: () => JSON.parse(sessionStorage.getItem("user")),
   setUser: (user) => sessionStorage.setItem("user", JSON.stringify(user)),
 };
 

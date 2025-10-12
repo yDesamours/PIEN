@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
 func main() {
-
+	fmt.Println(os.Getwd())
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
@@ -26,6 +27,7 @@ func main() {
 	appBuilder := NewAppBuilder()
 	appBuilder.Port(viper.GetString("server.port"))
 	appBuilder.Secret(viper.GetString("encrypt.secret"))
+	appBuilder.Mode(viper.GetString("mode"))
 
 	cf := viper.GetStringMapString("database")
 	dsn := fmt.Sprintf("host=%s  user=%s password=%s dbname=%s port=%s sslmode=%s", cf["host"], cf["user"], cf["password"], cf["dbname"], cf["port"], cf["sslmode"])

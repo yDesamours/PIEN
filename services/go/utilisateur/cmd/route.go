@@ -8,11 +8,9 @@ import (
 
 func route(app *App) http.Handler {
 	router := gin.Default()
-	utilisateurRepository := newUtilisateurRepository(app.GetDb())
-	jetonRepository := newJetonRepository(app.GetDb())
 
-	router.POST("/utilisateurs/login", login(app, utilisateurRepository, jetonRepository))
-	router.GET("/utilisateurs/me", me(app, utilisateurRepository, jetonRepository))
+	router.POST("/utilisateurs/login", login(app))
+	router.GET("/utilisateurs/me", me(app))
 
 	return router
 }

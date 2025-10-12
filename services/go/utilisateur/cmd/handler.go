@@ -67,7 +67,7 @@ func updateUser(app *App, repo *UtilisateurRepository) gin.HandlerFunc {
 // 	}
 // }
 
-func login(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository) gin.HandlerFunc {
+func login(app *App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type login struct {
 			Email    string `json:"email"`
@@ -83,7 +83,7 @@ func login(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository
 			return
 		}
 
-		user, err := userRepo.findByEmailAndRole(credentials.Email, credentials.Role)
+		user, err := app.UserModel.findByEmailAndRole(credentials.Email, credentials.Role)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusNotFound, gin.H{"message": "email ou mot de passe incorrect"})
@@ -99,7 +99,7 @@ func login(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository
 
 		sessionToken, err := app.Token.Random()
 
-		err = jetonRepo.invalidateForUserAndScope(user.ID, JetonScopeId)
+		err = app.JetonModel.invalidateForUserAndScope(user.ID, JetonScopeId)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -115,7 +115,7 @@ func login(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository
 			Porte:         JetonScopeId,
 		}
 
-		err = jetonRepo.create(&jeton)
+		err = app.JetonModel.create(&jeton)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -128,7 +128,7 @@ func login(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository
 	}
 }
 
-func me(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository) gin.HandlerFunc {
+func me(app *App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sessionToken, err := c.Cookie(JetonScopeId.String())
 		if err != nil || sessionToken == "" {
@@ -136,13 +136,13 @@ func me(app *App, userRepo *UtilisateurRepository, jetonRepo *JetonRepository) g
 			return
 		}
 
-		jeton, err := jetonRepo.find(sessionToken, JetonScopeId)
+		jeton, err := app.JetonModel.find(sessionToken, JetonScopeId)
 		if err != nil || jeton.EstRevoque {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid or expired session"})
 			return
 		}
 
-		user, err := userRepo.findById(jeton.UtilisateurID)
+		user, err := app.UserModel.findById(jeton.UtilisateurID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
 			return

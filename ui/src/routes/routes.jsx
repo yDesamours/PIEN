@@ -10,8 +10,10 @@ import EnseignantClasseLayout from "../layouts/enseignant/enseignantClasseLayout
 import EnseignantClasses from "../pages/enseignant/classes";
 import EnseignantClasse from "../pages/enseignant/classe";
 import EnseignantCours from "../pages/enseignant/lecons";
-import ClassesLoader from "../features/enseignant/loaders/classes";
-import ClasseLoader from "../features/enseignant/loaders/class";
+import ClassesLoader from "../loaders/enseignant/classes";
+import ClasseLoader from "../loaders/enseignant/class";
+import ModuleLoader from "../loaders/enseignant/module";
+import Module from "../pages/enseignant/module";
 
 export default createBrowserRouter([
   {
@@ -53,14 +55,38 @@ export default createBrowserRouter([
               },
               {
                 path: ":classeId",
-                loader: ClasseLoader,
-                element: <EnseignantClasse />,
+                children: [
+                  {
+                    index: true,
+                    element: <EnseignantClasse />,
+                    loader: ClasseLoader,
+                  },
+                  {
+                    path: "modules",
+                    children: [
+                      { index: true, element: <Module /> },
+                      {
+                        path: ":moduleId",
+                        children: [
+                          {
+                            index: true,
+                            element: <EnseignantCours />,
+                            loader: ModuleLoader,
+                          },
+                          ,
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
-              { path: ":classeId/cours", element: <EnseignantCours /> },
-              { path: ":classeId/cours/:coursId", element: <Cours /> },
             ],
           },
         ],
+      },
+      {
+        path: "enseignant/classes/:classeId/modules/:moduleId/lecons/:coursId",
+        element: <Cours />,
       },
     ],
   },

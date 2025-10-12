@@ -1,0 +1,38 @@
+[
+  {
+    "ID": 1,
+    "UtilisateurID": 1,
+    "Valeur": "70f8ff7f8c1594242030ebd0bddbd1644e5ae20abc30d3adeb9f8c239b03ef25",
+    "Porte": 2,
+    "EmisLe": "2025-10-03T18:08:46.7993923-04:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 2,
+    "UtilisateurID": 1,
+    "Valeur": "f645dcab02f64d4750dde2f64a171a8297d61298a9185e5216931b54d992efa0",
+    "Porte": 2,
+    "EmisLe": "2025-10-04T11:42:50.1584734-04:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 3,
+    "UtilisateurID": 1,
+    "Valeur": "b7bd08e8ac4b3228fb528e3ee7a47a60ad3ec64c6b783b75be4001ceb16f597e",
+    "Porte": 2,
+    "EmisLe": "2025-10-05T19:37:10.3092743-04:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 4,
+    "UtilisateurID": 1,
+    "Valeur": "6e89f64f85d14beeb44c86de51708bda01fc9b5779ff59ae2986a1d1c6dd51c2",
+    "Porte": 2,
+    "EmisLe": "2025-10-11T00:39:23.2533315-04:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": false
+  }
+]

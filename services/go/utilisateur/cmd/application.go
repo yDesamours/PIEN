@@ -10,10 +10,14 @@ import (
 )
 
 type App struct {
-	port   string
-	logger *log.Logger
-	db     *gorm.DB
-	Token  *Token
+	port                      string
+	logger                    *log.Logger
+	db                        *gorm.DB
+	Token                     *Token
+	mode                      string
+	UserModel                 UserDB
+	JetonModel                JetonDB
+	HistoriqueMotDePasseModel HistoriqueMotDePasseDB
 }
 
 func (a *App) GetDb() *gorm.DB {
@@ -44,6 +48,7 @@ type AppBuilder struct {
 	logger         *log.Logger
 	db             *gorm.DB
 	secret         string
+	mode           string
 }
 
 func NewAppBuilder() *AppBuilder {
@@ -53,6 +58,10 @@ func NewAppBuilder() *AppBuilder {
 
 func (a *AppBuilder) Secret(secret string) {
 	a.secret = secret
+}
+
+func (a *AppBuilder) Mode(mode string) {
+	a.mode = mode
 }
 
 func (a *AppBuilder) Port(port string) {
@@ -73,16 +82,51 @@ func (a *AppBuilder) Build() (*App, error) {
 		return nil, nil
 	}
 
-	db, err := db(a.databaseEngine, a.dsn)
-	if err != nil {
-		return nil, err
-	}
-	a.db = db
+	// db, err := db(a.databaseEngine, a.dsn)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// a.db = db
+
+	jetonRepository := a.jetonRepository()
+	userRepository := a.utilisateurRepository()
+	historiqueMotDePasseRepository := a.HistoriqueMotDePasseRepository()
 
 	return &App{
-		port:   a.port,
-		logger: a.logger,
-		db:     a.db,
-		Token:  New(a.secret),
+		port:                      a.port,
+		logger:                    a.logger,
+		db:                        a.db,
+		Token:                     New(a.secret),
+		mode:                      a.mode,
+		UserModel:                 userRepository,
+		JetonModel:                jetonRepository,
+		HistoriqueMotDePasseModel: historiqueMotDePasseRepository,
 	}, nil
+}
+
+func (a *AppBuilder) utilisateurRepository() UserDB {
+	if a.mode == "demo" {
+		return NewUserFileDB("ressources/user.json")
+	}
+
+	return newUtilisateurRepository(a.db)
+
+}
+
+func (a *AppBuilder) jetonRepository() JetonDB {
+	if a.mode == "demo" {
+		return NewJetonFileDB("ressources/jeton.json")
+	}
+
+	return newJetonRepository(a.db)
+
+}
+
+func (a *AppBuilder) HistoriqueMotDePasseRepository() HistoriqueMotDePasseDB {
+	if a.mode == "demo" {
+		return NewHistoriqueMotDePasseFileDB("ressources/h.json")
+	}
+
+	return newHistoriqueMotDePasseRepository(a.db)
+
 }

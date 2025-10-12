@@ -51,7 +51,12 @@ export default function useApi() {
   return { execute, requestState };
 }
 
-const sendRequest = async ({ method = "GET", body, url }) => {
+/**
+ *
+ * @param {} config
+ * @returns
+ */
+export const sendRequest = async ({ method = "GET", body, url }) => {
   const response = await fetch(url, {
     method,
     credentials: "include",

@@ -21,7 +21,7 @@ export default function BuilderToolbar() {
   };
 
   return (
-    <Toolbar className="bg-amber-300 h-16">
+    <Toolbar className="bg-primary text-white text-sm h-12">
       <ToolbarContent>
         <ToolbarItem className="flex-1">
           {description.title}
@@ -31,15 +31,16 @@ export default function BuilderToolbar() {
                 role="button"
                 onClick={openDescription}
                 className="w-6 h-6 cursor-pointer"
+                stroke="white"
               />
             </span>
           )}
         </ToolbarItem>
         <ToolbarItem>
-          <Undo onClick={undo} className="w-8 h-8" />
+          <Undo onClick={undo} className="w-8 h-8" stroke="white" />
         </ToolbarItem>
         <ToolbarItem>
-          <Redo onClick={redo} className="w-8 h-8" />
+          <Redo onClick={redo} className="w-8 h-8" stroke="white" />
         </ToolbarItem>
         <ToolbarItem onClick={toggle}>{text}</ToolbarItem>
       </ToolbarContent>

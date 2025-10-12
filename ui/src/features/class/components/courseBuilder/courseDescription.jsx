@@ -21,7 +21,7 @@ export default function CourseDescription() {
 
   return (
     <section
-      className={`${visible} bg-white shadow-lg font-sans flex flex-col transition-all duration-300 ease-in-out z-30 overflow-hidden absolute left-0 h-full py-8 `}
+      className={`${visible} bg-white shadow-lg font-sans flex flex-col transition-all duration-300 ease-in-out z-30 overflow-hidden absolute left-0 h-full py-2 text-sm `}
     >
       <div className="flex justify-end items-center pr-8">
         <button
@@ -31,9 +31,9 @@ export default function CourseDescription() {
           X
         </button>
       </div>
-      <form className="flex flex-col flex-1 gap-8 px-8">
+      <form className="flex flex-col flex-1 gap-4 px-8">
         <label>
-          <span className="text-xl font-bold">Titre</span>
+          <span className="font-bold">Titre</span>
           <input
             type="text"
             name="title"
@@ -43,7 +43,7 @@ export default function CourseDescription() {
           />
         </label>
         <label>
-          <span className="text-xl font-bold">Description</span>
+          <span className="font-bold">Description</span>
           <textarea
             name="description"
             value={description.description}
@@ -52,7 +52,7 @@ export default function CourseDescription() {
           />
         </label>
         <label>
-          <span className="text-xl font-bold">Objectif</span>
+          <span className="font-bold">Objectif</span>
           <textarea
             name="objectif"
             value={description.objectif}
@@ -63,12 +63,15 @@ export default function CourseDescription() {
       </form>
 
       <div className="w-full px-4 ">
-        <div className="w-full flex items-center  bg-amber-500 h-10 text-lg font-bold ">
-          <button className="flex-1 cursor-pointer h-full hover:bg-amber-700 transition-all duration-300">
+        <div className="w-full flex items-center gap-1 h-10 text-sm font-bold ">
+          <button className="flex-1 cursor-pointer h-full transition-all duration-300 bg-primary">
             Sauvegarder
           </button>
           <Dropdown className="h-full">
-            <DropdownTrigger className="h-full border-none bg-transparent  hover:bg-amber-700 transition-all duration-300" />
+            <DropdownTrigger
+              icon="option"
+              className="h-full border-none bg-gray-300 transition-all duration-300"
+            />
             <DropdownContainer>
               <DropdownContent>
                 <DropdownItem>Sauvegarder et publier</DropdownItem>

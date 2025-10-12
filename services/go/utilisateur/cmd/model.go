@@ -25,7 +25,7 @@ type UtilisateurRepository struct {
 	db *gorm.DB
 }
 
-func newUtilisateurRepository(db *gorm.DB) *UtilisateurRepository {
+func newUtilisateurRepository(db *gorm.DB) UserDB {
 	return &UtilisateurRepository{db}
 }
 
@@ -75,7 +75,7 @@ type JetonRepository struct {
 	db *gorm.DB
 }
 
-func newJetonRepository(db *gorm.DB) *JetonRepository {
+func newJetonRepository(db *gorm.DB) JetonDB {
 	return &JetonRepository{db}
 }
 
@@ -109,6 +109,10 @@ type HistoriqueMotDePasse struct {
 
 type HistoriqueMotDePasseRepository struct {
 	db *gorm.DB
+}
+
+func newHistoriqueMotDePasseRepository(db *gorm.DB) HistoriqueMotDePasseDB {
+	return &HistoriqueMotDePasseRepository{db: db}
 }
 
 func (r *HistoriqueMotDePasseRepository) create(historiqueMotDePasse *HistoriqueMotDePasse) error {
