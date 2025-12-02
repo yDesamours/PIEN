@@ -70,9 +70,7 @@ export default function PreviewElement({ component, data, order }) {
   const componentProps = { data };
 
   return (
-    <article
-      className={`flex flex-col order-${order} gap-1 bg-custom-test-color`}
-    >
+    <article className={`order-${order} gap-1 bg-custom-test-color`}>
       <Component {...componentProps} />
     </article>
   );

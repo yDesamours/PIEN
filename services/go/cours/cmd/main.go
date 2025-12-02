@@ -37,6 +37,7 @@ func main() {
 
 	app, err := appBuilder.Build()
 	if err != nil {
+
 		panic(err)
 	}
 	defer app.GetDb().Client().Disconnect(ctx)

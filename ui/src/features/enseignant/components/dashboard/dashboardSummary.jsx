@@ -2,7 +2,7 @@ import StatCard from "./statCard";
 
 const DashboardSummary = () => {
   return (
-    <section className="flex justify-left items-center gap-5 p-5">
+    <section className="flex justify-left items-center gap-5 py-5">
       <StatCard
         title="Classes Actives"
         value="5"
@@ -24,9 +24,19 @@ const DashboardSummary = () => {
       <StatCard
         title="Correction en Attente"
         value="18"
-        description={<span className="text-red-500">⚠️ Need attention</span>}
+        description={
+          <span className="text-red-500">⚠️ Besoin d'attention</span>
+        }
         icon="📝"
         iconBgClass="bg-orange-100 text-orange-600"
+      />
+
+      <StatCard
+        title="Evenement à venir"
+        value="18"
+        description={<span className="text-red-500">⚠️ Need attention</span>}
+        icon="📅"
+        iconBgClass="bg-yellow-100 text-orange-600"
       />
     </section>
   );

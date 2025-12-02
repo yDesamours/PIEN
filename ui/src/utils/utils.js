@@ -4,8 +4,8 @@ export function capitalize(s) {
 }
 
 export const storage = {
-  getUser: () => JSON.parse(sessionStorage.getItem("user")),
-  setUser: (user) => sessionStorage.setItem("user", JSON.stringify(user)),
+  getUser: () => JSON.parse(localStorage.getItem("user")),
+  setUser: (user) => localStorage.setItem("user", JSON.stringify(user)),
 };
 
 export function deepCopyJSON(obj) {

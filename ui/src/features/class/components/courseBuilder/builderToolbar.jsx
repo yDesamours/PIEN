@@ -20,6 +20,11 @@ export default function BuilderToolbar() {
     setVisible(tab);
   };
 
+  /**
+   *
+   * @param {MouseEvent} e
+   */
+
   return (
     <Toolbar className="bg-primary text-white text-sm h-12">
       <ToolbarContent>
@@ -36,12 +41,17 @@ export default function BuilderToolbar() {
             </span>
           )}
         </ToolbarItem>
-        <ToolbarItem>
-          <Undo onClick={undo} className="w-8 h-8" stroke="white" />
-        </ToolbarItem>
-        <ToolbarItem>
-          <Redo onClick={redo} className="w-8 h-8" stroke="white" />
-        </ToolbarItem>
+        {visible !== "preview" && (
+          <>
+            <ToolbarItem>
+              <Undo onClick={undo} className="w-8 h-8" stroke="white" />
+            </ToolbarItem>
+            <ToolbarItem>
+              <Redo onClick={redo} className="w-8 h-8" stroke="white" />
+            </ToolbarItem>
+          </>
+        )}
+
         <ToolbarItem onClick={toggle}>{text}</ToolbarItem>
       </ToolbarContent>
     </Toolbar>

@@ -34,7 +34,7 @@ const LoginForm = forwardRef(function (
     }));
   };
 
-  const ontogglePassword = () => {
+  const onTogglePassword = () => {
     setUserData((state) => ({
       ...state,
       showPassword: !state.showPassword,
@@ -66,8 +66,8 @@ const LoginForm = forwardRef(function (
       return;
     }
 
-    login(result.data);
-    navigate("/");
+    const role = login(result.data);
+    navigate("/" + role);
   };
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const LoginForm = forwardRef(function (
                   <input
                     type="checkbox"
                     name="showPassword"
-                    onChange={ontogglePassword}
+                    onChange={onTogglePassword}
                   />
                 </label>
 
