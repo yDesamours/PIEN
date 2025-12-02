@@ -1,4 +1,6 @@
 import DashboardSummary from "../../features/enseignant/components/dashboard/dashboardSummary";
+import RecentMessagesCard from "../../features/enseignant/components/dashboard/recentMessageCard";
+import RecentStudentActivity from "../../features/enseignant/components/dashboard/recentStudentActivity";
 
 export default function Dashboard() {
   return (
@@ -8,6 +10,10 @@ export default function Dashboard() {
         <p>Bon retour! Voila ou en sont vos activites</p>
       </section>
       <DashboardSummary />
+      <div className="flex gap-4 items-start">
+        <RecentStudentActivity />
+        <RecentMessagesCard />
+      </div>
     </>
   );
 }

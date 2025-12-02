@@ -40,7 +40,7 @@ export default function ModelViewer({
       {!preset && <div>Loading</div>}
       {preset && (
         <>
-          <div className="flex-2">
+          <div className="flex-2 ">
             <Canvas>
               <color attach="background" args={[background]} />
               <Environment files={preset} />

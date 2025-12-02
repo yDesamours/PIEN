@@ -25,7 +25,7 @@ export default function EnseignantLayout({ children }) {
           <Nav />
         </header>
 
-        <main className="w-full flex flex-col px-5 flex-1 bg-gray-100 overflow-scroll">
+        <main className="w-full flex flex-col px-5 flex-1 bg-gray-100 overflow-scroll py-4">
           <Outlet />
         </main>
 

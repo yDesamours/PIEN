@@ -32,12 +32,10 @@ const classes = [
 
 export default async function (params) {
   const user = storage.getUser();
-  console.log({ user });
 
   return defer({
     classes: new Promise(async (resolve, reject) => {
       const data = await sendRequest(CLASSE.ENSEIGNANT(user.id));
-      console.log(data);
       resolve(data.body);
     }),
   });

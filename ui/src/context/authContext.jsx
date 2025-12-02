@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, useMemo } from "react";
 import useApi from "../hooks/api";
 import USER from "../services/api/user";
 import { storage } from "../utils/utils";
@@ -10,40 +10,44 @@ export const AuthContext = createContext({
 });
 
 export default function AuthContextProvider({ children }) {
-  const [userData, setUserData] = useState();
+  const lastuser = storage.getUser();
+  const [userData, setUserData] = useState(lastuser ?? null);
+
   const { execute } = useApi();
 
   const login = (user) => {
     storage.setUser(user);
     setUserData({ ...user });
+    return user.role;
   };
 
   const logout = () => {
     setUserData(null);
   };
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const user = await execute(USER.ME);
-      if (user) {
-        login(user);
-      } else {
-        setUserData(null);
-      }
-    };
+  const contextValue = useMemo(
+    () => ({
+      user: userData,
+      login,
+      logout,
+    }),
+    [userData]
+  );
 
-    checkAuth();
-  }, []);
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     const user = await execute(USER.ME);
+  //     if (user) {
+  //       login(user);
+  //     } else {
+  //       setUserData(null);
+  //     }
+  //   };
+
+  //   checkAuth();
+  // }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user: userData,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 }
