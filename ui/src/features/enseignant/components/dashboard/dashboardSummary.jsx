@@ -5,18 +5,18 @@ const DashboardSummary = () => {
     <section className="flex justify-left items-center gap-5 py-5">
       <StatCard
         title="Classes Actives"
-        value="5"
-        description={
-          <span className="text-green-500 font-bold">↑ +1 this semester</span>
-        }
+        value="4"
+        // description={
+        //   <span className="text-green-500 font-bold">↑ +1 this semester</span>
+        // }
         icon="📖"
         iconBgClass="bg-blue-100 text-blue-600"
       />
 
       <StatCard
         title="Total Eleves"
-        value="247"
-        description={<span className="text-blue-600">Across all courses</span>}
+        value="57"
+        // description={<span className="text-blue-600">Across all courses</span>}
         icon="👥"
         iconBgClass="bg-green-100 text-green-600"
       />
@@ -34,9 +34,20 @@ const DashboardSummary = () => {
       <StatCard
         title="Evenement à venir"
         value="18"
-        description={<span className="text-red-500">⚠️ Need attention</span>}
+        // description={<span className="text-red-500">⚠️ Need attention</span>}
         icon="📅"
         iconBgClass="bg-yellow-100 text-orange-600"
+      />
+      <StatCard
+        title="Messages non repondu"
+        value="3"
+        description={
+          <span className="underline text-primary text-sm cursor-pointer">
+            Voir maintenant
+          </span>
+        }
+        icon="💬"
+        iconBgClass="bg-cyan-100 text-orange-600"
       />
     </section>
   );

@@ -1,15 +1,12 @@
 package main
 
 import (
-	"context"
-
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func db(dsn string, ctx context.Context) (*mongo.Client, error) {
+func db(dsn string) (*gorm.DB, error) {
 
-	clientOptions := options.Client().ApplyURI(dsn)
-	return mongo.Connect(ctx, clientOptions)
+	return gorm.Open(postgres.Open(dsn))
 
 }

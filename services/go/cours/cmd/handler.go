@@ -42,3 +42,20 @@ func listEnvironment(app *App, repo *HdrRepository) gin.HandlerFunc {
 
 	}
 }
+
+func getLecons(app *App) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		lecons := `[{"id": 1, "title": "Lesson 1","description": "This is the first lesson","modification": "12-jan-2025"}]`
+
+		c.JSON(http.StatusOK, lecons)
+	}
+}
+
+func getLecon(app *App) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		lecons := `[{"id": 1, "title": "Lesson 1","description": "This is the first lesson","modification": "12-jan-2025"}]`
+		// lecons := `[]`
+
+		c.JSON(http.StatusOK, lecons)
+	}
+}

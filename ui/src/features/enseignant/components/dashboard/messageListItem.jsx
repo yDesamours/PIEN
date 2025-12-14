@@ -7,11 +7,9 @@ export default function MessageListItem({
   return (
     <li className="flex items-center space-x-4 p-3 hover:bg-gray-50 cursor-pointer rounded-lg transition duration-150 ease-in-out">
       <div className="flex-shrink-0">
-        <img
-          className="h-10 w-10 rounded-full object-cover"
-          src={avatarSrc || "https://via.placeholder.com/40"}
-          alt={`${name} avatar`}
-        />
+        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+          {name.charAt(0)}
+        </div>
       </div>
 
       <div className="min-w-0 flex-1">

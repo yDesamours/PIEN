@@ -36,12 +36,11 @@ export default function EnseignantNav() {
     <Nav className="flex flex-1" id="nav">
       <NavContainer>
         <NavItem className="flex-1">
-          <form onSubmit={onsubmit} className="border">
-            <input
-              value={searchInput}
-              onChange={onChange}
-              className="border-none focus:border-none outline-none"
-            />
+          <form className=" max-w-4xl flex flex-col gap-2 rounded-xl p-6">
+            <fieldset className="w- border-1 p-1 border-gray-400 rounded-sm flex">
+              <input name="search" className="h-6 border-none flex-1 " />
+              <button className="bg-primary rounded-sm w-6">🔎</button>
+            </fieldset>
           </form>
         </NavItem>
         <NavItem onClick={showNotifications}>

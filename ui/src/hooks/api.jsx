@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCache } from "../context/cacheContext";
 
 export default function useApi() {
   const [requestState, setRequestState] = useState({
@@ -7,7 +8,9 @@ export default function useApi() {
     result: null,
   });
 
-  const execute = async (config, cb) => {
+  const { set } = useCache();
+
+  const execute = async (config, cb, force = false) => {
     setRequestState((state) => ({
       ...state,
       loading: true,
@@ -21,6 +24,9 @@ export default function useApi() {
 
       if (result.ok) {
         const response = { data: result.body };
+        if (config.method === "get") {
+          set(config.url, result.body);
+        }
         if (cb) return cb(response);
         return response;
       }

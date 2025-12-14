@@ -7,17 +7,16 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 )
 
 type App struct {
 	port   string
 	logger *log.Logger
-	db     *mongo.Database
+	db     *gorm.DB
 }
 
-func (a *App) GetDb() *mongo.Database {
+func (a *App) GetDb() *gorm.DB {
 	return a.db
 }
 
@@ -68,17 +67,10 @@ func (a *AppBuilder) Build() (*App, error) {
 		return nil, nil
 	}
 
-	client, err := db(a.dsn, a.ctx)
+	db, err := db(a.dsn)
 	if err != nil {
 		return nil, err
 	}
-
-	err = client.Ping(a.ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	db := client.Database("pien")
 
 	return &App{
 		port:   a.port,

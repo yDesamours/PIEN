@@ -2,6 +2,8 @@ package main
 
 import (
 	"PIEN/internal"
+	"PIEN/utilisateur/domain"
+	"PIEN/utilisateur/repository"
 	"net/http"
 	"time"
 
@@ -9,9 +11,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func createUsers(app *App, repo *UtilisateurRepository) gin.HandlerFunc {
+func createUsers(app *App, repo *repository.UtilisateurRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		user := &Utilisateur{}
+		user := &domain.Utilisateur{}
 		err := c.BindJSON(user)
 		if err != nil {
 			app.Error(err)
@@ -19,7 +21,7 @@ func createUsers(app *App, repo *UtilisateurRepository) gin.HandlerFunc {
 			return
 		}
 
-		_, err = repo.findByEmail(user.Email)
+		_, err = repo.FindByEmail(user.Email)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -34,16 +36,16 @@ func createUsers(app *App, repo *UtilisateurRepository) gin.HandlerFunc {
 		}
 		user.MotDePasse = internal.PrivateString(hashedPassword)
 
-		repo.create(user)
+		repo.Create(user)
 
 		c.JSON(http.StatusCreated, user)
 
 	}
 }
 
-func updateUser(app *App, repo *UtilisateurRepository) gin.HandlerFunc {
+func updateUser(app *App, repo *repository.UtilisateurRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		user := &Utilisateur{}
+		user := &domain.Utilisateur{}
 		err := c.BindJSON(user)
 		if err != nil {
 			app.Error(err)
@@ -83,7 +85,7 @@ func login(app *App) gin.HandlerFunc {
 			return
 		}
 
-		user, err := app.UserModel.findByEmailAndRole(credentials.Email, credentials.Role)
+		user, err := app.UserModel.FindByEmailAndRole(credentials.Email, credentials.Role)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusNotFound, gin.H{"message": "email ou mot de passe incorrect"})
@@ -99,23 +101,23 @@ func login(app *App) gin.HandlerFunc {
 
 		sessionToken, err := app.Token.Random()
 
-		err = app.JetonModel.invalidateForUserAndScope(user.ID, JetonScopeId)
+		err = app.JetonModel.InvalidateForUserAndScope(user.ID, domain.JetonScopeId)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return
 		}
 
-		jeton := Jeton{
-			ipAdresse:     c.ClientIP(),
+		jeton := domain.Jeton{
+			IpAdresse:     c.ClientIP(),
 			UtilisateurID: user.ID,
 			Valeur:        sessionToken,
 			EmisLe:        time.Now(),
 			EstRevoque:    false,
-			Porte:         JetonScopeId,
+			Porte:         domain.JetonScopeId,
 		}
 
-		err = app.JetonModel.create(&jeton)
+		err = app.JetonModel.Create(&jeton)
 		if err != nil {
 			app.Error(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -128,21 +130,43 @@ func login(app *App) gin.HandlerFunc {
 	}
 }
 
+func whoAre(app *App) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		type bulkCollectUser struct {
+			ids []int64
+		}
+
+		var request bulkCollectUser
+
+		err := c.BindJSON(&request)
+		if err != nil {
+			return
+		}
+
+		result, err := app.UserModel.FindAllById(request.ids)
+		if err != nil {
+			return
+		}
+
+		app.Success(c, http.StatusOK, result)
+	}
+}
+
 func me(app *App) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		sessionToken, err := c.Cookie(JetonScopeId.String())
+		sessionToken, err := c.Cookie(domain.JetonScopeId.String())
 		if err != nil || sessionToken == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
 
-		jeton, err := app.JetonModel.find(sessionToken, JetonScopeId)
+		jeton, err := app.JetonModel.Find(sessionToken, domain.JetonScopeId)
 		if err != nil || jeton.EstRevoque {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid or expired session"})
 			return
 		}
 
-		user, err := app.UserModel.findById(jeton.UtilisateurID)
+		user, err := app.UserModel.FindById(jeton.UtilisateurID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
 			return

@@ -141,6 +141,78 @@
     "Porte": 2,
     "EmisLe": "2025-12-01T11:00:34.0227633-05:00",
     "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 17,
+    "UtilisateurID": 1,
+    "Valeur": "8f415464d22a5175bfc67da513f92bc6d66f4c7e34a6c233fe1df2a6fff2ba50",
+    "Porte": 2,
+    "EmisLe": "2025-12-03T15:49:36.4885653-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 18,
+    "UtilisateurID": 1,
+    "Valeur": "4f5d230b1bdd62bfa2bb1b63a831db4c2de8c6667bf81226b4435ac0a81dbf37",
+    "Porte": 2,
+    "EmisLe": "2025-12-04T14:07:10.6154928-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 19,
+    "UtilisateurID": 1,
+    "Valeur": "a405ed96e1dd254d8408e8bf041ea60593a971a1706b3c58b5f257f31f49da02",
+    "Porte": 2,
+    "EmisLe": "2025-12-05T08:43:54.0282282-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 20,
+    "UtilisateurID": 1,
+    "Valeur": "f40738e4af0cc37895916a414b9e9e51423b9c9dc5294c958082cc03a4037d9d",
+    "Porte": 2,
+    "EmisLe": "2025-12-05T08:44:19.0380276-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 21,
+    "UtilisateurID": 1,
+    "Valeur": "fae6361c79e9a75f4e777b2298182bb7fc623a3599dabf1eb4faf10f6250840c",
+    "Porte": 2,
+    "EmisLe": "2025-12-05T11:56:36.1760762-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 22,
+    "UtilisateurID": 1,
+    "Valeur": "1e557d548c639ace6478adac3bbf67243dd0fd291c1f5812f5bad17763e421ec",
+    "Porte": 2,
+    "EmisLe": "2025-12-05T11:57:09.5010358-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 23,
+    "UtilisateurID": 1,
+    "Valeur": "1999baa61095c3fceff5a07971391b5fc4bb1591f86f7d4b284ae9e0de9f48b9",
+    "Porte": 2,
+    "EmisLe": "2025-12-05T12:37:11.0184123-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
+    "EstRevoque": true
+  },
+  {
+    "ID": 24,
+    "UtilisateurID": 1,
+    "Valeur": "e99c86c07208178080c5fb3726c218ae3bc026655681f33959788315f130ee68",
+    "Porte": 2,
+    "EmisLe": "2025-12-09T22:43:19.6912119-05:00",
+    "ExpireLe": "0001-01-01T00:00:00Z",
     "EstRevoque": false
   }
 ]

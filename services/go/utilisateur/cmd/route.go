@@ -11,6 +11,7 @@ func route(app *App) http.Handler {
 
 	router.POST("/utilisateurs/login", login(app))
 	router.GET("/utilisateurs/me", me(app))
+	router.POST("/utilisateurs/whoAre", whoAre(app))
 
 	return router
 }

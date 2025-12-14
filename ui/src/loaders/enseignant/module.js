@@ -21,8 +21,21 @@ const lecons = [
   },
 ];
 
+const module = {
+  titre: "Module",
+  description: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit
+          minima ipsam nam! Cupiditate iusto at quos quia ad sunt id
+          exercitationem, quisquam, consequatur, quod tenetur praesentium ut rem
+          officia accusamus.`,
+};
+
 export default async function (params) {
   return defer({
+    module: new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(module);
+      }, 1000);
+    }),
     lecons: new Promise(async (resolve, reject) => {
       setTimeout(() => {
         resolve(lecons);

@@ -2,21 +2,21 @@ import MessageListItem from "./messageListItem";
 
 const messagesData = [
   {
-    name: "Emma Wilson",
-    messagePreview: "Question about React hooks assignment...",
-    timeAgo: "2 hours ago",
+    name: "Johanne Clément",
+    messagePreview: "Merci de votre réponse",
+    timeAgo: "2h",
     avatarSrc: "/path/to/emma-avatar.jpg", // Remplacer par le chemin réel
   },
   {
-    name: "James Rodriguez",
-    messagePreview: "Request for deadline extension...",
-    timeAgo: "5 hours ago",
+    name: "Lami Pierre",
+    messagePreview: "Est ce qu'il faut que je finisse tout le ...",
+    timeAgo: "5h",
     avatarSrc: "/path/to/james-avatar.jpg", // Remplacer par le chemin réel
   },
   {
-    name: "Sarah Johnson",
-    messagePreview: "Thank you for the feedback on...",
-    timeAgo: "Yesterday",
+    name: "Sarah Junior",
+    messagePreview: "Je me demandais comment est ce que ...",
+    timeAgo: "Hier",
     avatarSrc: "/path/to/sarah-avatar.jpg", // Remplacer par le chemin réel
   },
 ];
@@ -25,7 +25,7 @@ export default function RecentMessagesCard() {
   return (
     <section className="bg-white p-6 shadow-lg rounded-lg max-w-sm w-full flex-1">
       <h2 className="text-xl font-semibold text-gray-800 mb-4">
-        Recent Messages
+        Recents Messages
       </h2>
 
       <ul className="divide-y divide-gray-200">
