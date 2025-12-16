@@ -1,11 +1,9 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -25,15 +23,12 @@ func main() {
 	})
 	viper.WatchConfig()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
-	defer cancel()
-
-	appBuilder := NewAppBuilder(ctx)
+	appBuilder := NewAppBuilder()
 	appBuilder.Port(viper.GetString("server.port"))
 
 	cf := viper.GetStringMapString("database")
-	dsn := fmt.Sprintf("mongodb://%s:%s@%s:%s/%s?authSource=%s", cf["user"], cf["password"], cf["host"], cf["port"], cf["dbname"], cf["authsource"])
-	appBuilder.DB(dsn)
+	dsn := fmt.Sprintf("host=%s  user=%s password=%s dbname=%s port=%s sslmode=%s", cf["host"], cf["user"], cf["password"], cf["dbname"], cf["port"], cf["sslmode"])
+	appBuilder.DB(cf["engine"], dsn)
 
 	app, err := appBuilder.Build()
 	if err != nil {

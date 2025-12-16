@@ -10,4 +10,3 @@ database:
   engine: postgres
   dbname: pien_user
   sslMode: disable
-mode: demo
