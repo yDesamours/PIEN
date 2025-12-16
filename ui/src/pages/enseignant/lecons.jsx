@@ -9,19 +9,24 @@ import {
   TabList,
 } from "../../components/tab";
 
+function ModuleDescription({ data: { titre, description } }) {
+  return (
+    <>
+      <h3 className="font-bold text-2xl">{titre}</h3>
+      <p>{description}</p>
+    </>
+  );
+}
+
 export default function EnseignantLecons() {
-  const { lecons } = useLoaderData();
+  const { lecons, module } = useLoaderData();
 
   return (
     <div>
       <section className="py-6 px-4 bg-primary text-white">
-        <h3 className="font-bold text-2xl">Module</h3>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit
-          minima ipsam nam! Cupiditate iusto at quos quia ad sunt id
-          exercitationem, quisquam, consequatur, quod tenetur praesentium ut rem
-          officia accusamus.
-        </p>
+        <Loader promise={module}>
+          <ModuleDescription />
+        </Loader>
       </section>
 
       <Tab value="modules">

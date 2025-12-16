@@ -30,7 +30,7 @@ export default function EnseignantSidebar() {
           </NavLink>
         </SideBarItem>
         <SideBarItem icon="eleve">
-          <NavLink to="classes" className="p-2">
+          <NavLink to="eleves" className="p-2">
             Eleve
           </NavLink>
         </SideBarItem>
@@ -73,17 +73,17 @@ export default function EnseignantSidebar() {
         <SideBarItem>
           <p className="text-gray-500">Parametres</p>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="profil">
           <NavLink to="classes" className="p-2">
             Profile
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="preferences">
           <NavLink to="classes" className="p-2">
             Preference
           </NavLink>
         </SideBarItem>
-        <SideBarItem icon="book">
+        <SideBarItem icon="support">
           <NavLink to="classes" className="p-2">
             Support
           </NavLink>

@@ -1,67 +1,68 @@
 package main
 
 import (
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
+	"PIEN/cours/domain"
+	"fmt"
+
 	"golang.org/x/net/context"
+	"gorm.io/gorm"
 )
 
 type GlbModelRepository struct {
-	c *mongo.Collection
+	c *gorm.DB
 }
 
-func (repo *GlbModelRepository) GetAll(ctx context.Context) ([]GlbModel, error) {
-	var models []GlbModel
-	cursor, err := repo.c.Find(ctx, bson.M{})
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(ctx)
+func (repo *GlbModelRepository) GetAll(ctx context.Context) ([]domain.GlbModel, error) {
+	var models []domain.GlbModel
+	err := repo.c.Find(models).Error
 
-	for cursor.Next(ctx) {
-		var model GlbModel
-		err = cursor.Decode(&model)
-		if err != nil {
-			return nil, err
-		}
-		models = append(models, model)
-	}
-
-	return models, nil
+	return models, err
 }
 
-func newGlbModelRepository(db *mongo.Database) *GlbModelRepository {
-	return &GlbModelRepository{c: db.Collection("models")}
+func newGlbModelRepository(db *gorm.DB) *GlbModelRepository {
+	return &GlbModelRepository{c: db}
 }
 
 type HdrRepository struct {
-	c *mongo.Collection
+	c *gorm.DB
 }
 
-func newHdrRepository(db *mongo.Database) *HdrRepository {
+func newHdrRepository(db *gorm.DB) *HdrRepository {
 	return &HdrRepository{
-		c: db.Collection("modelsPresets"),
+		c: db,
 	}
 }
 
-func (r *HdrRepository) listEnvironments(ctx context.Context) ([]Environment, error) {
-	var environments []Environment
+func (r *HdrRepository) listEnvironments(ctx context.Context) ([]domain.Environment, error) {
+	var environments []domain.Environment
 
-	cursor, err := r.c.Find(ctx, bson.M{})
-	if err != nil {
-		return nil, err
+	err := r.c.Find(environments).Error
+
+	return environments, err
+}
+
+type leconRepository struct {
+	c *gorm.DB
+}
+
+func newLeconRepository(db *gorm.DB) *leconRepository {
+	return &leconRepository{
+		c: db,
 	}
-	defer cursor.Close(ctx)
+}
 
-	for cursor.Next(ctx) {
-		var environment Environment
+const leconsSequenceName = "lecons_id_seq"
 
-		err := cursor.Decode(&environment)
-		if err != nil {
-			return nil, err
-		}
-		environments = append(environments, environment)
+func (r *leconRepository) getNextLeconId(db *gorm.DB) (int64, error) {
+	sqlQuery := fmt.Sprintf("SELECT nextval('%s')", leconsSequenceName)
+
+	var nextID int64
+
+	result := db.Raw(sqlQuery).Scan(&nextID)
+
+	if result.Error != nil {
+		return 0, result.Error
 	}
 
-	return environments, nil
+	return nextID, nil
 }

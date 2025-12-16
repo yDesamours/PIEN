@@ -10,6 +10,7 @@ import {
 import Loader from "../../components/loader/loader";
 import ClasseDescription from "./classeDescription";
 import Module from "./module";
+import Student from "./student";
 
 export default function Classe() {
   const { cours: coursPromise, classe } = useLoaderData();
@@ -51,6 +52,9 @@ export default function Classe() {
             <Loader promise={coursPromise}>
               <Module />
             </Loader>
+          </TabContent>
+          <TabContent value="eleves">
+            <Student />
           </TabContent>
         </TabBody>
       </Tab>

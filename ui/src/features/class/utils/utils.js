@@ -8,11 +8,14 @@ export function boxArgument(component, data, id, order) {
 }
 
 export const storage = {
-  setCourse: (state) => {
+  setCourse(state) {
     localStorage.setItem("course", JSON.stringify(state));
   },
-  getCourse: () => {
+  getCourse() {
     const course = localStorage.getItem("course");
     return course ? JSON.parse(course) : null;
+  },
+  clean() {
+    localStorage.removeItem("course");
   },
 };

@@ -1,6 +1,7 @@
 import {
   createContext,
   useCallback,
+  useEffect,
   useMemo,
   useReducer,
   useRef,
@@ -9,6 +10,7 @@ import {
 import { boxArgument, storage } from "../features/class/utils/utils";
 import ResourceChoser from "../features/class/components/organizer/resourceChoser";
 import { deepCopyJSON, id } from "../utils/utils";
+import { useParams } from "react-router-dom";
 
 export const courseBuilderContext = createContext({
   content: [],
@@ -32,6 +34,7 @@ export const courseBuilderContext = createContext({
   setDescription: () => {},
   undo: () => {},
   redo: () => {},
+  clean: () => {},
 });
 
 const getInitialComponentData = (componentType) => {
@@ -331,7 +334,10 @@ const reducer = (state, action) => {
 };
 
 export default function CourseBulderProvider({ children }) {
+  const params = useParams();
+
   const initialCourse = storage.getCourse() ?? {
+    id: crypto.randomUUID(),
     description: { title: "", resume: "", objectif: "" },
     blocks: [{ component: "new", order: 0, id: crypto.randomUUID() }],
     past: [],
@@ -436,6 +442,10 @@ export default function CourseBulderProvider({ children }) {
     dispacth({ type: "REDO" });
   }, [dispacth]);
 
+  const clean = useCallback(() => {
+    storage.clean();
+  });
+
   const contextValue = useMemo(
     () => ({
       content: deepCopyJSON(course.blocks),
@@ -457,6 +467,7 @@ export default function CourseBulderProvider({ children }) {
       load,
       undo,
       redo,
+      clean,
     }),
     [
       getData,
@@ -478,8 +489,13 @@ export default function CourseBulderProvider({ children }) {
       setDescription,
       undo,
       redo,
+      clean,
     ]
   );
+
+  useEffect(() => {
+    return clean;
+  }, []);
 
   return (
     <courseBuilderContext.Provider value={contextValue}>

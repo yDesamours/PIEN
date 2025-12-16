@@ -1,7 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import CourseBuilder from "../../features/class/components/courseBuilder/courseBuilder";
+import Loader from "../../components/loader/loader";
 
 export default function Cours() {
-  const params = useParams();
-  return <CourseBuilder />;
+  const data = useLoaderData();
+  return (
+    <Loader promise={data}>
+      <CourseBuilder />
+    </Loader>
+  );
 }

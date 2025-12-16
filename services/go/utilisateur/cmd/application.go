@@ -2,6 +2,7 @@ package main
 
 import (
 	"PIEN/internal"
+	"PIEN/utilisateur/repository"
 	"log"
 	"os"
 
@@ -15,9 +16,9 @@ type App struct {
 	db                        *gorm.DB
 	Token                     *Token
 	mode                      string
-	UserModel                 UserDB
-	JetonModel                JetonDB
-	HistoriqueMotDePasseModel HistoriqueMotDePasseDB
+	UserModel                 repository.UserDB
+	JetonModel                repository.JetonDB
+	HistoriqueMotDePasseModel repository.HistoriqueMotDePasseDB
 }
 
 func (a *App) GetDb() *gorm.DB {
@@ -82,11 +83,11 @@ func (a *AppBuilder) Build() (*App, error) {
 		return nil, nil
 	}
 
-	// db, err := db(a.databaseEngine, a.dsn)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// a.db = db
+	db, err := db(a.databaseEngine, a.dsn)
+	if err != nil {
+		return nil, err
+	}
+	a.db = db
 
 	jetonRepository := a.jetonRepository()
 	userRepository := a.utilisateurRepository()
@@ -104,29 +105,17 @@ func (a *AppBuilder) Build() (*App, error) {
 	}, nil
 }
 
-func (a *AppBuilder) utilisateurRepository() UserDB {
-	if a.mode == "demo" {
-		return NewUserFileDB("ressources/user.json")
-	}
-
-	return newUtilisateurRepository(a.db)
+func (a *AppBuilder) utilisateurRepository() repository.UserDB {
+	return repository.NewUtilisateurRepository(a.db)
 
 }
 
-func (a *AppBuilder) jetonRepository() JetonDB {
-	if a.mode == "demo" {
-		return NewJetonFileDB("ressources/jeton.json")
-	}
+func (a *AppBuilder) jetonRepository() repository.JetonDB {
 
-	return newJetonRepository(a.db)
+	return repository.NewJetonRepository(a.db)
 
 }
 
-func (a *AppBuilder) HistoriqueMotDePasseRepository() HistoriqueMotDePasseDB {
-	if a.mode == "demo" {
-		return NewHistoriqueMotDePasseFileDB("ressources/h.json")
-	}
-
-	return newHistoriqueMotDePasseRepository(a.db)
-
+func (a *AppBuilder) HistoriqueMotDePasseRepository() repository.HistoriqueMotDePasseDB {
+	return repository.NewHistoriqueMotDePasseRepository(a.db)
 }

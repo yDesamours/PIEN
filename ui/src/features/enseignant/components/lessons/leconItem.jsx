@@ -36,14 +36,14 @@ export default function LeconItem({ lecon }) {
       </CardBody>
       <CardFooter>
         <Button
-          onClick={() => navigate(`lecons/${lecon.id}`)}
+          onClick={() => navigate(`lecons/${lecon.id}/gerer?action=modifier`)}
           outline
           className="bg-primary text-white px-4 py-2 rounded-lg cursor-pointer"
         >
           Modifier
         </Button>
         <Button
-          onClick={() => navigate(`lecons/${lecon.id}/cours`)}
+          onClick={() => navigate(`lecons/${lecon.id}/gerer?action=voir`)}
           outline
           className="bg-gray-300 text-primary px-4 py-2 rounded-lg cursor-pointer"
         >

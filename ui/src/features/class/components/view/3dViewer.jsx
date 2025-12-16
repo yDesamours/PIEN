@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { Environment, Html, OrbitControls } from "@react-three/drei";
 import { Model } from "../3d/model";
 import Markers from "../3d/annotations/markers";
+import Annotation from "../3d/annotations/annotation";
 import useApi from "../../../../hooks/api";
 
 export default function Viewer3d({ data }) {
@@ -38,7 +39,7 @@ export default function Viewer3d({ data }) {
 function Viewer({ modelPath, loadingMessage, renderingConfig, className }) {
   const {
     scale = 3,
-    background = "#F354d4",
+    background = "#dadada",
     environmentPreset = "/model/hdr/empty_warehouse.hdr",
     animationName = null,
     autoRotate = false,
@@ -60,7 +61,7 @@ function Viewer({ modelPath, loadingMessage, renderingConfig, className }) {
     <div className={className}>
       {!preset && <div>Loading</div>}
       {preset && (
-        <>
+        <div className="bg-[#dadada] flex">
           <div className="flex-2 ">
             <Canvas>
               <color attach="background" args={[background]} />
@@ -86,10 +87,10 @@ function Viewer({ modelPath, loadingMessage, renderingConfig, className }) {
               </Suspense>
             </Canvas>
           </div>
-          {/* <div className="flex-1 flex flex-col">
-            <Annotation annotations={annotations} />
-          </div> */}
-        </>
+          <div className="flex-1 flex flex-col bg-transparent">
+            <Annotation showTitle={false} annotations={annotations} />
+          </div>
+        </div>
       )}
     </div>
   );

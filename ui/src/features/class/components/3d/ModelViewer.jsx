@@ -17,7 +17,7 @@ export default function ModelViewer({
 }) {
   const {
     scale = 3,
-    background = "#F354d4",
+    background = "#dadada",
     environmentPreset = "/model/hdr/empty_warehouse.hdr",
     animationName = null,
     autoRotate = false,

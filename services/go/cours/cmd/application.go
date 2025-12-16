@@ -2,22 +2,20 @@ package main
 
 import (
 	"PIEN/internal"
-	"context"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 )
 
 type App struct {
 	port   string
 	logger *log.Logger
-	db     *mongo.Database
+	db     *gorm.DB
 }
 
-func (a *App) GetDb() *mongo.Database {
+func (a *App) GetDb() *gorm.DB {
 	return a.db
 }
 
@@ -39,16 +37,18 @@ func (a *App) Success(c *gin.Context, code int, data interface{}) {
 }
 
 type AppBuilder struct {
-	dsn    string
-	port   string
-	logger *log.Logger
-	db     *gorm.DB
-	ctx    context.Context
+	databaseEngine string
+	dsn            string
+	port           string
+	logger         *log.Logger
+	db             *gorm.DB
+	secret         string
+	mode           string
 }
 
-func NewAppBuilder(ctx context.Context) *AppBuilder {
+func NewAppBuilder() *AppBuilder {
 	logger := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime)
-	return &AppBuilder{logger: logger, ctx: ctx}
+	return &AppBuilder{logger: logger}
 }
 
 func (a *AppBuilder) Port(port string) {
@@ -59,7 +59,8 @@ func (a *AppBuilder) Logger(logger *log.Logger) {
 	a.logger = logger
 }
 
-func (a *AppBuilder) DB(dsn string) {
+func (a *AppBuilder) DB(engine, dsn string) {
+	a.databaseEngine = engine
 	a.dsn = dsn
 }
 
@@ -68,17 +69,10 @@ func (a *AppBuilder) Build() (*App, error) {
 		return nil, nil
 	}
 
-	client, err := db(a.dsn, a.ctx)
+	db, err := db(a.dsn)
 	if err != nil {
 		return nil, err
 	}
-
-	err = client.Ping(a.ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	db := client.Database("pien")
 
 	return &App{
 		port:   a.port,

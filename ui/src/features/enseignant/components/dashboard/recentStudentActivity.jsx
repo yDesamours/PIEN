@@ -2,43 +2,42 @@ import StudentActivityRow from "./studentActivityRow";
 
 const studentData = [
   {
-    name: "Emma Wilson",
-    email: "emma.wilson@email.com",
+    name: "Johanne Clément",
+    email: "johanne.clement@email.com",
     avatarSrc: "/path/to/emma-avatar.jpg", // Remplacer par le chemin réel
     classe: "Ligne de Transmission",
-    activity: "Submitted Assignment #3",
-    lastActive: "2 hours ago",
+    activity: "A fini une lecon",
+    lastActive: "2h",
   },
   {
-    name: "James Rodriguez",
-    email: "james.rodriguez@email.com",
+    name: "Lami Pierre",
+    email: "lami.pierre@email.com",
     avatarSrc: "/path/to/james-avatar.jpg", // Remplacer par le chemin réel
     classe: "Ligne de Transmission",
-    activity: "Completed Quiz #2",
-    lastActive: "4 hours ago",
+    activity: "A soumis une évaluation",
+    lastActive: "4h",
   },
   {
-    name: "Sarah Johnson",
-    email: "sarah.johnson@email.com",
+    name: "Sarah Junior",
+    email: "sarah.junior@email.com",
     avatarSrc: "/path/to/sarah-avatar.jpg", // Remplacer par le chemin réel
     classe: "Ligne de Transmission",
-    activity: "Watched Lecture Video",
-    lastActive: "6 hours ago",
+    activity: "A Telecharger un document",
+    lastActive: "6h",
   },
   {
-    name: "Alex Thompson",
-    email: "alex.thompson@email.com",
+    name: "Alex Jean",
+    email: "alex.Jean@email.com",
     avatarSrc: "/path/to/alex-avatar.jpg", // Remplacer par le chemin réel
     classe: "Telephonie Mobile",
-    activity: "Posted in Discussion",
-    lastActive: "8 hours ago",
+    activity: "A redige un commentaire",
+    lastActive: "8h",
   },
 ];
 
 export default function RecentStudentActivity() {
   return (
     <section className="bg-white p-6 shadow-lg rounded-lg  shrink-1">
-      {/* En-tête du panneau */}
       <article className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-800">
           Activites Recentes
@@ -50,7 +49,6 @@ export default function RecentStudentActivity() {
         </div>
       </article>
 
-      {/* Tableau d'activité */}
       <article className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
