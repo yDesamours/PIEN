@@ -1,52 +1,46 @@
 package com.PEIN.controller;
 
+import com.PEIN.DTO.ClassRequestDTO;
+import com.PEIN.entity.Classe;
+import com.PEIN.entity.ClasseEleves;
+import com.PEIN.service.ClasseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.PEIN.Response;
-import com.PEIN.pojos.Classe;
-import com.PEIN.pojos.Contenu;
-import com.PEIN.service.ClasseService;
-import com.PEIN.service.ContenuService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/classes")
+@RequestMapping("/api/classes")
 @RequiredArgsConstructor
 public class ClasseController {
+
     private final ClasseService classeService;
-    private final ContenuService contenuService;
 
-    /**
-     * Endpoint pour récupérer toutes les classes.
-     * Accessible via GET /api/classes
-     */
-    @GetMapping
+    // 1️⃣ Créer une classe
+    @PostMapping("/create")
+    public ResponseEntity<Classe> createClasse(@RequestBody ClassRequestDTO request) {
+        Classe createdClasse = classeService.createClasse(request);
+        return ResponseEntity.ok(createdClasse);
+    }
+
+    // 2️⃣ Assigner un étudiant à une classe
+    @PostMapping("/assign-student")
+    public ResponseEntity<ClasseEleves> assignStudent(@RequestBody Long classeId, Long eleveId) {
+        ClasseEleves ce = classeService.assignStudentToClasse(classeId,eleveId);
+        return ResponseEntity.ok(ce);
+    }
+
+    // 3️⃣ Lister toutes les classes d’un enseignant
+    @GetMapping("/teacher/{enseignantId}")
+    public List<Classe> getClassesByTeacher(@PathVariable Long enseignantId) {
+        List<Classe> classes = classeService.getClassesByTeacher(enseignantId);
+        return classes;
+    }
+    @GetMapping("/")
     public List<Classe> getAllClasses() {
-        return classeService.getAllClasses();
+        List<Classe> classes = classeService.getAllClasses();
+        return classes;
     }
-
-    /**
-     * Endpoint pour récupérer les classes d'un enseignant spécifique.
-     * Accessible via GET /api/classes/enseignant/{enseignantId}
-     */
-    @GetMapping("/{enseignantId}")
-    public Response<List<Classe>> getClassesByEnseignant(@PathVariable String enseignantId) {
-        return Response.succes(classeService.getClassesByEnseignant(enseignantId));
-    }
-
-    @PostMapping("/{classeId}/contenus")
-    public ResponseEntity<String> addContenuToClasse(@PathVariable String classeId, @RequestBody Contenu contenu) {
-        try {
-            contenuService.add(classeId, contenu); // Appel au nouveau service
-            return new ResponseEntity<>("Contenu ajouté avec succès à la classe " + classeId, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erreur interne du serveur lors de l'ajout du contenu",
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }
+

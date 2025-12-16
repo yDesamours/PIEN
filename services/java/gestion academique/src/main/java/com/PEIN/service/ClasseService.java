@@ -1,42 +1,70 @@
 package com.PEIN.service;
-
+import com.PEIN.DTO.ClassRequestDTO;
+import com.PEIN.entity.*;
+import com.PEIN.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import com.PEIN.pojos.*;
-import com.PEIN.repository.ClasseRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClasseService {
 
     private final ClasseRepository classeRepository;
+    private final EchelonRepository echelonRepository;
+    private final MatiereRepository matiereRepository;
+    private final ProgrammeRepository programmeRepository;
+    private final ClasseElevesRepository classeElevesRepository;
+    private final EtudiantRepository etudiantRepository;
+    // Créer une classe
+    public Classe createClasse(ClassRequestDTO request) {
 
-    @Autowired
-    public ClasseService(ClasseRepository classeRepository) {
-        this.classeRepository = classeRepository;
+        // Vérification que les FK existent
+        Echelon echelon = echelonRepository.findById(request.getEchelonId())
+                .orElseThrow(() -> new RuntimeException("Echelon introuvable"));
+
+        Matiere matiere = matiereRepository.findById(request.getMatiereId())
+                .orElseThrow(() -> new RuntimeException("Matiere introuvable"));
+
+
+
+        Classe classe = new Classe();
+        classe.setEchelon(echelon);
+        classe.setMatiere(matiere);
+        classe.setNom(request.getNom());
+        classe.setEnseignant(request.getEnseignantId());
+        classe.setCode(request.getCode());
+        classe.setDescription(request.getDescription());
+        classe.setAnneeAcademique(request.getAnneeAcademique());
+        classe.setActif(true);
+        classe.setCreeLe(LocalDateTime.now());
+
+        return classeRepository.save(classe);
     }
 
-    /**
-     * Retourne toutes les classes.
-     * 
-     * @return Une liste de toutes les classes.
-     */
+    // Lister toutes les classes d’un enseignant
+    public List<Classe> getClassesByTeacher(Long enseignantId) {
+        return classeRepository.findByEnseignantAndSupprimeLeIsNull(enseignantId);
+    }
     public List<Classe> getAllClasses() {
         return classeRepository.findAll();
     }
 
-    /**
-     * Retourne les classes pour un enseignant spécifique.
-     * 
-     * @param enseignantId L'ID de l'enseignant.
-     * @return Une liste de classes associées à l'enseignant.
-     */
-    public List<Classe> getClassesByEnseignant(String enseignantId) {
-        return classeRepository.findByEnseignantId(enseignantId);
+    // Assigner un élève à une classe
+    public ClasseEleves assignStudentToClasse(Long classeId, Long eleveId) {
+        Classe classe = classeRepository.findById(classeId)
+                .orElseThrow(() -> new RuntimeException("Classe introuvable"));
+        Etudiant etudiant= etudiantRepository.findById(eleveId).orElseThrow(()->new RuntimeException("Etudiant introuvable"));
+
+        ClasseEleves ce = new ClasseEleves();
+        ce.setClasse_id(classe);
+        ce.setEleve_id(etudiant);
+        ce.setCreeLe(LocalDateTime.now());
+        ce.setModifieLe(LocalDateTime.now());
+
+        return classeElevesRepository.save(ce);
     }
+
 
 }
