@@ -21,6 +21,9 @@ import DashboardGestionnaire from "../pages/gestionnaire/dashboardGestionnaire";
 import StudentProfile from "../pages/enseignant/studentProfile";
 import MesElevesPanel from "../pages/enseignant/students";
 import leconLoader from "../loaders/enseignant/lecon";
+import GestionnaireMainLayout from "../layouts/gestionnaire/gestionnaireMainLayout";
+import GestionnaireClasseDashboard from "../pages/gestionnaire/gestionnaireClasseDashboard";
+import GestionnaireClasseLayout from "../layouts/gestionnaire/gestionnaireClasseLayout";
 
 export default createBrowserRouter([
   {
@@ -109,7 +112,7 @@ export default createBrowserRouter([
   path: "gestionnaire",
   element: (
     <PrivateOnly role="GESTIONNAIRE">
-      <GestionnaireLayout />
+      <GestionnaireMainLayout />
     </PrivateOnly>
   ),
   children: [
@@ -123,14 +126,20 @@ export default createBrowserRouter([
     },
     {
       path: "classes",
+      element: <GestionnaireClasseLayout/>,
       children: [
-        {
-          path: "create",
-          element: <CreationClasse />, // Formulaire création de classe
+         {
+          // path: "dashboard",
+          index:true,
+          element: <GestionnaireClasseDashboard />, // Formulaire création de classe
         },
         {
-          path: ":classeId/assign",
-          element: <AssignationEtudiants />, // Assignation d'étudiants
+          path: "create-classe",
+          element: <CreationClasse/>, // Formulaire création de classe
+        },
+        {
+          path: ":assigner-etudiant",
+          element: <AssignationEtudiants/>, // Assignation d'étudiants
         },
       ],
     },

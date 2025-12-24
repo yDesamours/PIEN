@@ -53,7 +53,7 @@ export default function EnseignantNav() {
         <NavItem>
           <Dropdown>
             <DropdownTrigger>
-              <User className="text-xs text-left w-20" />
+              <User className="text-xs text-left w-20" userName="Joseph Smirna" role="Admin"/>
             </DropdownTrigger>
             <DropdownContainer>
               <DropdownContent>

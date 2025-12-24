@@ -23,12 +23,20 @@ public class ClasseEleves {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "eleve_id", nullable = false)
+    @JsonIgnore
     private Etudiant eleve_id;
+    @Column(name = "eleve_id", nullable = false, insertable = false,updatable = false)
+    private Long eleveId;
     private LocalDateTime creeLe;
     private LocalDateTime modifieLe;
     private LocalDateTime supprimeLe;
 
     @ManyToOne
     @JoinColumn(name = "classe_id", nullable = false)
+    @JsonIgnore
     private Classe classe_id;
+    @Column(name = "classe_id", nullable = false,insertable = false,updatable = false)
+    private Long classeId;
+
+
 }

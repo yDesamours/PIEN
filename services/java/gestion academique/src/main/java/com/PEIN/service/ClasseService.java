@@ -1,7 +1,10 @@
 package com.PEIN.service;
+import com.PEIN.DTO.ClassDetailsDTO;
 import com.PEIN.DTO.ClassRequestDTO;
+import com.PEIN.DTO.EtudiantDTO;
 import com.PEIN.entity.*;
 import com.PEIN.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -47,9 +50,10 @@ public class ClasseService {
     public List<Classe> getClassesByTeacher(Long enseignantId) {
         return classeRepository.findByEnseignantAndSupprimeLeIsNull(enseignantId);
     }
-    public List<Classe> getAllClasses() {
-        return classeRepository.findAll();
+    public List<ClassDetailsDTO> getAllClasses() {
+        return classeRepository.findAllClasseCreated();
     }
+
 
     // Assigner un élève à une classe
     public ClasseEleves assignStudentToClasse(Long classeId, Long eleveId) {
@@ -64,6 +68,29 @@ public class ClasseService {
         ce.setModifieLe(LocalDateTime.now());
 
         return classeElevesRepository.save(ce);
+    }
+     //Trouver les eleves assigner a une classe
+    public List<EtudiantDTO> findStudentOfAClasse( Long classeId ){
+       List<EtudiantDTO>  etudiants = classeElevesRepository.findStudentOfAClasse(classeId);
+       return etudiants;
+    }
+
+    public List<EtudiantDTO> findAllStudent( Long classeId ){
+        List<EtudiantDTO>  etudiants = classeElevesRepository.findAllStudent( classeId);
+        return etudiants;
+    }
+    @Transactional
+    public void  deleteFromClasse(Long classeId, Long eleveId){
+        ClasseEleves classeEleves=classeElevesRepository.findClasseElevesByClasseIdAndEleveId(classeId,eleveId)
+                .orElseThrow(()->new RuntimeException("Donnees Introuvables"));
+       classeElevesRepository.deleteClasseElevesByClasseIdAndEleveId(classeId,eleveId);
+
+    }
+    @Transactional
+    public void deleteClass(Long id){
+        Classe classe= classeRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("Classe Introuvable"));
+        classeRepository.deleteClasseById(id);
     }
 
 

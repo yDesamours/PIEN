@@ -14,14 +14,14 @@ public interface MatiereRepository extends JpaRepository<Matiere,Long> {
     @Query("""
         SELECT m.code AS code, m.nom AS nom
         FROM Matiere m
-        WHERE m.supprimeLe IS NOT NULL
+        WHERE m.supprimeLe IS NULL
     """)
     List<LovProjection> findLov();
 
     @Query(value = """
         SELECT
-            e.matricule as code,
-            CONCAT(e.nom, ' ', e.prenom) AS nom
+            e.id as code,
+            CONCAT(e.matricule,' - ',e.nom, ' ', e.prenom) AS nom
         FROM sga.matiere m
         JOIN UNNEST(m.enseignants) AS ens_id ON TRUE
         JOIN sga.enseignant e ON e.id = ens_id

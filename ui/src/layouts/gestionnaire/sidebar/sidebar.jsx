@@ -25,17 +25,17 @@ export default function EnseignantSidebar() {
           </NavLink>
         </SideBarItem>
         <SideBarItem icon="book">
-          <NavLink to="creationClasse" className="p-2">
+          <NavLink to="classes" className="p-2">
             Classe
           </NavLink>
         </SideBarItem>
         <SideBarItem icon="eleve">
-          <NavLink to="creationClasse" className="p-2">
+          <NavLink to="classes" className="p-2">
             Eleve
           </NavLink>
         </SideBarItem>
         <SideBarItem icon="evaluation">
-          <NavLink to="creationClasse" className="p-2">
+          <NavLink to="classes" className="p-2">
             Evaluation
           </NavLink>
         </SideBarItem>
@@ -49,7 +49,6 @@ export default function EnseignantSidebar() {
             Rapport
           </NavLink>
         </SideBarItem>
-       
       </SideBarContent>
       <SideBarFooter />
     </SideBar>

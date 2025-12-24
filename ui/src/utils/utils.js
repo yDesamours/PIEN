@@ -11,6 +11,8 @@ export const storage = {
 export function deepCopyJSON(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
+export const apiUrl="api/"
+export const baseUrl= `http://${window.location.hostname}:8080/`
 
 /**
  *

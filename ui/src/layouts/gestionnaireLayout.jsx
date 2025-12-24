@@ -4,7 +4,7 @@ export default function GestionnaireLayout() {
   return (
     <>
       <p>ecran gestionnaire</p>
-      <Outlet />
+      {/* <Outlet /> */}
     </>
   );
 }

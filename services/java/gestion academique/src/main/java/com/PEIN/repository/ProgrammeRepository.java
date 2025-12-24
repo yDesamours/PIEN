@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProgrammeRepository extends JpaRepository<Programme,Long> {
     @Query("""
-        SELECT p.code AS code, p.nom AS nom
+        SELECT p.id AS code, p.code||'-'||p.nom AS nom,p.id as Id
         FROM Programme p
         WHERE p.actif = true
     """)
