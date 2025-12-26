@@ -10,13 +10,12 @@ import EnseignantClasseLayout from "../layouts/enseignant/enseignantClasseLayout
 import EnseignantClasses from "../pages/enseignant/classes";
 import EnseignantClasse from "../pages/enseignant/classe";
 import EnseignantCours from "../pages/enseignant/lecons";
-import ClassesLoader from "../loaders/enseignant/classes";
 import ClasseLoader from "../loaders/enseignant/class";
-import ModuleLoader from "../loaders/enseignant/module";
 import Module from "../pages/enseignant/module";
 import StudentProfile from "../pages/enseignant/studentProfile";
 import MesElevesPanel from "../pages/enseignant/students";
 import leconLoader from "../loaders/enseignant/lecon";
+import Lecon from "../pages/enseignant/lecon";
 
 export default createBrowserRouter([
   {
@@ -58,7 +57,6 @@ export default createBrowserRouter([
             children: [
               {
                 index: true,
-                loader: ClassesLoader,
                 element: <EnseignantClasses />,
               },
               {
@@ -72,16 +70,17 @@ export default createBrowserRouter([
                   {
                     path: "modules",
                     children: [
-                      { index: true, element: <Module /> },
                       {
                         path: ":moduleId",
                         children: [
                           {
                             index: true,
                             element: <EnseignantCours />,
-                            loader: ModuleLoader,
                           },
-                          ,
+                          {
+                            path: "lecons/:leconId",
+                            element: <Lecon />,
+                          },
                         ],
                       },
                     ],
@@ -93,12 +92,8 @@ export default createBrowserRouter([
         ],
       },
       {
-        path: "enseignant/classes/:classeId/modules/:moduleId/lecons/:coursId/gerer",
+        path: "enseignant/classes/:classeId/modules/:moduleId/lecons/:leconId/contenus/:versionId",
         loader: leconLoader,
-        element: <Cours />,
-      },
-      {
-        path: "enseignant/classes/:classeId/modules/:moduleId/lecons/new",
         element: <Cours />,
       },
     ],
