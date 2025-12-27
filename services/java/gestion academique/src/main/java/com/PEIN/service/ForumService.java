@@ -2,9 +2,6 @@ package com.PEIN.service;
 
 import org.springframework.stereotype.Service;
 
-import com.PEIN.pojos.*;
-import com.PEIN.repository.ClasseRepository;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
