@@ -10,7 +10,7 @@ type Lesson struct {
 	Objectifs          pq.StringArray `gorm:"column:objectifs;type:varchar[]" json:"objectifs"`
 	CompetencesCiblees pq.StringArray `gorm:"column:competences_ciblees;type:varchar[]" json:"competencesCiblees"`
 	Prerequis          pq.StringArray `gorm:"column:prerequis;type:varchar[]" json:"prerequis"`
-	Ordre              int            `gorm:"column:ordre;not null" json:"ordre"`
+	Ordre              uint           `gorm:"column:ordre;not null" json:"ordre"`
 	VersionActiveID    *uint          `gorm:"column:version_active_id" json:"versionActiveId"`
 
 	ContenuLecons []ContenuLecon     `gorm:"foreignKey:LeconID" json:"versions,omitempty"`

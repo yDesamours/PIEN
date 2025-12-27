@@ -19,7 +19,7 @@ func (r *appLessonRepository) ListModuleLessons(moduleId uint64) ([]domain.Lesso
 
 	result := r.db.
 		Where(&domain.Lesson{ModuleID: moduleId}).
-		Select("titre", "description", "ordre", "date_creation").
+		Select("id", "titre", "description", "ordre", "date_creation").
 		Find(&lessons)
 	return lessons, result.Error
 }
@@ -27,6 +27,17 @@ func (r *appLessonRepository) ListModuleLessons(moduleId uint64) ([]domain.Lesso
 func (r *appLessonRepository) Save(l *domain.Lesson) error {
 	result := r.db.Save(l)
 	return result.Error
+}
+
+func (r *appLessonRepository) OrderLessons(lessons []domain.Lesson) error {
+	return r.db.Transaction(func(tx *gorm.DB) error {
+		for _, l := range lessons {
+			if err := tx.Model(&l).Update("ordre", l.Ordre).Error; err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 }
 
 func (r *appLessonRepository) GetById(lessonId int64) (domain.Lesson, error) {

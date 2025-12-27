@@ -1,10 +1,9 @@
 import Icon from "../../../../components/icon/icon";
 import LeconItem from "./leconItem";
 import Modal from "../../../../components/modal/modal";
-import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import LeconMetadataForm from "./leconMetadata";
-import useStore from "../../../../store/store";
 import EmptyState from "../../../../components/empty/empty";
 import COURS from "../../../../services/api/cours";
 import useApi from "../../../../hooks/api";
@@ -16,16 +15,23 @@ import {
   TabItem,
   TabList,
 } from "../../../../components/tab";
+import LeconSortList from "./sortList";
 
 export default function Lecons() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMetadataModalOpen, setIsMetadataModalOpen] = useState(false);
+  const [isSortModalOpen, setIsSortModalOpen] = useState(false);
   const [lessons, setLessons] = useState([]);
-  const [filteredLecons, setFilteredLecons] = useState([]);
+  const [filteredLessons, setFilteredLessons] = useState([]);
+  const [sortedLessons, setSortedLessons] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef();
   const { classeId, moduleId } = useParams();
   const { execute } = useApi();
 
-  const published = filteredLecons.filter((l) => l.versionActiveId !== null);
-  const notPublished = filteredLecons.filter((l) => l.versionActiveId === null);
+  const published = filteredLessons.filter((l) => l.versionActiveId !== null);
+  const notPublished = filteredLessons.filter(
+    (l) => l.versionActiveId === null
+  );
 
   const loadLessons = async () => {
     const r = await execute(COURS.GET_MODULE_LECONS({ classeId, moduleId }));
@@ -33,16 +39,50 @@ export default function Lecons() {
       return;
     }
     setLessons(r.data || []);
-    setFilteredLecons(r.data || []);
+    setFilteredLessons(r.data || []);
+    setSortedLessons(r.data || []);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openMetadataModal = () => {
+    setIsMetadataModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeMetadataModal = () => {
+    setIsMetadataModalOpen(false);
   };
+
+  const openSortModal = () => {
+    setIsSortModalOpen(true);
+  };
+
+  const closeSortModal = () => {
+    setIsSortModalOpen(false);
+  };
+
+  const toggleMenu = (e) => {
+    e.stopPropagation();
+    setIsMenuOpen((s) => !s);
+  };
+
+  const onSort = useCallback(async () => {
+    const r = await execute(
+      COURS.SORT_LECONS({
+        classeId,
+        moduleId,
+        data: {
+          content: sortedLessons.map((l) => ({
+            lessonId: l.id,
+            order: l.ordre,
+          })),
+        },
+      })
+    );
+    if (r.error) {
+      return;
+    }
+    setLessons(r.data);
+    setFilteredLessons(r.data);
+  }, [sortedLessons, COURS]);
 
   const onSubmitLesson = async (data) => {
     const newLesson = { ...data };
@@ -63,7 +103,7 @@ export default function Lecons() {
    */
   const onSearch = (e) => {
     const inputValue = e.value.trim().toLowerCase();
-    setFilteredLecons(() =>
+    setFilteredLessons(() =>
       lessons.filter((l) => {
         const lowerCaseName = l.titre.toLowerCase();
         return (
@@ -78,18 +118,61 @@ export default function Lecons() {
     loadLessons();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       <div className="bg-white rounded-lg shadow p-6 text-sm mb-3">
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-semibold">Module Lessons</h2>
-          <button
-            onClick={openModal}
-            className="flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition"
-          >
-            <Icon name="plus" className="w-4 h-4" />
-            Ajouter une lecon
-          </button>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={openMetadataModal}
+              className="flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition"
+            >
+              <Icon name="plus" className="w-4 h-4" />
+              Ajouter une lecon
+            </button>
+            <div className="relative" ref={menuRef}>
+              <Icon
+                name="option"
+                role="button"
+                className="text-right w-6 h-full cursor-pointer rounded-sm bg-gray-300 p-1"
+                onClick={toggleMenu}
+              />
+
+              {isMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50 py-1">
+                  <button
+                    onClick={() => {
+                      openSortModal();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center w-full px-4 py-2 text-sm text-green-600 hover:bg-red-50"
+                  >
+                    <Icon name="trash" className="w-4 h-4 mr-2" /> Organiser
+                  </button>
+                  <button
+                    onClick={() => {
+                      console.log("Supprimer");
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    <Icon name="trash" className="w-4 h-4 mr-2" /> Supprimer
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <fieldset className="w-full border-1 p-1 border-gray-400 rounded-sm flex mb-2">
@@ -116,7 +199,7 @@ export default function Lecons() {
         <TabBody>
           <TabContent value="public">
             {published.length > 0 ? (
-              <ul className="flex gap-2">
+              <ul className="flex gap-2 flex-wrap">
                 {published.map((lecon) => (
                   <LeconItem lecon={lecon} key={lecon.id} />
                 ))}
@@ -129,7 +212,7 @@ export default function Lecons() {
           </TabContent>
           <TabContent value="prive">
             {notPublished.length > 0 ? (
-              <ul className="flex gap-2">
+              <ul className="flex gap-2 flex-wrap">
                 {notPublished.map((lecon) => (
                   <LeconItem lecon={lecon} key={lecon.id} />
                 ))}
@@ -143,8 +226,24 @@ export default function Lecons() {
         </TabBody>
       </Tab>
 
-      <Modal isOpen={isModalOpen} title="Nouveau Lecon" onClose={closeModal}>
+      <Modal
+        isOpen={isMetadataModalOpen}
+        title="Nouveau Lecon"
+        onClose={closeMetadataModal}
+      >
         <LeconMetadataForm onSubmit={onSubmitLesson} />
+      </Modal>
+
+      <Modal
+        isOpen={isSortModalOpen}
+        title={"Organiser les lecons"}
+        onClose={closeSortModal}
+      >
+        <LeconSortList
+          lecons={sortedLessons}
+          setLecons={setSortedLessons}
+          onSort={onSort}
+        />
       </Modal>
     </>
   );

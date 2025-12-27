@@ -43,3 +43,14 @@ func (r *appModuleRepository) GetById(moduleId int64) (domain.Module, error) {
 	result := r.db.Find(&m, moduleId)
 	return m, result.Error
 }
+
+func (r *appModuleRepository) SortModules(modules []domain.Module) error {
+	return r.db.Transaction(func(tx *gorm.DB) error {
+		for _, m := range modules {
+			if err := tx.Model(&m).Update("ordre", m.Ordre).Error; err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+}

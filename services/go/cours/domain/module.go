@@ -9,7 +9,7 @@ type Module struct {
 	Objectifs          pq.StringArray      `gorm:"column:objectifs;type:varchar[]" json:"objectifs"`
 	CompetencesCiblees pq.StringArray      `gorm:"column:competences_ciblees;type:varchar[]" json:"competences_ciblees"`
 	Prerequis          pq.StringArray      `gorm:"column:prerequis;type:varchar[]" json:"prerequis"`
-	Ordre              int                 `gorm:"column:ordre;not null" json:"ordre"`
+	Ordre              uint                `gorm:"column:ordre;not null" json:"ordre"`
 	Lecons             []Lesson            `gorm:"foreignKey:ModuleID" json:"lecons,omitempty"`
 	Commentaires       []CommentaireModule `gorm:"foreignKey:ModuleID" json:"commentaires,omitempty"`
 	ClassId            uint64              `gorm:"column:classe_id;not null" json:"classId"`

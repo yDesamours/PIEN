@@ -6,6 +6,7 @@ import (
 	"PIEN/cours/validator"
 	"context"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -221,6 +222,102 @@ func updateModule(app *App, repo repository.ModuleRepository) gin.HandlerFunc {
 		}
 
 		app.Success(c, http.StatusCreated, module)
+
+	}
+}
+
+func orderModuleLessons(app *App, repo repository.LessonRepository) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		moduleId, err := app.int64(c, "moduleId")
+		if err != nil {
+			return
+		}
+
+		var lessonOrder ItemOrder
+		err = c.BindJSON(&lessonOrder)
+		if err != nil {
+			return
+		}
+
+		var orders = lessonOrder.Content
+		lessons, err := repo.ListModuleLessons(uint64(moduleId))
+		if err != nil {
+			return
+		}
+
+		slices.SortFunc(orders, func(o1, o2 order) int {
+			return int(o1.Id) - int(o2.Id)
+		})
+		slices.SortFunc(lessons, func(a, b domain.Lesson) int {
+			return int(a.ID) - int(b.ID)
+		})
+
+		ok := slices.EqualFunc(orders, lessons, func(o order, l domain.Lesson) bool {
+			return o.Id == uint64(l.ID)
+		})
+
+		if !ok {
+			return
+		}
+
+		for i := range lessons {
+			lessons[i].Ordre = orders[i].Order
+		}
+
+		err = repo.OrderLessons(lessons)
+		if err != nil {
+			return
+		}
+
+		app.Success(c, http.StatusOK, lessons)
+
+	}
+}
+
+func orderClassModules(app *App, repo repository.ModuleRepository) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		classId, err := app.int64(c, "classId")
+		if err != nil {
+			return
+		}
+
+		var moduleOrder ItemOrder
+		err = c.BindJSON(&moduleOrder)
+		if err != nil {
+			return
+		}
+
+		var orders = moduleOrder.Content
+		modules, err := repo.ListClassModules(uint64(classId))
+		if err != nil {
+			return
+		}
+
+		slices.SortFunc(orders, func(o1, o2 order) int {
+			return int(o1.Id) - int(o2.Id)
+		})
+		slices.SortFunc(modules, func(a, b domain.Module) int {
+			return int(a.ID) - int(b.ID)
+		})
+
+		ok := slices.EqualFunc(orders, modules, func(o order, l domain.Module) bool {
+			return o.Id == uint64(l.ID)
+		})
+
+		if !ok {
+			return
+		}
+
+		for i := range modules {
+			modules[i].Ordre = orders[i].Order
+		}
+
+		err = repo.SortModules(modules)
+		if err != nil {
+			return
+		}
+
+		app.Success(c, http.StatusOK, modules)
 
 	}
 }

@@ -28,7 +28,7 @@ export default function LeconItem({ lecon }) {
   };
 
   return (
-    <Card className="relative">
+    <Card as="li" className={`relative order-${lecon.ordre}`}>
       <CardHeader className="flex justify-between items-start">
         <div className="flex flex-col items-start gap-1">
           <h3 className="font-bold">{lecon.titre}</h3>

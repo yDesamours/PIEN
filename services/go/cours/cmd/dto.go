@@ -15,3 +15,12 @@ type Lesson struct {
 	Contenu            datatypes.JSON `json:"contenu"`
 	Commentaires       []string       `json:"commentaires"`
 }
+
+type ItemOrder struct {
+	Content []order `json:"content"`
+}
+
+type order struct {
+	Id    uint64 `json:"id"`
+	Order uint   `json:"order"`
+}

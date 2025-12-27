@@ -6,13 +6,16 @@ import Modal from "../../components/modal/modal";
 import ModuleMetadataForm from "../../features/enseignant/components/modules/moduleMetadata";
 import useApi from "../../hooks/api";
 import COURS from "../../services/api/cours";
+import ModuleSortList from "../../features/enseignant/components/modules/sortList";
 
 export default function Module() {
   const { classe } = useLoaderData();
   const [modules, setModules] = useState([]);
   const [filteredModules, setFilteredModules] = useState([]);
+  const [sortedModules, setsortedModules] = useState([]);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMetadataModalOpen, setIsMetadataModalOpen] = useState(false);
+  const [isSortModalOpen, setIsSortModalOpen] = useState(false);
   const { execute } = useApi();
   const { classeId } = useParams();
 
@@ -23,6 +26,7 @@ export default function Module() {
     }
     setModules(r.data);
     setFilteredModules(r.data);
+    setsortedModules(r.data);
   };
 
   /**
@@ -42,38 +46,73 @@ export default function Module() {
     );
   };
 
+  const onSortedModules = async () => {
+    const r = await execute(
+      COURS.SORT_MODULES({ classeId, data: { content: sortedModules } })
+    );
+    if (r.error) {
+      return;
+    }
+    setModules(r.data);
+    setFilteredModules(r.data);
+  };
+
   useEffect(() => {
     load();
   }, []);
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openMetadataModal = () => {
+    setIsMetadataModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeMedatadaModal = () => {
+    setIsMetadataModalOpen(false);
+  };
+
+  const openSortModal = () => {
+    setIsSortModalOpen(true);
+  };
+
+  const closeSortModal = () => {
+    setIsSortModalOpen(false);
   };
 
   const createModule = async (data) => {
     const r = await execute(COURS.CREATE_MODULE({ classeId, data: data }));
     setModules((s) => [...s, { ...r }]);
-    closeModal();
+    closeMedatadaModal();
   };
 
   return (
     <>
       <Loader promise={filteredModules}>
-        <Modules onNew={openModal} onSearch={onSearchModule} />
+        <Modules
+          onNew={openMetadataModal}
+          onSearch={onSearchModule}
+          onSort={openSortModal}
+        />
       </Loader>
 
       <Modal
         title="Ajouter un module"
-        isOpen={isModalOpen}
-        onClose={closeModal}
+        isOpen={isMetadataModalOpen}
+        onClose={closeMedatadaModal}
       >
         <Loader promise={classe}>
           <ModuleMetadataForm onSubmit={createModule} />
         </Loader>
+      </Modal>
+
+      <Modal
+        onClose={closeSortModal}
+        isOpen={isSortModalOpen}
+        title="Organiser les modules"
+      >
+        <ModuleSortList
+          modules={sortedModules}
+          setModules={setsortedModules}
+          onSorted={onSortedModules}
+        />
       </Modal>
     </>
   );

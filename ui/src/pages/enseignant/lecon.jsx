@@ -106,7 +106,7 @@ export default function Lecon() {
         <TabBody>
           <TabContent value="contenu">
             <Loader promise={lecon}>
-              <Versions versions={lecon.versions} />
+              <Versions />
             </Loader>
           </TabContent>
           <TabContent value="commentaires"></TabContent>

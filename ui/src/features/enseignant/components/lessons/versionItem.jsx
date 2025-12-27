@@ -47,15 +47,18 @@ export default function VersionItem({ version, isActive = false }) {
 
           {isMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50 py-1">
-              <button
-                onClick={() => {
-                  console.log("Archiver");
-                  setIsMenuOpen(false);
-                }}
-                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                <Icon name="archive" className="w-4 h-4 mr-2" /> Archiver
-              </button>
+              {!isActive && (
+                <button
+                  onClick={() => {
+                    console.log("Archiver");
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <Icon name="archive" className="w-4 h-4 mr-2" /> Definir comme
+                  Actif
+                </button>
+              )}
               <button
                 onClick={() => {
                   console.log("Supprimer");

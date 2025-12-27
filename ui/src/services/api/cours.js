@@ -99,4 +99,17 @@ COURS.GET_LECON_VERSION = ({ classeId, moduleId, leconId, versionId }) => ({
     versionId,
 });
 
+COURS.SORT_LECONS = ({ classeId, moduleId, data }) => ({
+  method: "PUT",
+  url:
+    host + "/classes/" + classeId + "/modules/" + moduleId + "/order-lessons",
+  body: data,
+});
+
+COURS.SORT_MODULES = ({ classeId, data }) => ({
+  method: "PUT",
+  url: host + "/classes/" + classeId + "/order-modules",
+  body: data,
+});
+
 export default COURS;
